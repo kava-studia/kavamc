@@ -6,6 +6,7 @@ import "./globals.css";
 import "./refinement.css";
 import "./mobile-polish.css";
 import "./mobile-final.css";
+import "./stability.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kavamc.vercel.app"),
