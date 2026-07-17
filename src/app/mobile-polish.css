@@ -1,0 +1,184 @@
+/* Mobile design matching the approved iPhone-style mockup */
+:root {
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "Segoe UI", sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
+  --mono: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+}
+
+.mobile-menu-backdrop { display: none; }
+.mobile-menu-brand, .mobile-menu-booking { display: none; }
+
+@media (max-width: 1060px) {
+  .mobile-menu-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 88;
+    border: 0;
+    background: rgba(0,0,0,.66);
+    backdrop-filter: blur(18px) saturate(115%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .28s ease, visibility .28s ease;
+  }
+  .mobile-menu-backdrop.open { opacity: 1; visibility: visible; }
+
+  .menu-toggle {
+    z-index: 96;
+    min-width: 96px;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(20,21,25,.78);
+    box-shadow: inset 0 1px rgba(255,255,255,.06), 0 12px 36px rgba(0,0,0,.28);
+    backdrop-filter: blur(22px) saturate(130%);
+  }
+  .menu-toggle small { font-size: .78rem; font-weight: 650; }
+  .menu-open .menu-toggle { border-color: rgba(255,106,36,.48); box-shadow: 0 0 0 1px rgba(255,106,36,.08), 0 14px 38px rgba(0,0,0,.35); }
+
+  .mobile-menu {
+    display: flex;
+    position: fixed;
+    inset: 12px 12px calc(82px + env(safe-area-inset-bottom));
+    z-index: 92;
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 34px;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(255,106,36,.11), transparent 28%),
+      linear-gradient(145deg, rgba(30,32,38,.96), rgba(12,13,17,.985));
+    box-shadow: inset 0 1px rgba(255,255,255,.08), 0 32px 90px rgba(0,0,0,.62);
+    backdrop-filter: blur(36px) saturate(135%);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(18px) scale(.985);
+    transition: opacity .28s ease, visibility .28s ease, transform .32s cubic-bezier(.2,.8,.2,1);
+  }
+  .mobile-menu:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(115deg, rgba(255,255,255,.07), transparent 22%, transparent 72%, rgba(255,106,36,.04));
+  }
+  .mobile-menu.open { opacity: 1; visibility: visible; transform: none; }
+
+  .mobile-menu-brand {
+    display: block;
+    position: relative;
+    margin-bottom: 28px;
+    color: #f4f2ef;
+    font: 800 1.15rem/1 var(--body);
+    letter-spacing: -.045em;
+  }
+  .mobile-menu-brand span { color: var(--orange); }
+
+  .mobile-menu nav { display: grid; gap: 10px; margin: 0; }
+  .mobile-menu nav a {
+    display: grid;
+    grid-template-columns: 48px minmax(0,1fr) 24px;
+    align-items: center;
+    gap: 10px;
+    min-height: 82px;
+    padding: 0 18px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 22px;
+    background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+    box-shadow: inset 0 1px rgba(255,255,255,.025);
+    font-family: var(--body);
+    text-transform: none;
+    letter-spacing: -.035em;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+  .mobile-menu nav a:active { transform: scale(.985); background: rgba(255,106,36,.08); border-color: rgba(255,106,36,.36); }
+  .mobile-menu nav a > span { color: var(--orange); font: 600 .82rem/1 var(--body); }
+  .mobile-menu nav a strong { color: #f1efec; font-size: clamp(1.35rem, 5vw, 2rem); font-weight: 480; line-height: 1.05; }
+  .mobile-menu nav a i { color: var(--orange-2); font: 300 2rem/1 var(--body); text-align: right; opacity: 1; }
+
+  .mobile-menu-booking {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 24px;
+    background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.016));
+    box-shadow: inset 0 1px rgba(255,255,255,.035);
+  }
+  .mobile-menu-booking-copy { display: grid; grid-template-columns: 48px 1fr; align-items: center; gap: 14px; }
+  .mobile-menu-booking-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,106,36,.34);
+    border-radius: 16px;
+    color: var(--orange-2);
+    background: rgba(255,106,36,.09);
+    box-shadow: 0 0 30px rgba(255,106,36,.11);
+  }
+  .mobile-menu-booking-copy strong { display: block; font-size: .98rem; font-weight: 600; letter-spacing: -.02em; }
+  .mobile-menu-booking-copy p { margin: 3px 0 0; color: rgba(255,255,255,.5); font-size: .82rem; }
+  .mobile-menu-booking > a {
+    min-height: 58px;
+    padding: 0 20px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: white;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff5b16, #ff8a2f);
+    box-shadow: 0 14px 38px rgba(255,90,20,.28), inset 0 1px rgba(255,255,255,.24);
+  }
+  .mobile-menu-booking > a span { font-size: 1.3rem; }
+  .mobile-menu-booking > small { color: rgba(255,255,255,.42); font-size: .68rem; text-align: center; line-height: 1.45; }
+}
+
+@media (max-width: 680px) {
+  body { font-family: var(--body); letter-spacing: -.015em; }
+  .site-header { background: linear-gradient(180deg, rgba(8,9,12,.96), rgba(8,9,12,.7)); border-bottom-color: rgba(255,255,255,.06); }
+  .brand { font-size: 1.08rem; font-weight: 800; }
+
+  .mobile-menu { inset: 8px 8px calc(78px + env(safe-area-inset-bottom)); padding: 20px 14px 18px; border-radius: 30px; }
+  .mobile-menu-brand { margin: 6px 8px 22px; }
+  .mobile-menu nav { gap: 8px; }
+  .mobile-menu nav a { min-height: 72px; padding: 0 15px; border-radius: 19px; grid-template-columns: 40px minmax(0,1fr) 20px; }
+  .mobile-menu nav a strong { font-size: clamp(1.22rem, 5.8vw, 1.55rem); }
+  .mobile-menu nav a i { font-size: 1.65rem; }
+  .mobile-menu-booking { padding: 15px; border-radius: 21px; }
+  .mobile-menu-booking > a { min-height: 56px; }
+
+  .hero { margin: 8px; min-height: calc(100svh - 88px); padding: 86px 14px 22px; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,.09); box-shadow: inset 0 1px rgba(255,255,255,.04); }
+  .hero h1 { font-size: clamp(4rem, 21vw, 6rem); font-weight: 720; letter-spacing: -.075em; }
+  .hero h1 em { font-family: Georgia, serif; font-weight: 500; }
+  .hero-tagline { font-size: 1.02rem; }
+
+  section:not(.hero):not(.visual-break):not(.live-feature) { margin-inline: 8px; border-radius: 28px; }
+  .services-panel, .formats, .video, .process, .contacts, .experience, .advantages { border: 1px solid rgba(255,255,255,.07); overflow: hidden; }
+  .compact-heading h2, .section-heading h2, .experience-copy h2, .contact-heading h2, .advantages-intro h2 { font-weight: 660; letter-spacing: -.06em; }
+  .service-card, .format-card, .lead-form { border-radius: 24px; }
+
+  .mobile-bottom-nav {
+    left: 8px;
+    right: 8px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    height: 68px;
+    z-index: 94;
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 22px;
+    background: rgba(18,19,23,.9);
+    box-shadow: 0 18px 50px rgba(0,0,0,.42), inset 0 1px rgba(255,255,255,.05);
+    backdrop-filter: blur(28px) saturate(130%);
+  }
+  .mobile-bottom-nav a { border-radius: 16px; font-size: .58rem; text-transform: none; letter-spacing: -.01em; }
+  .mobile-bottom-nav .mobile-book { background: linear-gradient(135deg, #ff5b16, #ff8a2f); box-shadow: 0 8px 24px rgba(255,91,22,.24); }
+
+  .menu-open .back-to-top, .menu-open .cookie-panel { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+}
