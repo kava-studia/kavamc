@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { CookieConsent } from "@/components/cookie-consent";
 import { ScrollEffects } from "@/components/scroll-effects";
+import { SiteControls } from "@/components/site-controls";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,8 +15,8 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#050505", colorScheme: "dark" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#090909", colorScheme: "dark" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ru"><body><ScrollEffects />{children}<CookieConsent /></body></html>;
+  return <html lang="ru"><body><ScrollEffects /><SiteControls />{children}<CookieConsent /></body></html>;
 }
