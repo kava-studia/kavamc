@@ -3,6 +3,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { ScrollEffects } from "@/components/scroll-effects";
 import { SiteControls } from "@/components/site-controls";
 import "./globals.css";
+import "./refinement.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kavamc.vercel.app"),
