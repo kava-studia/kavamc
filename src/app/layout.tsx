@@ -5,6 +5,7 @@ import { SiteControls } from "@/components/site-controls";
 import "./globals.css";
 import "./refinement.css";
 import "./mobile-polish.css";
+import "./mobile-final.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kavamc.vercel.app"),
