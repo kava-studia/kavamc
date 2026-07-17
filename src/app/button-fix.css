@@ -1,43 +1,68 @@
-/* Targeted format CTA and floating control fix */
+/* Focused fix for format action buttons */
 .format-card > a {
   width: 100% !important;
   min-height: 52px !important;
-  margin-top: auto !important;
-  padding: 0 1rem !important;
+  margin-top: 1.15rem !important;
+  padding: 0 10px 0 17px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  gap: .75rem !important;
-  border-radius: 999px !important;
+  gap: 14px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  color: #f8f6f2 !important;
+  background: linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07),0 10px 26px rgba(0,0,0,.18) !important;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Variable","Segoe UI",Arial,sans-serif !important;
+  font-size: .92rem !important;
+  font-weight: 650 !important;
   line-height: 1 !important;
-  font-size: .78rem !important;
-  font-weight: 760 !important;
-  letter-spacing: .045em !important;
-  text-transform: uppercase !important;
+  letter-spacing: -.01em !important;
+  text-transform: none !important;
   white-space: nowrap !important;
+  transition: transform .2s ease,border-color .2s ease,background .2s ease,box-shadow .2s ease !important;
 }
 
-.format-card > a svg,
-.format-card > a span:last-child {
-  flex: 0 0 auto !important;
+.format-card > a svg {
+  width: 34px !important;
+  height: 34px !important;
+  padding: 8px !important;
+  flex: 0 0 34px !important;
   margin: 0 !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255,111,44,.28) !important;
+  color: #ff9a62 !important;
+  background: rgba(255,111,44,.09) !important;
 }
 
-@media (max-width: 680px) {
+@media (hover:hover) {
+  .format-card > a:hover {
+    transform: translateY(-2px) !important;
+    border-color: rgba(255,111,44,.46) !important;
+    background: linear-gradient(145deg,rgba(255,111,44,.12),rgba(255,255,255,.035)) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08),0 14px 34px rgba(0,0,0,.24) !important;
+  }
+}
+
+@media (max-width:680px) {
   .format-card {
     display: flex !important;
     flex-direction: column !important;
   }
-
   .format-card > a {
-    min-height: 54px !important;
-    margin-top: 1.25rem !important;
-    padding: 0 1.05rem !important;
-    font-size: .8rem !important;
+    min-height: 50px !important;
+    margin-top: 1rem !important;
+    padding-left: 16px !important;
+    border-radius: 15px !important;
+    font-size: .9rem !important;
   }
-
+  .format-card > a svg {
+    width: 32px !important;
+    height: 32px !important;
+    flex-basis: 32px !important;
+  }
   .back-to-top {
-    right: .85rem !important;
+    right: .8rem !important;
     bottom: 86px !important;
     width: 48px !important;
     height: 48px !important;
