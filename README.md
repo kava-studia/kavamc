@@ -33,3 +33,7 @@ API `/api/lead` умеет отправлять заявки:
 - на email через Resend
 
 Переменные перечислены в `.env.example`.
+
+## Deployment
+
+Основной production-проект: `kavamc.vercel.app`. Репозиторий: `kava-studia/kavamc`, ветка: `main`.
