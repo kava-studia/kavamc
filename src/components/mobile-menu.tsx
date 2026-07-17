@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 
 const links = [
+  ["Возможности", "#services"],
   ["Форматы", "#formats"],
-  ["Видео", "#video"],
+  ["Медиа", "#video"],
   ["Опыт", "#experience"],
   ["Контакты", "#contacts"],
 ] as const;
