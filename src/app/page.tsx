@@ -10,119 +10,119 @@ function Arrow() { return <span aria-hidden="true">↗</span>; }
 
 function Photo({ src, className = "", label, position }: { src: string; className?: string; label: string; position?: string }) {
   return (
-    <div className={`photo ${className}`} style={{ backgroundImage: `linear-gradient(180deg, transparent 36%, rgba(0,0,0,.76)), url(${src})`, backgroundPosition: position }}>
+    <div className={`photo ${className}`} style={{ backgroundImage: `linear-gradient(180deg, transparent 42%, rgba(4,5,10,.84)), url(${src})`, backgroundPosition: position }}>
       <span>{label}</span>
     </div>
   );
 }
 
+const services = [
+  { icon: "◉", title: "Клубный MC", text: "Работа поверх DJ-сета, точные выходы, драйв и живой контакт с танцполом." },
+  { icon: "⌁", title: "Продюсер событий", text: "Концепция, программа, команда, артисты и продвижение в одном контуре." },
+  { icon: "◇", title: "Частные события", text: "Свадьбы, корпоративы, открытия, презентации и городские мероприятия." },
+  { icon: "ϟ", title: "Live Guitar Show", text: "Электроника, drum and bass, rock, metal, живая гитара и энергия сцены." },
+];
+
+const advantages = [
+  ["01", "Чувствую зал", "Работаю по реакции людей, а не по заученному шаблону."],
+  ["02", "Усиливаю DJ", "Не мешаю музыке, а точно поднимаю нужные моменты сета."],
+  ["03", "Создаю контент", "Делаю живые сцены, которые гости снимают и публикуют сами."],
+  ["04", "Держу стиль", "Без дешёвых конкурсов, давления и ощущения корпоративного ада."],
+];
+
 export default function Home() {
   return (
-    <main>
+    <main className="home-page">
       <header className="site-header">
         <a className="brand" href="#top" aria-label="KAVA MC - на главную">KAVA<span>MC</span></a>
-        <nav aria-label="Основная навигация"><a href="#formats">Форматы</a><a href="#video">Видео</a><a href="#experience">Опыт</a><a href="#contacts">Контакты</a></nav>
-        <a className="header-cta" href={telegram} target="_blank" rel="noreferrer">Обсудить дату <Arrow /></a>
+        <nav aria-label="Основная навигация"><a href="#services">Возможности</a><a href="#formats">Форматы</a><a href="#video">Медиа</a><a href="#experience">Опыт</a><a href="#contacts">Контакты</a></nav>
+        <a className="header-cta" href={telegram} target="_blank" rel="noreferrer">Забронировать дату <Arrow /></a>
         <MobileMenu />
       </header>
 
       <section className="hero" id="top">
-        <div className="hero-noise" />
-        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA MC · CLUB PERFORMANCE" position="72% center" />
+        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA MC · CLUB PERFORMANCE" position="70% center" />
+        <div className="hero-grid-overlay" aria-hidden="true" />
         <div className="hero-content" data-reveal>
-          <p className="eyebrow">MC · HOST · EVENT PRODUCER</p>
-          <h1>Энергия<br /><em>вечера.</em></h1>
-          <p className="hero-copy">Клубный MC, ведущий и продюсер событий. Живая работа с залом, точная связка с DJ и атмосфера без кринжа и принуждения.</p>
-          <div className="hero-actions"><a className="button button-primary" href="#video">Смотреть showreel</a><a className="button button-ghost" href={telegram} target="_blank" rel="noreferrer">Пригласить KAVA MC <Arrow /></a></div>
+          <div className="hero-kicker"><span>Клубный MC</span><span>Ведущий событий</span><span>Event producer</span></div>
+          <h1>KAVA <em>MC</em></h1>
+          <p className="hero-tagline">Я не просто веду события.<br /><strong>Я создаю энергию, которую помнят.</strong></p>
+          <div className="hero-actions">
+            <a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить дату <Arrow /></a>
+            <a className="button button-ghost" href="#video"><span className="button-play">▶</span> Смотреть шоу-рил</a>
+          </div>
+          <div className="hero-social"><span>Москва · Россия</span><a href={telegram} target="_blank" rel="noreferrer">Telegram</a><a href="mailto:juri.kava@yandex.ru">Email</a></div>
         </div>
-        <div className="hero-stats" data-reveal><div><strong>8+</strong><span>лет в индустрии</span></div><div><strong>15K</strong><span>MC - сет</span></div><div><strong>30K</strong><span>MC + live guitar</span></div></div>
-        <div className="scroll-mark">SCROLL · FEEL · BOOK</div>
+        <div className="hero-event-card" data-reveal>
+          <span>Основной формат</span><strong>Клубный MC-сет</strong><p>Работа с DJ и залом</p><div><b>15 000 ₽</b><small>+ трансфер</small></div>
+        </div>
+        <div className="hero-rail" aria-hidden="true"><span>01</span><i /><span>ENERGY</span></div>
       </section>
 
-      <div className="ticker" aria-hidden="true"><div>KAVA MC · CLUB SET · LIVE GUITAR · EVENT PRODUCTION · KAVA MC · CLUB SET · LIVE GUITAR · EVENT PRODUCTION ·</div></div>
-
-      <section className="manifesto section-dark">
-        <p className="section-index" data-reveal>01 · POSITION</p>
-        <div className="manifesto-grid">
-          <h2 data-reveal>Не тамада.<br />Не аниматор.<br /><span>Не фон.</span></h2>
-          <div data-reveal><p className="large-copy">KAVA MC создаёт динамику вечера, усиливает DJ - сет и держит внимание зала без дешёвых конкурсов.</p><p>Для заведения это сильная пятница или суббота, живой контакт с гостями, узнаваемые моменты для контента и цельный сценарий ночи.</p></div>
+      <section className="services-panel" id="services">
+        <div className="compact-heading" data-reveal><div><p className="section-index">Что я делаю</p><h2>Больше,<br />чем <em>MC</em></h2></div><p>Харизма, контроль, импровизация и продюсерское мышление в каждом выходе.</p></div>
+        <div className="service-grid">
+          {services.map((service) => <article className="service-card" key={service.title} data-reveal><span className="service-icon">{service.icon}</span><div><h3>{service.title}</h3><p>{service.text}</p></div><Arrow /></article>)}
         </div>
       </section>
 
-      <section className="formats section-light" id="formats">
-        <div className="section-heading" data-reveal><div><p className="section-index">02 · FORMATS</p><h2>Выберите<br /><em>уровень энергии</em></h2></div><p>Разовый выход, серия клубных дат или полноценное событие под ключ. Каждый формат адаптируется под площадку и аудиторию.</p></div>
+      <section className="advantages section-dark">
+        <div className="advantages-intro" data-reveal><p className="section-index">Почему это работает</p><h2>Не фон.<br /><em>Катализатор.</em></h2><p>Я соединяю музыку, людей и момент так, чтобы вечер ощущался цельным, живым и дорогим.</p></div>
+        <div className="advantage-grid">{advantages.map(([index, title, text]) => <article key={index} data-reveal><span>{index}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
+      </section>
+
+      <section className="formats" id="formats">
+        <div className="section-heading" data-reveal><div><p className="section-index">Форматы и стоимость</p><h2>Выбери<br /><em>уровень энергии</em></h2></div><p>От одного клубного выхода до полноценной серии событий. Всё адаптируется под площадку, музыку и аудиторию.</p></div>
         <div className="format-grid">
-          {formats.map((format) => (
+          {formats.map((format, index) => (
             <article className={`format-card ${"featured" in format && format.featured ? "featured" : ""}`} key={format.title} data-reveal>
-              <p className="card-index">{format.eyebrow}</p><h3>{format.title}</h3><p className="format-price">{format.price}</p><p className="format-text">{format.text}</p>
-              <div className="tags">{format.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><a href="#contacts">Обсудить формат <Arrow /></a>
+              <div className="format-top"><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Флагман</b> : null}</div>
+              <h3>{format.title}</h3><p className="format-price">{format.price}</p><p className="format-text">{format.text}</p>
+              <div className="tags">{format.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><a href="#contacts">Выбрать формат <Arrow /></a>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="club section-dark">
-        <Photo src="/media/club-wide.webp" className="club-photo" label="CROWD CONTROL · LIVE CONTACT" position="center" />
-        <div className="club-copy">
-          <p className="section-index" data-reveal>03 · FOR VENUES</p><h2 data-reveal>Когда DJ играет,<br /><em>зал должен жить.</em></h2>
-          <p data-reveal>KAVA MC подключается разово или серией выступлений. Формат адаптируется под музыкальную программу, стиль заведения и задачи конкретной ночи.</p>
-          <div className="benefit-list" data-reveal>{["Взаимодействие с DJ", "Импровизация и работа с залом", "Интеграции артистов и партнёров", "Контентные моменты", "Регулярные слоты и резидентство", "Live - шоу с гитарой"].map((item, index) => <div key={item}><span>0{index + 1}</span><strong>{item}</strong></div>)}</div>
-        </div>
+      <section className="visual-break">
+        <Photo src="/media/club-wide.webp" className="visual-break-photo" label="CROWD · ENERGY · MOMENT" position="center" />
+        <div className="visual-break-copy" data-reveal><p className="section-index">Работа с площадками</p><h2>DJ играет.<br /><em>Зал живёт.</em></h2><p>Разовый сет, серия пятниц, сезонная программа или резидентство. Я подстраиваюсь под музыкальную концепцию заведения и усиливаю её.</p><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить сотрудничество <Arrow /></a></div>
       </section>
 
       <section className="video section-black" id="video">
-        <div className="section-heading inverse" data-reveal><div><p className="section-index">04 · SHOWREEL</p><h2>Не верь тексту.<br /><em>Смотри.</em></h2></div><p>Реальные видео из клубов. Нажмите на карточку - ролик откроется крупно со звуком и управлением.</p></div>
+        <div className="section-heading inverse" data-reveal><div><p className="section-index">Реальные выступления</p><h2>Смотри<br /><em>энергию</em></h2></div><p>Никаких стоков и выдуманных кейсов. Здесь реальные клубы, публика, сцена и работа в моменте.</p></div>
         <VideoGallery />
       </section>
 
-      <section className="live section-accent">
-        <div className="live-copy">
-          <p className="section-index" data-reveal>05 · SIGNATURE SHOW</p><h2 data-reveal>KAVA MC<br /><span>+</span> LIVE GUITAR</h2>
-          <p data-reveal>Электронная основа, живой гитарист и MC. Rock, metal, drum and bass и rave соединяются в одном клубном шоу.</p>
-          <div className="live-price" data-reveal><strong>30 000 ₽</strong><span>+ трансфер</span></div><a className="button button-dark" href={telegram} target="_blank" rel="noreferrer">Запросить live - формат <Arrow /></a>
-        </div>
-        <Photo src="/media/live-guitar.webp" className="live-photo" label="ROCK · DNB · RAVE" position="center" />
+      <section className="live-feature">
+        <Photo src="/media/live-guitar.webp" className="live-feature-photo" label="LIVE GUITAR · ROCK · DNB" position="center" />
+        <div className="live-feature-copy" data-reveal><span className="live-badge">Флагманское шоу</span><h2>KAVA MC<br /><em>+ Live Guitar</em></h2><p>Электронная музыка, drum and bass, rock, metal, живая гитара и голос, который держит сцену.</p><div className="live-price"><strong>30 000 ₽</strong><span>+ трансфер</span></div><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Запросить live-формат <Arrow /></a></div>
       </section>
 
-      <section className="experience section-light" id="experience">
-        <div className="experience-intro" data-reveal><p className="section-index">06 · EXPERIENCE</p><h2>Более восьми лет<br /><em>внутри индустрии.</em></h2><p>Клубные вечера, рестораны, городские праздники, свадьбы, корпоративы, открытия и частные события.</p></div>
+      <section className="experience" id="experience">
+        <div className="experience-copy" data-reveal><p className="section-index">Опыт</p><h2>Восемь лет<br /><em>внутри индустрии</em></h2><p>Клубы, рестораны, свадьбы, корпоративы, городские события, открытия, презентации и продюсирование площадок.</p></div>
+        <div className="experience-stats" data-reveal><div><strong>8+</strong><span>лет опыта</span></div><div><strong>3</strong><span>города в портфолио</span></div><div><strong>6</strong><span>форматов работы</span></div></div>
         <div className="venue-list" data-reveal>{venues.map((venue) => <div key={venue.city}><strong>{venue.city}</strong><span>{venue.names}</span></div>)}</div>
-        <div className="experience-gallery">
-          <Photo src="/media/backstage.webp" className="gallery-main" label="LIGHT · MOMENT · CHARACTER" position="center" />
-          <Photo src="/media/official.webp" className="gallery-small" label="KAVA · OFF STAGE" position="center" />
-        </div>
-      </section>
-
-      <section className="photo-story section-black">
-        <div className="story-copy" data-reveal><p className="section-index">07 · HUMAN CONTACT</p><h2>Микрофон - не стена.<br /><em>Это мост.</em></h2><p>Главная работа происходит не «на сцене», а между музыкой, гостями и моментом. Без давления. С чувством меры. С характером.</p></div>
-        <Photo src="/media/private-event.webp" className="story-photo" label="REAL PEOPLE · REAL REACTION" position="center" />
+        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="CHARACTER · LIGHT · MOMENT" position="center" /><Photo src="/media/private-event.webp" className="gallery-small" label="REAL PEOPLE · REAL REACTION" position="center" /></div>
       </section>
 
       <section className="process section-dark">
-        <p className="section-index" data-reveal>08 · PROCESS</p>
-        <div className="process-grid">{["Запрос и дата", "Формат и задачи", "Музыка и программа", "Подготовка", "Проведение", "Регулярное сотрудничество"].map((step, index) => <div className="process-step" key={step} data-reveal><span>0{index + 1}</span><h3>{step}</h3></div>)}</div>
+        <div className="compact-heading" data-reveal><div><p className="section-index">Как всё проходит</p><h2>От запроса<br /><em>до вау-эффекта</em></h2></div><p>Без бюрократии, бесконечных созвонов и хаоса. Понятный путь до сильного события.</p></div>
+        <div className="process-grid">{["Запрос и дата", "Короткий бриф", "Музыка и задачи", "Подготовка", "Событие", "Повторные даты"].map((step, index) => <div className="process-step" key={step} data-reveal><span>0{index + 1}</span><h3>{step}</h3></div>)}</div>
       </section>
 
-      <section className="pricing section-black">
-        <p className="section-index" data-reveal>09 · PRICING</p>
-        <div className="price-row" data-reveal><span>MC - сет</span><strong>15 000 ₽</strong><small>+ трансфер</small></div>
-        <div className="price-row" data-reveal><span>MC + живой гитарист</span><strong>30 000 ₽</strong><small>+ трансфер</small></div>
-        <div className="price-row" data-reveal><span>Серия выступлений</span><strong>Индивидуально</strong><small>по графику и задаче</small></div>
-        <p className="pricing-note">Для постоянных слотов на несколько недель условия согласовываются индивидуально.</p>
-      </section>
-
-      <section className="contacts section-light" id="contacts">
-        <div className="contact-heading" data-reveal><p className="section-index">10 · BOOKING</p><h2>Есть дата?<br /><em>Соберём вечер.</em></h2><p className="contact-note">Форма не отправляет данные на сервер сайта. Она собирает готовое сообщение и открывает Telegram - вы сами подтверждаете отправку.</p>
-          <div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a><a href="tel:+79932542217">+7 993 254 - 22 - 17 <Arrow /></a></div>
-        </div>
+      <section className="contacts" id="contacts">
+        <div className="contact-heading" data-reveal><p className="section-index">Бронирование</p><h2>Создадим<br /><em>что-то сильное?</em></h2><p className="contact-note">Оставь данные - форма соберёт сообщение и откроет Telegram. Ты увидишь текст перед отправкой.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a></div></div>
         <ContactForm />
       </section>
 
       <footer>
         <a className="brand footer-brand" href="#top">KAVA<span>MC</span></a>
-        <div className="footer-center"><p>MC · ведущий · продюсер событий</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div>
+        <div className="footer-center"><p>Клубный MC · ведущий · продюсер событий</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div>
         <p>© {new Date().getFullYear()} KAVA MC</p>
       </footer>
+
+      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><span>⌂</span>Главная</a><a href="#formats"><span>◇</span>Форматы</a><a href="#video"><span>▶</span>Медиа</a><a className="mobile-book" href={telegram} target="_blank" rel="noreferrer"><span>ϟ</span>Забронировать</a></nav>
     </main>
   );
 }
