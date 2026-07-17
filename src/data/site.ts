@@ -46,7 +46,7 @@ export const formats = [
 
 export const venues = [
   { city: "Орск", names: "Мята · Мантра · Медведь" },
-  { city: "Воронеж", names: "МОНЕ · Робин Сдобин" },
+  { city: "Воронеж", names: "МОНЕ" },
   { city: "Сергиев Посад", names: "Ничего Личного · Sorry Mama · Дикобраз" },
 ];
 
