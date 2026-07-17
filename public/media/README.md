@@ -1,18 +1,22 @@
 # KAVA MC media
 
-Замените временные SVG-постеры реальными оптимизированными фотографиями.
+Положите оптимизированные изображения в эту папку с такими именами:
 
-Рекомендуемые имена и роли:
-
-- hero.webp - главный портрет на первом экране
+- hero.webp - главный портрет на первом экране, вертикальный или 4:5
 - club-wide.webp - широкий клубный кадр с микрофоном
-- club-main.webp - постер главного showreel
-- live-guitar.webp - кадр live-формата с гитаристом
-- private-event.webp - частное или корпоративное событие
-- backstage.webp - backstage
-- official.webp - официальный выход или большая сцена
-- og.webp - обложка 1200 x 630
+- club-main.webp - постер главного club showreel
+- live-guitar.webp - кадр с гитаристом или live-командой
+- private-event.webp - частное событие или свадьба
+- backstage.webp - backstage или подготовка
+- official.webp - официальный выход или сцена
+- og.webp - обложка 1200x630 для соцсетей
 
-После загрузки замените пути в `src/app/page.tsx`, `src/data/site.ts` и `src/app/layout.tsx`.
+Рекомендации:
 
-Для видео заполните поле `videoUrl` в `src/data/site.ts`. Тяжёлые ролики лучше хранить в YouTube, VK Video, Rutube или Cloudflare R2, а не в GitHub.
+- WebP или AVIF
+- 1800-2400 px по длинной стороне для больших кадров
+- 1200-1600 px для карточек
+- качество WebP 78-85
+- без тяжёлых исходников в GitHub
+
+Видео добавляются в src/data/site.ts через поле videoUrl. Для тяжёлых роликов используйте YouTube, VK Video, Rutube или Cloudflare R2.
