@@ -47,6 +47,15 @@ const collaboration = [
   { n: "03", title: "Продюсирование под ключ", text: "Концепция, команда, артисты, продвижение и контроль реализации.", cta: "Собрать проект" },
 ];
 
+const catalogMedia = [
+  { src: "/media/club-wide.webp", position: "50% 38%" },
+  { src: "/media/live-guitar.webp", position: "50% 32%" },
+  { src: "/media/backstage.webp", position: "50% 28%" },
+  { src: "/media/private-event.webp", position: "50% 34%" },
+  { src: "/media/hero.webp", position: "66% 30%" },
+  { src: "/media/club-wide.webp", position: "50% 44%" },
+];
+
 export default function Home() {
   return (
     <main className="home-page night-architecture">
@@ -58,7 +67,7 @@ export default function Home() {
       </header>
 
       <section className="hero ns-hero" id="top">
-        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA MC · LIVE ENERGY" position="70% center" />
+        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA MC · LIVE ENERGY" position="64% 30%" />
         <div className="ns-hero-copy" data-reveal>
           <p className="eyebrow">Клубный MC · ведущий · продюсер событий</p>
           <h1>Голос,<br />который <em>двигает</em><br />вечер</h1>
@@ -71,12 +80,12 @@ export default function Home() {
       <div className="marquee" aria-hidden="true"><div>KAVA MC · CLUB SET · LIVE GUITAR · EVENT PRODUCTION · PRIVATE EVENTS · KAVA MC · CLUB SET · LIVE GUITAR · EVENT PRODUCTION · PRIVATE EVENTS ·</div></div>
 
       <section className="catalog" id="formats">
-        <div className="catalog-head" data-reveal><p className="eyebrow">Форматы</p><h2>Выбирай не услугу.<br /><em>Выбирай энергию.</em></h2><p>От одного клубного выхода до полного продюсирования события.</p></div>
-        <div className="catalog-grid">
+        <div className="content-shell catalog-head" data-reveal><div><p className="eyebrow">Форматы</p><h2>Выбирай не услугу.<br /><em>Выбирай энергию.</em></h2></div><p>От одного клубного выхода до полного продюсирования события.</p></div>
+        <div className="content-shell catalog-grid">
           {formats.map((format, index) => {
-            const images = ["/media/club-wide.webp", "/media/live-guitar.webp", "/media/backstage.webp", "/media/private-event.webp", "/media/hero.webp", "/media/club-wide.webp"];
+            const media = catalogMedia[index];
             return <article className={`catalog-card ${"featured" in format && format.featured ? "featured" : ""}`} key={format.title} data-reveal>
-              <div className="catalog-card-image" style={{ backgroundImage: `linear-gradient(180deg,transparent 20%,rgba(5,7,11,.94)),url(${images[index]})` }}><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Флагман</b> : null}</div>
+              <div className="catalog-card-image" style={{ backgroundImage: `linear-gradient(180deg,rgba(5,7,11,.04) 20%,rgba(5,7,11,.88)),url(${media.src})`, backgroundPosition: media.position }}><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Флагман</b> : null}</div>
               <div className="catalog-card-body"><h3>{format.title}</h3><strong>{format.price}</strong><p>{format.text}</p><div className="tags">{format.tags.map(tag => <span key={tag}>{tag}</span>)}</div><a href="#contacts">Выбрать формат <Arrow /></a></div>
             </article>;
           })}
@@ -84,35 +93,37 @@ export default function Home() {
       </section>
 
       <section className="included" id="included">
-        <div className="included-title" data-reveal><p className="eyebrow">Что входит в работу</p><h2>Не просто<br /><em>микрофон.</em></h2><p>Я собираю вечер как систему - музыка, темп, коммуникация, сцена и контент.</p></div>
-        <div className="included-list">{included.map((item, index) => <div key={item} data-reveal><span>0{index + 1}</span><strong>{item}</strong><Icon name="check" size={22}/></div>)}</div>
+        <div className="content-shell included-layout">
+          <div className="included-title" data-reveal><p className="eyebrow">Что входит в работу</p><h2>Не просто<br /><em>микрофон.</em></h2><p>Я собираю вечер как систему - музыка, темп, коммуникация, сцена и контент.</p></div>
+          <div className="included-list">{included.map((item, index) => <div key={item} data-reveal><span>0{index + 1}</span><strong>{item}</strong><Icon name="check" size={22}/></div>)}</div>
+        </div>
       </section>
 
       <section className="collaboration">
-        <div className="section-head" data-reveal><p className="eyebrow">Механики сотрудничества</p><h2>Один артист.<br /><em>Три масштаба.</em></h2></div>
-        <div className="collaboration-grid">{collaboration.map(item => <article key={item.n} data-reveal><span>{item.n}</span><h3>{item.title}</h3><p>{item.text}</p><a href="#contacts">{item.cta} <Arrow /></a></article>)}</div>
+        <div className="content-shell"><div className="section-head" data-reveal><div><p className="eyebrow">Механики сотрудничества</p><h2>Один артист.<br /><em>Три масштаба.</em></h2></div><p>Можно начать с одной даты, проверить химию с залом и перейти к регулярной системе.</p></div>
+        <div className="collaboration-grid">{collaboration.map(item => <article key={item.n} data-reveal><span>{item.n}</span><h3>{item.title}</h3><p>{item.text}</p><a href="#contacts">{item.cta} <Arrow /></a></article>)}</div></div>
       </section>
 
-      <section className="visual-break ns-break"><Photo src="/media/private-event.webp" className="visual-break-photo" label="REAL PEOPLE · REAL MOMENT" position="center"/><div className="visual-break-copy" data-reveal><p className="eyebrow">Для площадок и брендов</p><h2>Событие должно<br /><em>работать на вас.</em></h2><p>Подстраиваюсь под музыкальную концепцию, аудиторию и коммерческую задачу площадки. Можно начать с одной даты и перейти к серии.</p><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить сотрудничество <Arrow /></a></div></section>
+      <section className="visual-break ns-break"><Photo src="/media/private-event.webp" className="visual-break-photo" label="REAL PEOPLE · REAL MOMENT" position="48% 34%"/><div className="content-shell visual-break-inner"><div className="visual-break-copy" data-reveal><p className="eyebrow">Для площадок и брендов</p><h2>Событие должно<br /><em>работать на вас.</em></h2><p>Подстраиваюсь под музыкальную концепцию, аудиторию и коммерческую задачу площадки. Можно начать с одной даты и перейти к серии.</p><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить сотрудничество <Arrow /></a></div></div></section>
 
-      <section className="video" id="video"><div className="section-head inverse" data-reveal><p className="eyebrow">Реальные выступления</p><h2>Сначала смотри.<br /><em>Потом решай.</em></h2><p>Без стоков. Только реальные клубы, публика, сцена и работа в моменте.</p></div><VideoGallery /></section>
+      <section className="video" id="video"><div className="content-shell"><div className="section-head inverse" data-reveal><div><p className="eyebrow">Реальные выступления</p><h2>Сначала смотри.<br /><em>Потом решай.</em></h2></div><p>Без стоков. Только реальные клубы, публика, сцена и работа в моменте.</p></div><VideoGallery /></div></section>
 
       <section className="experience" id="experience">
-        <div className="experience-copy" data-reveal><p className="eyebrow">Опыт</p><h2>Восемь лет<br /><em>внутри индустрии.</em></h2><p>Клубы, рестораны, частные события, корпоративы, открытия и продюсирование площадок.</p></div>
+        <div className="content-shell experience-layout"><div className="experience-copy" data-reveal><p className="eyebrow">Опыт</p><h2>Восемь лет<br /><em>внутри индустрии.</em></h2><p>Клубы, рестораны, частные события, корпоративы, открытия и продюсирование площадок.</p></div>
         <div className="venue-list">{venues.map(venue => <div key={venue.city} data-reveal><strong>{venue.city}</strong><span>{venue.names}</span></div>)}</div>
-        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="CHARACTER · LIGHT · MOMENT" position="center"/><Photo src="/media/club-wide.webp" className="gallery-small" label="CROWD · ENERGY" position="center"/></div>
+        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="CHARACTER · LIGHT · MOMENT" position="50% 28%"/><Photo src="/media/club-wide.webp" className="gallery-small" label="CROWD · ENERGY" position="50% 42%"/></div></div>
       </section>
 
       <div className="marquee marquee-orange" aria-hidden="true"><div>СЦЕНА · МУЗЫКА · ХАРИЗМА · ЭНЕРГИЯ · КОНТЕНТ · СЦЕНА · МУЗЫКА · ХАРИЗМА · ЭНЕРГИЯ · КОНТЕНТ ·</div></div>
 
       <section className="contacts" id="contacts">
-        <div className="contact-heading" data-reveal><p className="eyebrow">Бронирование</p><h2>Расскажи задачу.<br /><em>Я предложу формат.</em></h2><p>Заполни короткую форму. Сообщение откроется в Telegram - ты увидишь его перед отправкой.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a></div></div>
-        <ContactForm />
+        <div className="content-shell contacts-layout"><div className="contact-heading" data-reveal><p className="eyebrow">Бронирование</p><h2>Расскажи задачу.<br /><em>Я предложу формат.</em></h2><p>Заполни короткую форму. Сообщение откроется в Telegram - ты увидишь его перед отправкой.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a></div></div>
+        <ContactForm /></div>
       </section>
 
       <footer><a className="brand footer-brand" href="#top">KAVA<span>MC</span></a><div className="footer-center"><p>Клубный MC · ведущий · продюсер событий</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div><p>© {new Date().getFullYear()} KAVA MC</p></footer>
 
-      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><Icon name="home" size={20}/>Главная</a><a href="#formats"><Icon name="grid" size={20}/>Форматы</a><a href="#video"><Icon name="media" size={20}/>Видео</a><a className="mobile-book" href={telegram} target="_blank" rel="noreferrer"><Icon name="bolt" size={20}/>Обсудить</a></nav>
+      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><Icon name="home" size={20}/>Главная</a><a href="#formats"><Icon name="grid" size={20}/>Форматы</a><a href="#video"><Icon name="media" size={20}/>Медиа</a><a className="mobile-book" href={telegram} target="_blank" rel="noreferrer"><Icon name="bolt" size={20}/>Забронировать</a></nav>
     </main>
   );
 }
