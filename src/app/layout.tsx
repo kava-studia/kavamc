@@ -4,10 +4,8 @@ import { ScrollEffects } from "@/components/scroll-effects";
 import { SiteControls } from "@/components/site-controls";
 import "./globals.css";
 import "./refinement.css";
-import "./mobile-polish.css";
 import "./mobile-final.css";
-import "./stability.css";
-import "./button-fix.css";
+import "./premium-v2.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kavamc.vercel.app"),
@@ -20,7 +18,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#090909", colorScheme: "dark" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#0b0d12", colorScheme: "dark" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="ru"><body><ScrollEffects /><SiteControls />{children}<CookieConsent /></body></html>;
