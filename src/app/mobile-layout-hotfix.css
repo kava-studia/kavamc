@@ -1,0 +1,100 @@
+/* Targeted mobile layout hotfix — hero, catalog crop and floating controls */
+@media (max-width: 680px) {
+  .ns-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    align-items: stretch !important;
+    min-height: calc(100svh - 16px) !important;
+    height: auto !important;
+  }
+
+  .ns-hero-copy {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+  }
+
+  .hero-actions {
+    width: 100% !important;
+  }
+
+  .hero-facts {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 16px 0 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    flex: 0 0 auto !important;
+    overflow: hidden !important;
+  }
+
+  .hero-facts > div {
+    min-width: 0 !important;
+    padding: 12px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 3px !important;
+  }
+
+  .hero-facts strong {
+    font-size: 1.55rem !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .hero-facts span {
+    width: 100% !important;
+    font-size: .62rem !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .catalog-card {
+    grid-template-rows: 250px auto !important;
+  }
+
+  .catalog-card-image {
+    min-height: 250px !important;
+  }
+
+  .catalog-card:nth-child(4) .catalog-card-image {
+    background-position: 50% 12% !important;
+  }
+
+  .catalog-card:nth-child(5) .catalog-card-image {
+    background-position: 64% 18% !important;
+  }
+
+  .back-to-top {
+    display: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-facts {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-facts > div {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.12) !important;
+  }
+
+  .hero-facts > div:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .hero-facts span {
+    width: auto !important;
+    max-width: 58% !important;
+    text-align: right !important;
+  }
+}
