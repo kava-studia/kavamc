@@ -23,6 +23,12 @@ const ALLOWED_TYPES = [
   "dance_venue",
 ] as const;
 
+const NON_VENUE_WORDS = [
+  "торговый центр", "торгово-развлекательный центр", "торгово развлекательный центр",
+  "торговый комплекс", "бизнес-центр", "бизнес центр", "shopping mall", "business center",
+  "гипермаркет", "универмаг", "рынок", "автовокзал", "железнодорожный вокзал",
+];
+
 const CSV_HEADERS = [
   "osm_type", "osm_id", "name", "amenity", "city", "district", "street", "house_number", "address",
   "phone", "email", "website", "telegram", "vk", "instagram", "opening_hours", "cuisine", "capacity",
@@ -35,6 +41,7 @@ type OverpassElement = {
   lat?: number;
   lon?: number;
   center?: { lat?: number; lon?: number };
+  timestamp?: string;
   tags?: Record<string, string>;
 };
 
@@ -46,6 +53,10 @@ function value(tags: Record<string, string>, ...keys: string[]) {
     if (candidate) return candidate;
   }
   return "";
+}
+
+function normalise(input: string) {
+  return input.toLowerCase().replace(/ё/g, "е").replace(/\s+/g, " ").trim();
 }
 
 function normalisePhone(phone: string) {
@@ -84,23 +95,41 @@ function isLifecycleClosed(tags: Record<string, string>) {
   return tags.disused === "yes"
     || tags.abandoned === "yes"
     || tags.closed === "yes"
+    || tags.demolished === "yes"
     || Boolean(tags["disused:amenity"])
     || Boolean(tags["abandoned:amenity"])
     || Boolean(tags["demolished:amenity"])
-    || Boolean(tags["was:amenity"]);
+    || Boolean(tags["was:amenity"])
+    || Boolean(tags["razed:amenity"]);
+}
+
+function isShoppingOrInfrastructure(tags: Record<string, string>) {
+  const corpus = normalise([
+    value(tags, "name", "brand", "operator"),
+    value(tags, "description", "note"),
+    value(tags, "building"),
+    value(tags, "shop"),
+  ].filter(Boolean).join(" "));
+
+  if (NON_VENUE_WORDS.some((word) => corpus.includes(word))) return true;
+  if (/^(тц|трц|тк|бц)(\s|$|[«"'])/.test(corpus)) return true;
+  if (["mall", "retail", "supermarket", "department_store"].includes(tags.shop ?? "")) return true;
+  if (["retail", "commercial"].includes(tags.building ?? "") && !value(tags, "name")) return true;
+  return false;
 }
 
 function toVenue(element: OverpassElement): VenueRow | null {
   const tags = element.tags ?? {};
   const amenity = inferAmenity(tags);
   if (!ALLOWED_TYPES.includes(amenity as (typeof ALLOWED_TYPES)[number])) return null;
-  if (isLifecycleClosed(tags)) return null;
+  if (isLifecycleClosed(tags) || isShoppingOrInfrastructure(tags)) return null;
 
   const lat = element.lat ?? element.center?.lat ?? "";
   const lon = element.lon ?? element.center?.lon ?? "";
   const name = value(tags, "name", "brand", "operator");
   const city = value(tags, "addr:city", "addr:town", "addr:village", "addr:municipality", "addr:place");
   const address = buildAddress(tags);
+  if (!name) return null;
 
   return {
     osm_type: element.type,
@@ -124,7 +153,7 @@ function toVenue(element: OverpassElement): VenueRow | null {
     description: value(tags, "description", "note"),
     latitude: lat,
     longitude: lon,
-    osm_updated_at: "",
+    osm_updated_at: element.timestamp ?? "",
     yandex_maps_url: buildYandexMapsUrl(name, address, city, lat, lon),
     osm_url: `https://www.openstreetmap.org/${element.type}/${element.id}`,
   };
@@ -138,7 +167,7 @@ async function fetchOverpass(query: string) {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-          "User-Agent": "KAVA-MC-Venue-Research/1.3 (juri.kava@yandex.ru)",
+          "User-Agent": "KAVA-MC-Venue-Research/2.0 (juri.kava@yandex.ru)",
         },
         body: new URLSearchParams({ data: query }),
         cache: "no-store",
@@ -158,7 +187,7 @@ async function fetchOverpass(query: string) {
 
 export async function GET(request: NextRequest) {
   const format = request.nextUrl.searchParams.get("format") === "csv" ? "csv" : "json";
-  const query = `[out:json][timeout:45];\narea(3600051490)->.moscowOblast;\n(\n  nwr[\"amenity\"~\"^(restaurant|bar|pub|nightclub|biergarten|events_venue|music_venue|karaoke_box)$\"](area.moscowOblast);\n  nwr[\"club\"=\"music\"](area.moscowOblast);\n  nwr[\"leisure\"=\"dance\"](area.moscowOblast);\n);\nout center tags;`;
+  const query = `[out:json][timeout:45];\narea(3600051490)->.moscowOblast;\n(\n  nwr["amenity"~"^(restaurant|bar|pub|nightclub|biergarten|events_venue|music_venue|karaoke_box)$"](area.moscowOblast);\n  nwr["club"="music"](area.moscowOblast);\n  nwr["leisure"="dance"](area.moscowOblast);\n);\nout center meta;`;
 
   try {
     const payload = await fetchOverpass(query);
