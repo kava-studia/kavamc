@@ -148,7 +148,7 @@
 
 .filters input,
 .filters select,
-td select {
+.tableWrap td select {
   width: 100%;
   border: 1px solid rgba(255,255,255,.13);
   border-radius: 13px;
@@ -160,7 +160,7 @@ td select {
 
 .filters input:focus,
 .filters select:focus,
-td select:focus { border-color: #ff7a1a; }
+.tableWrap td select:focus { border-color: #ff7a1a; }
 
 .resultHeader {
   padding: 10px 2px 12px;
@@ -179,13 +179,13 @@ td select:focus { border-color: #ff7a1a; }
   background: rgba(255,255,255,.025);
 }
 
-table {
+.tableWrap table {
   width: 100%;
   min-width: 1250px;
   border-collapse: collapse;
 }
 
-th {
+.tableWrap th {
   position: sticky;
   top: 0;
   z-index: 2;
@@ -198,7 +198,7 @@ th {
   text-transform: uppercase;
 }
 
-td {
+.tableWrap td {
   padding: 15px 14px;
   border-top: 1px solid rgba(255,255,255,.075);
   vertical-align: top;
@@ -206,15 +206,15 @@ td {
   line-height: 1.4;
 }
 
-tbody tr:hover { background: rgba(255,122,26,.055); }
+.tableWrap tbody tr:hover { background: rgba(255,122,26,.055); }
 
-td strong,
-td span,
-td small { display: block; }
-td strong { margin-bottom: 5px; font-size: 14px; }
-td span { color: rgba(245,242,234,.72); }
-td small { margin-top: 5px; color: rgba(245,242,234,.48); }
-td p { min-width: 260px; max-width: 370px; margin: 0; color: rgba(245,242,234,.78); }
+.tableWrap td strong,
+.tableWrap td span,
+.tableWrap td small { display: block; }
+.tableWrap td strong { margin-bottom: 5px; font-size: 14px; }
+.tableWrap td span { color: rgba(245,242,234,.72); }
+.tableWrap td small { margin-top: 5px; color: rgba(245,242,234,.48); }
+.tableWrap td p { min-width: 260px; max-width: 370px; margin: 0; color: rgba(245,242,234,.78); }
 
 .priority {
   width: 34px;
