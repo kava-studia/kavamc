@@ -6,7 +6,7 @@ export const maxDuration = 60;
 
 type RawVenue = {
   osm_type: string;
-  osm_id: number;
+  osm_id: number | string;
   name: string;
   amenity: string;
   city: string;
@@ -77,7 +77,7 @@ const NIGHTLIFE_WORDS = [
 
 const RESTOBAR_WORDS = [
   "restobar", "ресто-бар", "рестобар", "gastrobar", "гастробар", "lounge", "лаунж",
-  "grill bar", "гриль бар", "music bar", "караоке", "karaoke",
+  "grill bar", "гриль бар", "music bar", "караоке", "karaoke", "кальян", "hookah",
 ];
 
 const EVENT_WORDS = ["банкет", "свадеб", "event", "ивент", "торжеств", "праздник", "усадьба", "шале"];
@@ -97,172 +97,181 @@ function hasAny(haystack: string, words: string[]) {
   return words.some((word) => haystack.includes(word));
 }
 
-function directContact(v: RawVenue) {
-  return Boolean(v.phone || v.email || v.telegram || v.vk || v.instagram);
+function directContact(venue: RawVenue) {
+  return Boolean(venue.phone || venue.email || venue.telegram || venue.vk || venue.instagram);
 }
 
-function contactChannel(v: RawVenue) {
-  if (v.telegram) return "Telegram";
-  if (v.vk) return "VK";
-  if (v.instagram) return "Instagram";
-  if (v.email) return "Email";
-  if (v.phone) return "Телефон";
-  if (v.website) return "Сайт";
+function contactChannel(venue: RawVenue) {
+  if (venue.telegram) return "Telegram";
+  if (venue.vk) return "VK";
+  if (venue.instagram) return "Instagram";
+  if (venue.email) return "Email";
+  if (venue.phone) return "Телефон";
+  if (venue.website) return "Сайт";
   return "Искать контакт";
 }
 
-function isLate(v: RawVenue) {
-  const hours = v.opening_hours || "";
+function isLate(venue: RawVenue) {
+  const hours = venue.opening_hours || "";
   return /24:00|00:00|00:30|01:00|01:30|02:00|02:30|03:00|04:00|05:00|06:00/.test(hours)
     || /24\/7/i.test(hours);
 }
 
-function segmentFor(v: RawVenue) {
-  const corpus = text(v.name, v.description, v.cuisine);
-  if (["nightclub", "music_club", "dance_venue"].includes(v.amenity)) return "Ночной клуб";
-  if (v.amenity === "music_venue") return "Музыкальная площадка";
-  if (v.amenity === "karaoke_box" || hasAny(corpus, ["караоке", "karaoke"])) return "Караоке";
-  if (hasAny(corpus, RESTOBAR_WORDS)) return "Рестобар / лаунж";
-  if (["bar", "pub", "biergarten"].includes(v.amenity)) return "Бар / паб";
-  if (v.amenity === "events_venue") return "Event-площадка";
-  if (v.amenity === "restaurant" && (isLate(v) || hasAny(corpus, NIGHTLIFE_WORDS))) return "Ресторан с вечерним форматом";
+function yandexMapsUrl(venue: RawVenue) {
+  if (venue.yandex_maps_url) return venue.yandex_maps_url;
+  const query = [venue.name, venue.address || venue.city].filter(Boolean).join(", ");
+  return query
+    ? `https://yandex.ru/maps/?text=${encodeURIComponent(query)}`
+    : "https://yandex.ru/maps/";
+}
+
+function segmentFor(venue: RawVenue) {
+  const corpus = text(venue.name, venue.description, venue.cuisine);
+  if (["nightclub", "music_club", "dance_venue"].includes(venue.amenity)) return "Ночной клуб";
+  if (venue.amenity === "music_venue") return "Музыкальная площадка";
+  if (venue.amenity === "karaoke_box" || hasAny(corpus, ["караоке", "karaoke"])) return "Караоке";
+  if (hasAny(corpus, RESTOBAR_WORDS)) return "Рестобар / вечерний ресторан";
+  if (["bar", "pub", "biergarten"].includes(venue.amenity)) return "Бар / паб";
+  if (venue.amenity === "restaurant" && (isLate(venue) || hasAny(corpus, NIGHTLIFE_WORDS))) {
+    return "Рестобар / вечерний ресторан";
+  }
+  if (venue.amenity === "events_venue") return "Event-площадка";
   return "Обычный ресторан";
 }
 
-function nightlifeRelevant(v: RawVenue) {
-  const corpus = text(v.name, v.description, v.cuisine);
-  return NIGHTLIFE_TYPES.includes(v.amenity)
+function nightlifeRelevant(venue: RawVenue) {
+  const corpus = text(venue.name, venue.description, venue.cuisine);
+  return NIGHTLIFE_TYPES.includes(venue.amenity)
     || hasAny(corpus, NIGHTLIFE_WORDS)
-    || (v.amenity === "restaurant" && isLate(v));
+    || (venue.amenity === "restaurant" && isLate(venue));
 }
 
-function nightlifeScore(v: RawVenue) {
-  const corpus = text(v.name, v.description, v.cuisine);
+function nightlifeScore(venue: RawVenue) {
+  const corpus = text(venue.name, venue.description, venue.cuisine);
   let score = 0;
 
-  switch (v.amenity) {
-    case "nightclub": score += 125; break;
-    case "music_club": score += 120; break;
-    case "dance_venue": score += 116; break;
-    case "music_venue": score += 112; break;
-    case "karaoke_box": score += 108; break;
-    case "bar": score += 96; break;
-    case "pub": score += 92; break;
-    case "biergarten": score += 84; break;
-    case "events_venue": score += 72; break;
-    case "restaurant": score += 38; break;
+  switch (venue.amenity) {
+    case "nightclub": score += 140; break;
+    case "music_club": score += 136; break;
+    case "dance_venue": score += 132; break;
+    case "music_venue": score += 126; break;
+    case "karaoke_box": score += 122; break;
+    case "bar": score += 104; break;
+    case "pub": score += 100; break;
+    case "biergarten": score += 90; break;
+    case "events_venue": score += 68; break;
+    case "restaurant": score += 42; break;
     default: score += 20;
   }
 
-  if (hasAny(corpus, RESTOBAR_WORDS)) score += 38;
-  if (hasAny(corpus, ["ночной", "night", "club", "клуб", "dance", "dj", "диджей"])) score += 30;
-  if (hasAny(corpus, ["караоке", "karaoke"])) score += 28;
-  if (hasAny(corpus, ["live", "music", "музык", "концерт", "вечерин"])) score += 22;
-  if (isLate(v)) score += 22;
-  if (directContact(v)) score += 18;
-  if (v.telegram || v.vk || v.instagram) score += 8;
-  if (v.website) score += 6;
-  if (v.capacity && Number(v.capacity) >= 50) score += 8;
-  if (hasAny(corpus, EVENT_WORDS)) score += 10;
-  if (!v.city) score -= 4;
-  if (!v.name) score -= 220;
+  if (hasAny(corpus, RESTOBAR_WORDS)) score += 42;
+  if (venue.amenity === "restaurant" && isLate(venue)) score += 38;
+  if (hasAny(corpus, ["ночной", "night", "club", "клуб", "dance", "dj", "диджей"])) score += 34;
+  if (hasAny(corpus, ["караоке", "karaoke"])) score += 30;
+  if (hasAny(corpus, ["live", "music", "музык", "концерт", "вечерин"])) score += 24;
+  if (isLate(venue)) score += 20;
+  if (directContact(venue)) score += 18;
+  if (venue.telegram || venue.vk || venue.instagram) score += 8;
+  if (venue.website) score += 6;
+  if (venue.capacity && Number(venue.capacity) >= 50) score += 8;
+  if (hasAny(corpus, EVENT_WORDS)) score += 8;
+  if (!venue.city) score -= 4;
+  if (!venue.name) score -= 220;
   if (hasAny(corpus, JUNK_WORDS)) score -= 200;
-
   return score;
 }
 
-function actualityFor(v: RawVenue): { status: ActualityStatus; reason: string } {
-  const direct = directContact(v);
-  const updatedAt = v.osm_updated_at ? new Date(v.osm_updated_at) : null;
-  const validDate = updatedAt && !Number.isNaN(updatedAt.getTime()) ? updatedAt : null;
-  const ageDays = validDate ? Math.floor((Date.now() - validDate.getTime()) / 86_400_000) : null;
+function actualityFor(venue: RawVenue, snapshotGeneratedAt: string) {
+  const direct = directContact(venue);
+  const snapshotDate = new Date(snapshotGeneratedAt);
+  const snapshotIsFresh = !Number.isNaN(snapshotDate.getTime())
+    && Date.now() - snapshotDate.getTime() <= 14 * 86_400_000;
 
-  if (ageDays !== null && ageDays <= 730 && direct) {
+  if (snapshotIsFresh && direct) {
     return {
-      status: "Свежие данные",
-      reason: `Карточка обновлялась ${validDate?.toLocaleDateString("ru-RU")} и содержит прямой контакт`,
+      status: "Свежие данные" as ActualityStatus,
+      reason: "База обновлена недавно и содержит прямой контакт. Окончательно проверь статус в Яндекс Картах",
     };
   }
 
-  if ((ageDays !== null && ageDays <= 1095) || direct || v.website) {
+  if (snapshotIsFresh || direct || venue.website) {
     return {
-      status: "Вероятно актуально",
-      reason: direct
-        ? "Есть действующий формат прямого контакта, но площадку всё равно нужно открыть в Яндекс Картах"
-        : "Есть сайт или относительно свежая карточка, требуется подтверждение режима работы",
+      status: "Вероятно актуально" as ActualityStatus,
+      reason: venue.website || direct
+        ? "Есть сайт или прямой контакт. Система дополнительно проверит сайт на текущей странице"
+        : "Точка есть в свежем снимке карты, но требует подтверждения в Яндекс Картах",
     };
   }
 
   return {
-    status: "Проверить вручную",
-    reason: "Нет свежего подтверждения работы - открой Яндекс Карты и проверь статус, афишу и последние отзывы",
+    status: "Проверить вручную" as ActualityStatus,
+    reason: "Нет автоматического подтверждения работы - проверь Яндекс Карты, афишу и последние отзывы",
   };
 }
 
-function productFor(v: RawVenue) {
-  const segment = segmentFor(v);
-  if (["Ночной клуб", "Музыкальная площадка", "Караоке", "Рестобар / лаунж", "Бар / паб"].includes(segment)) {
+function productFor(venue: RawVenue) {
+  const segment = segmentFor(venue);
+  if (["Ночной клуб", "Музыкальная площадка", "Караоке", "Рестобар / вечерний ресторан", "Бар / паб"].includes(segment)) {
     return { product: "KAVA MC Club Set", price: "15 000 ₽ + трансфер" };
   }
-  if (v.amenity === "events_venue" || hasAny(text(v.name, v.description), EVENT_WORDS)) {
+  if (venue.amenity === "events_venue" || hasAny(text(venue.name, venue.description), EVENT_WORDS)) {
     return { product: "KAVA MC + Live Guitar / банкет", price: "от 30 000 ₽ + трансфер" };
   }
   return { product: "Гостевая пятница / суббота с KAVA MC", price: "15 000 ₽ + трансфер" };
 }
 
-function reasonFor(v: RawVenue) {
-  const segment = segmentFor(v);
+function reasonFor(venue: RawVenue) {
+  const segment = segmentFor(venue);
   if (segment === "Ночной клуб") return "Ночной формат - MC усиливает DJ-сет, контакт с залом и динамику вечера";
   if (segment === "Музыкальная площадка") return "Можно предложить MC-поддержку концертов, DJ-сетов и специальных вечеринок";
   if (segment === "Караоке") return "Караоке-аудитории нужен ведущий, который держит темп, вовлекает гостей и поддерживает DJ";
-  if (segment === "Рестобар / лаунж") return "Рестобар можно усилить вечерней программой без превращения заведения в конкурсный ад";
+  if (segment === "Рестобар / вечерний ресторан") return "Поздний ресторанный формат подходит под гостевую пятницу, DJ-сет и регулярную программу с MC";
   if (segment === "Бар / паб") return "Подходит под гостевую пятницу, тематическую вечеринку или регулярную резиденцию";
-  if (segment === "Ресторан с вечерним форматом") return "Есть признаки позднего или музыкального формата - можно предложить тестовую пятницу";
   return "Площадке можно продать специальную дату, банкет или готовую вечернюю программу";
 }
 
-function decisionMakerFor(v: RawVenue) {
-  const segment = segmentFor(v);
-  if (["Ночной клуб", "Музыкальная площадка", "Караоке", "Рестобар / лаунж", "Бар / паб"].includes(segment)) {
+function decisionMakerFor(venue: RawVenue) {
+  const segment = segmentFor(venue);
+  if (["Ночной клуб", "Музыкальная площадка", "Караоке", "Рестобар / вечерний ресторан", "Бар / паб"].includes(segment)) {
     return "Управляющий / арт-директор / booking";
   }
-  if (v.amenity === "events_venue") return "Управляющий / банкетный менеджер / собственник";
-  return "Управляющий / банкетный менеджер / маркетолог";
+  if (venue.amenity === "events_venue") return "Управляющий / банкетный менеджер / собственник";
+  return "Управляющий / маркетолог";
 }
 
-function toLead(v: RawVenue): Lead {
-  const nightlife = nightlifeRelevant(v);
-  const nScore = nightlifeScore(v);
-  const score = nScore;
-  const direct = directContact(v);
-  const priority: Lead["priority"] = score >= 125 ? "A" : score >= 90 ? "B" : "C";
+function toLead(venue: RawVenue, snapshotGeneratedAt: string): Lead {
+  const nightlife = nightlifeRelevant(venue);
+  const score = nightlifeScore(venue);
+  const direct = directContact(venue);
+  const priority: Lead["priority"] = score >= 135 ? "A" : score >= 92 ? "B" : "C";
   const labels = { A: "Высокий", B: "Средний", C: "На проверку" } as const;
-  const offer = productFor(v);
-  const actuality = actualityFor(v);
-  const pipelineStatus = direct ? "Писать сейчас" : v.website ? "Найти ЛПР" : "Проверить";
+  const offer = productFor(venue);
+  const actuality = actualityFor(venue, snapshotGeneratedAt);
+  const pipelineStatus = direct ? "Писать сейчас" : venue.website ? "Найти ЛПР" : "Проверить";
 
   return {
-    ...v,
-    id: `${v.osm_type}-${v.osm_id}`,
+    ...venue,
+    yandex_maps_url: yandexMapsUrl(venue),
+    id: `${venue.osm_type}-${venue.osm_id}`,
     score,
-    nightlife_score: nScore,
+    nightlife_score: score,
     priority,
     priority_label: labels[priority],
-    qualified: Boolean(v.name) && nightlife && score >= 70,
+    qualified: Boolean(venue.name) && nightlife && score >= 75,
     nightlife_relevant: nightlife,
-    late_hours: isLate(v),
-    venue_segment: segmentFor(v),
+    late_hours: isLate(venue),
+    venue_segment: segmentFor(venue),
     direct_contact: direct,
-    contact_channel: contactChannel(v),
+    contact_channel: contactChannel(venue),
     product: offer.product,
     price: offer.price,
-    reason: reasonFor(v),
-    decision_maker: decisionMakerFor(v),
+    reason: reasonFor(venue),
+    decision_maker: decisionMakerFor(venue),
     pipeline_status: pipelineStatus,
     next_step: pipelineStatus === "Писать сейчас"
       ? "Открыть Яндекс Карты, подтвердить работу и отправить персональное сообщение"
       : pipelineStatus === "Найти ЛПР"
-        ? "Открыть сайт и Яндекс Карты, найти управляющего или booking"
+        ? "Открыть официальный сайт и Яндекс Карты, найти управляющего или booking"
         : "Проверить актуальность, афишу, последние отзывы и вечерний формат",
     actuality_status: actuality.status,
     actuality_reason: actuality.reason,
@@ -281,15 +290,16 @@ export async function GET(request: NextRequest) {
     const all = request.nextUrl.searchParams.get("all") === "true";
     const focus = request.nextUrl.searchParams.get("focus") ?? "nightlife";
     const format = request.nextUrl.searchParams.get("format") === "csv" ? "csv" : "json";
-    const rawUrl = new URL("/api/venues?includeCafe=false", request.nextUrl.origin);
-    const rawResponse = await fetch(rawUrl, { cache: "no-store", signal: AbortSignal.timeout(58_000) });
+    const rawUrl = new URL("/api/venues", request.nextUrl.origin);
+    const rawResponse = await fetch(rawUrl, { cache: "no-store", signal: AbortSignal.timeout(20_000) });
 
     if (!rawResponse.ok) {
       return NextResponse.json({ error: "Не удалось загрузить исходную базу", status: rawResponse.status }, { status: 502 });
     }
 
     const payload = await rawResponse.json() as { generatedAt?: string; venues?: RawVenue[] };
-    const allLeads = (payload.venues ?? []).map(toLead);
+    const generatedAt = payload.generatedAt ?? new Date().toISOString();
+    const allLeads = (payload.venues ?? []).map((venue) => toLead(venue, generatedAt));
     const leads = allLeads
       .filter((lead) => {
         if (all) return true;
@@ -308,7 +318,7 @@ export async function GET(request: NextRequest) {
       findDecisionMaker: leads.filter((lead) => lead.pipeline_status === "Найти ЛПР").length,
       research: leads.filter((lead) => lead.pipeline_status === "Проверить").length,
       nightclubs: leads.filter((lead) => lead.venue_segment === "Ночной клуб").length,
-      restobars: leads.filter((lead) => lead.venue_segment === "Рестобар / лаунж").length,
+      restobars: leads.filter((lead) => lead.venue_segment === "Рестобар / вечерний ресторан").length,
       karaoke: leads.filter((lead) => lead.venue_segment === "Караоке").length,
       bars: leads.filter((lead) => lead.venue_segment === "Бар / паб").length,
       lateVenues: leads.filter((lead) => lead.late_hours).length,
@@ -335,15 +345,13 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      generatedAt: payload.generatedAt ?? new Date().toISOString(),
+      generatedAt,
       source: "OpenStreetMap contributors via Overpass API",
       area: "Московская область",
       focus,
       stats,
       leads,
-    }, {
-      headers: { "Cache-Control": "no-store" },
-    });
+    }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     return NextResponse.json({
       error: "Не удалось собрать квалифицированную базу лидов",
