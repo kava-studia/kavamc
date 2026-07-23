@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23T04:14:50Z",
+  "generatedAt": "2026-07-23T04:19:10Z",
   "source": "OpenStreetMap contributors via Overpass API",
   "endpoint": "https://kavamc.vercel.app/api/venues?includeCafe=false&format=csv"
 }
