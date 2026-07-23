@@ -1,0 +1,49 @@
+name: Refresh Moscow Oblast venues
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/refresh-venues.yml"
+      - "src/app/api/venues/route.ts"
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Wait for production deployment
+        run: sleep 45
+
+      - name: Download current venue database
+        run: |
+          mkdir -p data
+          curl --fail --location --retry 5 --retry-delay 10 \
+            "https://kavamc.vercel.app/api/venues?includeCafe=false&format=csv" \
+            --output data/moscow-oblast-venues-latest.csv
+          test "$(wc -l < data/moscow-oblast-venues-latest.csv)" -gt 500
+
+      - name: Save refresh metadata
+        run: |
+          printf '{\n  "generatedAt": "%s",\n  "source": "OpenStreetMap contributors via Overpass API",\n  "endpoint": "https://kavamc.vercel.app/api/venues?includeCafe=false&format=csv"\n}\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            > data/moscow-oblast-venues-meta.json
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "kava-venue-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/moscow-oblast-venues-latest.csv data/moscow-oblast-venues-meta.json
+          if git diff --cached --quiet; then
+            echo "Venue database is unchanged"
+            exit 0
+          fi
+          git commit -m "Refresh Moscow Oblast venue database"
+          git push
