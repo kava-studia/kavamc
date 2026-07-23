@@ -10,7 +10,7 @@ const OVERPASS_ENDPOINTS = [
   "https://overpass.nchc.org.tw/api/interpreter",
 ];
 
-const AMENITIES = [
+const ALLOWED_TYPES = [
   "restaurant",
   "bar",
   "pub",
@@ -18,6 +18,10 @@ const AMENITIES = [
   "cafe",
   "biergarten",
   "events_venue",
+  "music_venue",
+  "karaoke_box",
+  "music_club",
+  "dance_venue",
 ] as const;
 
 const CSV_HEADERS = [
@@ -42,6 +46,8 @@ const CSV_HEADERS = [
   "description",
   "latitude",
   "longitude",
+  "osm_updated_at",
+  "yandex_maps_url",
   "osm_url",
 ] as const;
 
@@ -51,6 +57,7 @@ type OverpassElement = {
   lat?: number;
   lon?: number;
   center?: { lat?: number; lon?: number };
+  timestamp?: string;
   tags?: Record<string, string>;
 };
 
@@ -81,24 +88,53 @@ function buildAddress(tags: Record<string, string>) {
   return [city, street, house].filter(Boolean).join(", ");
 }
 
+function buildYandexMapsUrl(name: string, address: string, city: string, lat: number | string, lon: number | string) {
+  const query = [name, address || city].filter(Boolean).join(", ");
+  if (query) return `https://yandex.ru/maps/?text=${encodeURIComponent(query)}`;
+  if (lat !== "" && lon !== "") return `https://yandex.ru/maps/?text=${encodeURIComponent(`${lat},${lon}`)}`;
+  return "https://yandex.ru/maps/";
+}
+
+function inferAmenity(tags: Record<string, string>) {
+  const amenity = value(tags, "amenity");
+  if (amenity) return amenity;
+  if (tags.club === "music") return "music_club";
+  if (tags.leisure === "dance") return "dance_venue";
+  return "";
+}
+
+function isLifecycleClosed(tags: Record<string, string>) {
+  return tags.disused === "yes"
+    || tags.abandoned === "yes"
+    || tags.closed === "yes"
+    || Boolean(tags["disused:amenity"])
+    || Boolean(tags["abandoned:amenity"])
+    || Boolean(tags["demolished:amenity"])
+    || Boolean(tags["was:amenity"]);
+}
+
 function toVenue(element: OverpassElement): VenueRow | null {
   const tags = element.tags ?? {};
-  const amenity = value(tags, "amenity");
-  if (!AMENITIES.includes(amenity as (typeof AMENITIES)[number])) return null;
+  const amenity = inferAmenity(tags);
+  if (!ALLOWED_TYPES.includes(amenity as (typeof ALLOWED_TYPES)[number])) return null;
+  if (isLifecycleClosed(tags)) return null;
 
   const lat = element.lat ?? element.center?.lat ?? "";
   const lon = element.lon ?? element.center?.lon ?? "";
+  const name = value(tags, "name", "brand", "operator");
+  const city = value(tags, "addr:city", "addr:town", "addr:village", "addr:municipality", "addr:place");
+  const address = buildAddress(tags);
 
   return {
     osm_type: element.type,
     osm_id: element.id,
-    name: value(tags, "name", "brand", "operator"),
+    name,
     amenity,
-    city: value(tags, "addr:city", "addr:town", "addr:village", "addr:municipality", "addr:place"),
+    city,
     district: value(tags, "addr:district", "addr:suburb"),
     street: value(tags, "addr:street"),
     house_number: value(tags, "addr:housenumber"),
-    address: buildAddress(tags),
+    address,
     phone: normalisePhone(value(tags, "contact:phone", "phone", "contact:mobile", "mobile")),
     email: value(tags, "contact:email", "email"),
     website: value(tags, "contact:website", "website", "url"),
@@ -111,6 +147,8 @@ function toVenue(element: OverpassElement): VenueRow | null {
     description: value(tags, "description", "note"),
     latitude: lat,
     longitude: lon,
+    osm_updated_at: element.timestamp ?? "",
+    yandex_maps_url: buildYandexMapsUrl(name, address, city, lat, lon),
     osm_url: `https://www.openstreetmap.org/${element.type}/${element.id}`,
   };
 }
@@ -124,7 +162,7 @@ async function fetchOverpass(query: string) {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-          "User-Agent": "KAVA-MC-Venue-Research/1.0 (juri.kava@yandex.ru)",
+          "User-Agent": "KAVA-MC-Venue-Research/1.1 (juri.kava@yandex.ru)",
         },
         body: new URLSearchParams({ data: query }),
         cache: "no-store",
@@ -149,17 +187,23 @@ export async function GET(request: NextRequest) {
   const format = request.nextUrl.searchParams.get("format") === "csv" ? "csv" : "json";
   const includeCafe = request.nextUrl.searchParams.get("includeCafe") !== "false";
   const amenityPattern = includeCafe
-    ? "restaurant|bar|pub|nightclub|cafe|biergarten|events_venue"
-    : "restaurant|bar|pub|nightclub|biergarten|events_venue";
+    ? "restaurant|bar|pub|nightclub|cafe|biergarten|events_venue|music_venue|karaoke_box"
+    : "restaurant|bar|pub|nightclub|biergarten|events_venue|music_venue|karaoke_box";
 
-  // OpenStreetMap relation 51490 is Moscow Oblast; area IDs use relation ID + 3,600,000,000.
-  const query = `[out:json][timeout:50];\narea(3600051490)->.moscowOblast;\n(\n  nwr[\"amenity\"~\"^(${amenityPattern})$\"](area.moscowOblast);\n);\nout center tags;`;
+  const query = `[out:json][timeout:50];\narea(3600051490)->.moscowOblast;\n(\n  nwr[\"amenity\"~\"^(${amenityPattern})$\"](area.moscowOblast);\n  nwr[\"club\"=\"music\"](area.moscowOblast);\n  nwr[\"leisure\"=\"dance\"](area.moscowOblast);\n);\nout center tags meta;`;
 
   try {
     const payload = await fetchOverpass(query);
+    const seen = new Set<string>();
     const venues = (payload.elements ?? [])
       .map(toVenue)
       .filter((venue): venue is VenueRow => Boolean(venue))
+      .filter((venue) => {
+        const key = `${venue.osm_type}-${venue.osm_id}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
       .sort((a, b) => String(a.city).localeCompare(String(b.city), "ru") || String(a.name).localeCompare(String(b.name), "ru"));
 
     if (format === "csv") {
