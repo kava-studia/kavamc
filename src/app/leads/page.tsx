@@ -22,12 +22,17 @@ type Lead = {
   longitude: number | string;
   osm_updated_at: string;
   yandex_maps_url: string;
+  two_gis_url: string;
+  google_search_url: string;
+  instagram_search_url: string;
+  vk_search_url: string;
   osm_url: string;
   score: number;
   nightlife_score: number;
   priority: "A" | "B" | "C";
   priority_label: string;
   nightlife_relevant: boolean;
+  false_positive: boolean;
   late_hours: boolean;
   venue_segment: string;
   direct_contact: boolean;
@@ -63,6 +68,7 @@ type Payload = {
     bars: number;
     lateVenues: number;
     freshData: number;
+    rejectedFalsePositives?: number;
   };
   leads: Lead[];
 };
@@ -75,14 +81,27 @@ type LeadActivity = {
 
 type ActivityMap = Record<string, LeadActivity>;
 
+type SourceLink = {
+  label: string;
+  url: string;
+  kind: "website" | "instagram" | "vk" | "maps" | "directory" | "web";
+  snippet: string;
+};
+
 type VerificationResult = {
   id: string;
   status: string;
   reason: string;
+  confidence: "high" | "medium" | "low";
+  exclude: boolean;
+  evidenceCount: number;
   checkedAt: string;
   websiteReachable: boolean;
   websiteStatus: number | null;
   websiteFinalUrl: string;
+  instagramUrl: string;
+  vkUrl: string;
+  sourceLinks: SourceLink[];
 };
 
 type VerificationMap = Record<string, VerificationResult>;
@@ -100,6 +119,16 @@ const STATUS_OPTIONS = [
   "Неактуально",
 ];
 
+const ACTUALITY_OPTIONS = [
+  "Все статусы",
+  "Подтверждено",
+  "Вероятно работает",
+  "Нужна ручная проверка",
+  "Закрыто / исключить",
+  "Не тот формат",
+  "Не проверено",
+];
+
 function safeUrl(value: string) {
   if (!value) return "";
   return /^https?:\/\//i.test(value) ? value : `https://${value}`;
@@ -115,14 +144,23 @@ function buildMessage(lead: Lead) {
   return `Привет! Я Кава, клубный MC и ведущий. ${intro} ${lead.reason}. ${offer}\n\n${lead.product} - ${lead.price}. Можно начать с одной тестовой даты или обсудить регулярные выходы.\n\nКейсы и видео: kavamc.vercel.app\nTelegram: @kava_studia\n\nПодскажите, с кем можно обсудить программу и свободные даты?`;
 }
 
-function contactHref(lead: Lead) {
+function contactHref(lead: Lead, verification?: VerificationResult) {
   if (lead.telegram) return safeUrl(lead.telegram.startsWith("@") ? `t.me/${lead.telegram.slice(1)}` : lead.telegram);
-  if (lead.vk) return safeUrl(lead.vk);
   if (lead.instagram) return safeUrl(lead.instagram);
+  if (verification?.instagramUrl) return verification.instagramUrl;
+  if (lead.vk) return safeUrl(lead.vk);
+  if (verification?.vkUrl) return verification.vkUrl;
   if (lead.email) return `mailto:${lead.email}`;
   if (lead.phone) return `tel:${lead.phone.replace(/[^+\d]/g, "")}`;
   if (lead.website) return safeUrl(lead.website);
   return lead.yandex_maps_url || lead.osm_url;
+}
+
+function contactLabel(lead: Lead, verification?: VerificationResult) {
+  if (lead.telegram) return "Telegram";
+  if (lead.instagram || verification?.instagramUrl) return "Instagram";
+  if (lead.vk || verification?.vkUrl) return "VK";
+  return lead.contact_channel;
 }
 
 function formatCheckedAt(value: string) {
@@ -130,6 +168,16 @@ function formatCheckedAt(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
   return date.toLocaleString("ru-RU", { dateStyle: "short", timeStyle: "short" });
+}
+
+function effectiveStage(lead: Lead, verification: VerificationResult | undefined, activity: LeadActivity | undefined) {
+  if (activity?.status) return activity.status;
+  if (!verification) return "Проверить";
+  if (verification.exclude) return "Неактуально";
+  if (["Подтверждено", "Вероятно работает"].includes(verification.status)) {
+    return lead.direct_contact || verification.instagramUrl || verification.vkUrl ? "Писать сейчас" : "Найти ЛПР";
+  }
+  return "Проверить";
 }
 
 export default function LeadsPage() {
@@ -141,19 +189,19 @@ export default function LeadsPage() {
   const [segment, setSegment] = useState("Все форматы");
   const [priority, setPriority] = useState("Все приоритеты");
   const [actuality, setActuality] = useState("Все статусы");
-  const [stage, setStage] = useState("Писать сейчас");
+  const [stage, setStage] = useState("Все этапы");
   const [page, setPage] = useState(1);
   const [copiedId, setCopiedId] = useState("");
   const [activity, setActivity] = useState<ActivityMap>({});
   const [verification, setVerification] = useState<VerificationMap>({});
   const [verifying, setVerifying] = useState(false);
-  const pageSize = 40;
+  const pageSize = 20;
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem("kava-mc-lead-activity-v1");
       if (stored) setActivity(JSON.parse(stored) as ActivityMap);
-      const verified = window.localStorage.getItem("kava-mc-lead-verification-v1");
+      const verified = window.localStorage.getItem("kava-mc-lead-verification-v2");
       if (verified) setVerification(JSON.parse(verified) as VerificationMap);
     } catch {
       // CRM remains usable if local storage is unavailable.
@@ -192,8 +240,9 @@ export default function LeadsPage() {
     const query = search.trim().toLowerCase().replace(/ё/g, "е");
 
     return payload.leads.filter((lead) => {
-      const actualStage = activity[lead.id]?.status ?? lead.pipeline_status;
-      const liveActuality = verification[lead.id]?.status ?? lead.actuality_status;
+      const check = verification[lead.id];
+      const actualStage = effectiveStage(lead, check, activity[lead.id]);
+      const liveActuality = check?.status ?? lead.actuality_status;
       const haystack = `${lead.name} ${lead.city} ${lead.address} ${lead.reason} ${lead.product} ${lead.venue_segment}`.toLowerCase().replace(/ё/g, "е");
       return (!query || haystack.includes(query))
         && (city === "Все города" || lead.city === city)
@@ -222,12 +271,18 @@ export default function LeadsPage() {
       body: JSON.stringify({
         leads: pending.map((lead) => ({
           id: lead.id,
+          name: lead.name,
+          city: lead.city,
+          address: lead.address,
+          amenity: lead.amenity,
+          venue_segment: lead.venue_segment,
           website: lead.website,
           phone: lead.phone,
           email: lead.email,
           telegram: lead.telegram,
           vk: lead.vk,
           instagram: lead.instagram,
+          yandex_maps_url: lead.yandex_maps_url,
         })),
       }),
     })
@@ -239,12 +294,12 @@ export default function LeadsPage() {
         setVerification((current) => {
           const updated = { ...current };
           for (const result of results) updated[result.id] = result;
-          window.localStorage.setItem("kava-mc-lead-verification-v1", JSON.stringify(updated));
+          window.localStorage.setItem("kava-mc-lead-verification-v2", JSON.stringify(updated));
           return updated;
         });
       })
       .catch(() => {
-        // Base actuality from fresh OSM data remains visible if website verification fails.
+        // Manual research links remain available if automatic research is temporarily blocked.
       })
       .finally(() => setVerifying(false));
     // visibleKey intentionally represents the current page batch.
@@ -257,8 +312,10 @@ export default function LeadsPage() {
     window.setTimeout(() => setCopiedId(""), 1800);
   };
 
+  const confirmedCount = Object.values(verification).filter((item) => item.status === "Подтверждено").length;
+
   if (loading) {
-    return <main className={styles.loading}>Собираю ночную жизнь Подмосковья. Тут баров больше, чем обещаний начать новую жизнь с понедельника.</main>;
+    return <main className={styles.loading}>Собираю кандидатов и проверяю, кто из них реально жив, а кто уже призрак из старой карточки.</main>;
   }
 
   if (error || !payload) {
@@ -269,29 +326,30 @@ export default function LeadsPage() {
     <main className={styles.page}>
       <section className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>KAVA MC NIGHTLIFE SALES</p>
-          <h1>Ночные клубы, рестобары и караоке Подмосковья</h1>
-          <p className={styles.subtitle}>Приоритет не на рестораны вообще, а на места, где есть DJ, поздний график, вечеринки, караоке, музыка и аудитория для MC.</p>
+          <p className={styles.eyebrow}>KAVA MC MULTI-SOURCE SALES</p>
+          <h1>Живые ночные площадки, а не свалка карточек</h1>
+          <p className={styles.subtitle}>OpenStreetMap теперь только находит кандидатов. Перед продажей система ищет точное название по вебу, Яндекс Картам, 2ГИС, Instagram и VK, отсеивает закрытые места, ТЦ и неправильный формат.</p>
         </div>
         <div className={styles.heroActions}>
-          <a className={styles.primaryButton} href="/api/venues/leads?focus=nightlife&format=csv">Скачать ночную CRM</a>
-          <a className={styles.secondaryButton} href="/api/venues/leads?all=true&format=csv">Скачать весь сырой массив</a>
+          <a className={styles.primaryButton} href="/api/venues/leads?focus=nightlife&format=csv">Скачать кандидатов</a>
+          <a className={styles.secondaryButton} href="/api/venues/leads?all=true&format=csv">Скачать сырой массив</a>
         </div>
       </section>
 
       <section className={styles.stats}>
-        <article><span>Ночная выборка</span><strong>{payload.stats.qualified.toLocaleString("ru-RU")}</strong></article>
+        <article><span>Кандидаты после фильтра</span><strong>{payload.stats.qualified.toLocaleString("ru-RU")}</strong></article>
         <article><span>Ночные клубы</span><strong>{payload.stats.nightclubs.toLocaleString("ru-RU")}</strong></article>
         <article><span>Рестобары / лаунжи</span><strong>{payload.stats.restobars.toLocaleString("ru-RU")}</strong></article>
-        <article><span>Поздний график</span><strong>{payload.stats.lateVenues.toLocaleString("ru-RU")}</strong></article>
-        <article><span>Писать сейчас</span><strong>{payload.stats.writeNow.toLocaleString("ru-RU")}</strong></article>
+        <article><span>Отсечено ТЦ и мусора</span><strong>{(payload.stats.rejectedFalsePositives ?? 0).toLocaleString("ru-RU")}</strong></article>
+        <article><span>Подтверждено в интернете</span><strong>{confirmedCount.toLocaleString("ru-RU")}</strong></article>
       </section>
 
       <section className={styles.workflow}>
+        <button className={stage === "Все этапы" ? styles.activeStage : ""} onClick={() => setStage("Все этапы")}>Все</button>
         <button className={stage === "Писать сейчас" ? styles.activeStage : ""} onClick={() => setStage("Писать сейчас")}>1. Писать сейчас</button>
         <button className={stage === "Найти ЛПР" ? styles.activeStage : ""} onClick={() => setStage("Найти ЛПР")}>2. Найти ЛПР</button>
         <button className={stage === "Проверить" ? styles.activeStage : ""} onClick={() => setStage("Проверить")}>3. Проверить</button>
-        <button className={stage === "Все этапы" ? styles.activeStage : ""} onClick={() => setStage("Все этапы")}>Все этапы</button>
+        <button className={stage === "Неактуально" ? styles.activeStage : ""} onClick={() => setStage("Неактуально")}>Исключённые</button>
       </section>
 
       <section className={styles.filters}>
@@ -311,19 +369,13 @@ export default function LeadsPage() {
           <option value="C">C - проверить</option>
         </select>
         <select value={actuality} onChange={(event) => setActuality(event.target.value)}>
-          <option>Все статусы</option>
-          <option>Сайт отвечает</option>
-          <option>Контакт найден - проверить карту</option>
-          <option>Нужна проверка в Яндекс Картах</option>
-          <option>Свежие данные</option>
-          <option>Вероятно актуально</option>
-          <option>Проверить вручную</option>
+          {ACTUALITY_OPTIONS.map((option) => <option key={option}>{option}</option>)}
         </select>
       </section>
 
       <section className={styles.resultHeader}>
         <div><strong>{filtered.length.toLocaleString("ru-RU")}</strong> лидов в текущей выборке</div>
-        <div>{verifying ? "Проверяю сайты текущей страницы..." : `Страница ${page} из ${pages}`}</div>
+        <div>{verifying ? "Ищу площадки по вебу, Instagram, VK и каталогам..." : `Страница ${page} из ${pages}`}</div>
       </section>
 
       <section className={styles.tableWrap}>
@@ -332,21 +384,21 @@ export default function LeadsPage() {
             <tr>
               <th>Приоритет</th>
               <th>Заведение</th>
-              <th>Актуальность</th>
+              <th>Проверка</th>
               <th>Почему подходит</th>
               <th>Что продаём</th>
               <th>Контакт</th>
               <th>Этап</th>
-              <th>Действие</th>
+              <th>Источники</th>
             </tr>
           </thead>
           <tbody>
             {visible.map((lead) => {
-              const actualStatus = activity[lead.id]?.status ?? lead.pipeline_status;
-              const liveCheck = verification[lead.id];
-              const actualityStatus = liveCheck?.status ?? lead.actuality_status;
-              const actualityReason = liveCheck?.reason ?? lead.actuality_reason;
-              const checkedAt = liveCheck?.checkedAt ?? lead.actuality_checked_at;
+              const check = verification[lead.id];
+              const actualStatus = effectiveStage(lead, check, activity[lead.id]);
+              const actualityStatus = check?.status ?? lead.actuality_status;
+              const actualityReason = check?.reason ?? lead.actuality_reason;
+              const checkedAt = check?.checkedAt ?? lead.actuality_checked_at;
 
               return (
                 <tr key={lead.id}>
@@ -356,17 +408,17 @@ export default function LeadsPage() {
                     <span>{lead.venue_segment}{lead.city ? ` · ${lead.city}` : ""}</span>
                     <small>{lead.address || "Адрес требует проверки"}</small>
                     {lead.opening_hours && <small>График: {lead.opening_hours}</small>}
-                    <a className={styles.sourceLink} href={lead.yandex_maps_url} target="_blank" rel="noreferrer">Открыть в Яндекс Картах</a>
                   </td>
                   <td>
                     <strong>{actualityStatus}</strong>
                     <span>{actualityReason}</span>
-                    <small>Проверено: {formatCheckedAt(checkedAt)}</small>
+                    {check && <small>Независимых источников: {check.evidenceCount}</small>}
+                    {checkedAt && <small>Проверено: {formatCheckedAt(checkedAt)}</small>}
                   </td>
                   <td><p>{lead.reason}</p><small>Ищем: {lead.decision_maker}</small></td>
                   <td><strong>{lead.product}</strong><span>{lead.price}</span></td>
                   <td>
-                    <a className={styles.contactLink} href={contactHref(lead)} target="_blank" rel="noreferrer">{lead.contact_channel}</a>
+                    <a className={styles.contactLink} href={contactHref(lead, check)} target="_blank" rel="noreferrer">{contactLabel(lead, check)}</a>
                     {lead.phone && <small>{lead.phone}</small>}
                     {lead.email && <small>{lead.email}</small>}
                     {lead.website && <a className={styles.sourceLink} href={safeUrl(lead.website)} target="_blank" rel="noreferrer">Официальный сайт</a>}
@@ -378,11 +430,19 @@ export default function LeadsPage() {
                     })}>
                       {STATUS_OPTIONS.map((option) => <option key={option}>{option}</option>)}
                     </select>
+                    {!check?.exclude && ["Подтверждено", "Вероятно работает"].includes(check?.status ?? "") && (
+                      <button className={styles.copyButton} onClick={() => copyMessage(lead)}>{copiedId === lead.id ? "Скопировано" : "Скопировать заход"}</button>
+                    )}
                   </td>
                   <td>
-                    <button className={styles.copyButton} onClick={() => copyMessage(lead)}>{copiedId === lead.id ? "Скопировано" : "Скопировать заход"}</button>
+                    {check?.sourceLinks?.slice(0, 6).map((source) => (
+                      <a key={source.url} className={styles.sourceLink} href={source.url} target="_blank" rel="noreferrer" title={source.snippet}>{source.label}</a>
+                    ))}
                     <a className={styles.sourceLink} href={lead.yandex_maps_url} target="_blank" rel="noreferrer">Яндекс Карты</a>
-                    <a className={styles.sourceLink} href={lead.osm_url} target="_blank" rel="noreferrer">Исходная карточка</a>
+                    <a className={styles.sourceLink} href={lead.two_gis_url} target="_blank" rel="noreferrer">2ГИС</a>
+                    <a className={styles.sourceLink} href={lead.google_search_url} target="_blank" rel="noreferrer">Поиск в интернете</a>
+                    <a className={styles.sourceLink} href={lead.instagram_search_url} target="_blank" rel="noreferrer">Найти Instagram</a>
+                    <a className={styles.sourceLink} href={lead.vk_search_url} target="_blank" rel="noreferrer">Найти VK</a>
                   </td>
                 </tr>
               );
@@ -391,7 +451,7 @@ export default function LeadsPage() {
         </table>
       </section>
 
-      {visible.length === 0 && <div className={styles.empty}>По этим фильтрам никого нет. Значит, фильтры сейчас строже фейсконтроля в 2007 году.</div>}
+      {visible.length === 0 && <div className={styles.empty}>По этим фильтрам ничего нет. Возможно, интернет-проверка уже вынесла мусор за дверь.</div>}
 
       <section className={styles.pagination}>
         <button disabled={page === 1} onClick={() => setPage((current) => Math.max(1, current - 1))}>Назад</button>
@@ -400,16 +460,16 @@ export default function LeadsPage() {
       </section>
 
       <section className={styles.rules}>
-        <h2>Что теперь считается актуальным</h2>
+        <h2>Как теперь принимается решение</h2>
         <div>
-          <p><strong>Сайт отвечает.</strong> Автоматическая проверка подтвердила, что официальный сайт доступен прямо сейчас.</p>
-          <p><strong>Яндекс Карты обязательны.</strong> Перед сообщением проверяем статус работы, свежие отзывы, афишу и вечерний график.</p>
-          <p><strong>Приоритет ночной жизни.</strong> Обычные рестораны без музыки и позднего формата больше не забивают первую очередь.</p>
+          <p><strong>Одна карта ничего не доказывает.</strong> OpenStreetMap используется только как стартовый список кандидатов.</p>
+          <p><strong>Нужно несколько источников.</strong> Система ищет официальный сайт, каталоги, Instagram, VK и обычные веб-упоминания.</p>
+          <p><strong>Мусор исключается автоматически.</strong> Закрытые заведения, ТЦ, БЦ и неподходящий формат уходят в раздел «Исключённые».</p>
         </div>
       </section>
 
       <footer className={styles.footer}>
-        Автоматическая актуализация подтверждает свежесть исходной карты и доступность официального сайта. Финальный статус работы заведения подтверждай по Яндекс Картам и последним отзывам перед первым касанием.
+        Автоматический поиск использует открытые веб-страницы и поисковую выдачу. Instagram иногда закрывает данные от автоматических систем, поэтому для каждого лида дополнительно оставлена отдельная кнопка поиска профиля.
       </footer>
     </main>
   );
