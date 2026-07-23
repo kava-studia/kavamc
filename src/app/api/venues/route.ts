@@ -15,7 +15,6 @@ const ALLOWED_TYPES = [
   "bar",
   "pub",
   "nightclub",
-  "cafe",
   "biergarten",
   "events_venue",
   "music_venue",
@@ -162,7 +161,7 @@ async function fetchOverpass(query: string) {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-          "User-Agent": "KAVA-MC-Venue-Research/1.1 (juri.kava@yandex.ru)",
+          "User-Agent": "KAVA-MC-Nightlife-Research/1.2 (juri.kava@yandex.ru)",
         },
         body: new URLSearchParams({ data: query }),
         cache: "no-store",
@@ -185,12 +184,10 @@ async function fetchOverpass(query: string) {
 
 export async function GET(request: NextRequest) {
   const format = request.nextUrl.searchParams.get("format") === "csv" ? "csv" : "json";
-  const includeCafe = request.nextUrl.searchParams.get("includeCafe") !== "false";
-  const amenityPattern = includeCafe
-    ? "restaurant|bar|pub|nightclub|cafe|biergarten|events_venue|music_venue|karaoke_box"
-    : "restaurant|bar|pub|nightclub|biergarten|events_venue|music_venue|karaoke_box";
+  const nightlifeNamePattern = "ночн|night|клуб|club|караоке|karaoke|lounge|лаунж|restobar|ресто.?бар|рестобар|gastrobar|гастробар|music|музык|dance|dj|диджей|бар|bar|pub|паб|afterparty|вечерин";
+  const lateHoursPattern = "24/7|00:|01:|02:|03:|04:|05:|06:";
 
-  const query = `[out:json][timeout:50];\narea(3600051490)->.moscowOblast;\n(\n  nwr[\"amenity\"~\"^(${amenityPattern})$\"](area.moscowOblast);\n  nwr[\"club\"=\"music\"](area.moscowOblast);\n  nwr[\"leisure\"=\"dance\"](area.moscowOblast);\n);\nout center tags meta;`;
+  const query = `[out:json][timeout:50];\narea(3600051490)->.moscowOblast;\n(\n  nwr[\"amenity\"~\"^(bar|pub|nightclub|biergarten|events_venue|music_venue|karaoke_box)$\"](area.moscowOblast);\n  nwr[\"amenity\"=\"restaurant\"][\"name\"~\"${nightlifeNamePattern}\",i](area.moscowOblast);\n  nwr[\"amenity\"=\"restaurant\"][\"description\"~\"${nightlifeNamePattern}\",i](area.moscowOblast);\n  nwr[\"amenity\"=\"restaurant\"][\"opening_hours\"~\"${lateHoursPattern}\"](area.moscowOblast);\n  nwr[\"club\"=\"music\"](area.moscowOblast);\n  nwr[\"leisure\"=\"dance\"](area.moscowOblast);\n);\nout meta center;`;
 
   try {
     const payload = await fetchOverpass(query);
@@ -216,7 +213,7 @@ export async function GET(request: NextRequest) {
         status: 200,
         headers: {
           "Content-Type": "text/csv; charset=utf-8",
-          "Content-Disposition": `attachment; filename=moscow-oblast-venues-${new Date().toISOString().slice(0, 10)}.csv`,
+          "Content-Disposition": `attachment; filename=moscow-oblast-nightlife-${new Date().toISOString().slice(0, 10)}.csv`,
           "Cache-Control": "no-store",
           "X-Venues-Count": String(venues.length),
         },
@@ -228,6 +225,7 @@ export async function GET(request: NextRequest) {
         generatedAt: new Date().toISOString(),
         source: "OpenStreetMap contributors via Overpass API",
         area: "Moscow Oblast",
+        focus: "nightlife",
         count: venues.length,
         venues,
       },
@@ -236,7 +234,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Не удалось получить данные заведений",
+        error: "Не удалось получить данные ночных заведений",
         details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 502, headers: { "Cache-Control": "no-store" } },
