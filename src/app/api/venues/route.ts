@@ -5,8 +5,8 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 const OVERPASS_ENDPOINTS = [
-  "https://overpass-api.de/api/interpreter",
   "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass-api.de/api/interpreter",
   "https://overpass.nchc.org.tw/api/interpreter",
 ];
 
@@ -56,7 +56,6 @@ type OverpassElement = {
   lat?: number;
   lon?: number;
   center?: { lat?: number; lon?: number };
-  timestamp?: string;
   tags?: Record<string, string>;
 };
 
@@ -146,7 +145,7 @@ function toVenue(element: OverpassElement): VenueRow | null {
     description: value(tags, "description", "note"),
     latitude: lat,
     longitude: lon,
-    osm_updated_at: element.timestamp ?? "",
+    osm_updated_at: "",
     yandex_maps_url: buildYandexMapsUrl(name, address, city, lat, lon),
     osm_url: `https://www.openstreetmap.org/${element.type}/${element.id}`,
   };
@@ -161,11 +160,11 @@ async function fetchOverpass(query: string) {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-          "User-Agent": "KAVA-MC-Nightlife-Research/1.2 (juri.kava@yandex.ru)",
+          "User-Agent": "KAVA-MC-Venue-Research/1.3 (juri.kava@yandex.ru)",
         },
         body: new URLSearchParams({ data: query }),
         cache: "no-store",
-        signal: AbortSignal.timeout(55_000),
+        signal: AbortSignal.timeout(50_000),
       });
 
       if (!response.ok) {
@@ -184,10 +183,7 @@ async function fetchOverpass(query: string) {
 
 export async function GET(request: NextRequest) {
   const format = request.nextUrl.searchParams.get("format") === "csv" ? "csv" : "json";
-  const nightlifeNamePattern = "ночн|night|клуб|club|караоке|karaoke|lounge|лаунж|restobar|ресто.?бар|рестобар|gastrobar|гастробар|music|музык|dance|dj|диджей|бар|bar|pub|паб|afterparty|вечерин";
-  const lateHoursPattern = "24/7|00:|01:|02:|03:|04:|05:|06:";
-
-  const query = `[out:json][timeout:50];\narea(3600051490)->.moscowOblast;\n(\n  nwr[\"amenity\"~\"^(bar|pub|nightclub|biergarten|events_venue|music_venue|karaoke_box)$\"](area.moscowOblast);\n  nwr[\"amenity\"=\"restaurant\"][\"name\"~\"${nightlifeNamePattern}\",i](area.moscowOblast);\n  nwr[\"amenity\"=\"restaurant\"][\"description\"~\"${nightlifeNamePattern}\",i](area.moscowOblast);\n  nwr[\"amenity\"=\"restaurant\"][\"opening_hours\"~\"${lateHoursPattern}\"](area.moscowOblast);\n  nwr[\"club\"=\"music\"](area.moscowOblast);\n  nwr[\"leisure\"=\"dance\"](area.moscowOblast);\n);\nout meta center;`;
+  const query = `[out:json][timeout:45];\narea(3600051490)->.moscowOblast;\n(\n  nwr[\"amenity\"~\"^(restaurant|bar|pub|nightclub|biergarten|events_venue|music_venue|karaoke_box)$\"](area.moscowOblast);\n  nwr[\"club\"=\"music\"](area.moscowOblast);\n  nwr[\"leisure\"=\"dance\"](area.moscowOblast);\n);\nout center tags;`;
 
   try {
     const payload = await fetchOverpass(query);
@@ -213,8 +209,8 @@ export async function GET(request: NextRequest) {
         status: 200,
         headers: {
           "Content-Type": "text/csv; charset=utf-8",
-          "Content-Disposition": `attachment; filename=moscow-oblast-nightlife-${new Date().toISOString().slice(0, 10)}.csv`,
-          "Cache-Control": "no-store",
+          "Content-Disposition": `attachment; filename=moscow-oblast-venues-${new Date().toISOString().slice(0, 10)}.csv`,
+          "Cache-Control": "public, s-maxage=21600, stale-while-revalidate=86400",
           "X-Venues-Count": String(venues.length),
         },
       });
@@ -225,16 +221,15 @@ export async function GET(request: NextRequest) {
         generatedAt: new Date().toISOString(),
         source: "OpenStreetMap contributors via Overpass API",
         area: "Moscow Oblast",
-        focus: "nightlife",
         count: venues.length,
         venues,
       },
-      { headers: { "Cache-Control": "no-store" } },
+      { headers: { "Cache-Control": "public, s-maxage=21600, stale-while-revalidate=86400" } },
     );
   } catch (error) {
     return NextResponse.json(
       {
-        error: "Не удалось получить данные ночных заведений",
+        error: "Не удалось получить данные заведений",
         details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 502, headers: { "Cache-Control": "no-store" } },
