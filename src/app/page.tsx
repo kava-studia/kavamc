@@ -33,60 +33,60 @@ function Photo({ src, className = "", label, position }: { src: string; classNam
 }
 
 const included = [
-  "Сценарная логика и драматургия вечера",
-  "Работа с DJ, артистами и технической командой",
-  "Контакт с залом без навязчивых конкурсов",
-  "Объявления, импровизация и партнёрские интеграции",
-  "Создание моментов для фото и видео",
-  "Подготовка под конкретную площадку и аудиторию",
+  "Личное общение с заказчиком и один ответственный за общий процесс",
+  "Программа, сценарный каркас и тайминг под конкретное событие",
+  "Живое ведение, импровизация и работа с залом без принуждения гостей",
+  "Подбор DJ и других подрядчиков под задачу мероприятия",
+  "Подбор подрядчиков по звуку и свету с отдельным расчётом оборудования",
+  "Координация договорённостей и контроль согласованного плана",
 ];
 
 const collaboration = [
-  { n: "01", title: "Один сильный выход", text: "Клубный сет, открытие, презентация или частное событие.", cta: "Выбрать дату" },
-  { n: "02", title: "Серия событий", text: "Регулярные пятницы, субботы, сезонные программы и тематические ночи.", cta: "Обсудить серию" },
-  { n: "03", title: "Продюсирование под ключ", text: "Концепция, команда, артисты, продвижение и контроль реализации.", cta: "Собрать проект" },
+  { n: "01", title: "Знакомство и задача", text: "Обсуждаем формат, гостей, площадку, ожидания и то, что точно не должно происходить.", cta: "Проверить дату" },
+  { n: "02", title: "Предложение и подготовка", text: "Фиксируем состав работы, собираем программу, тайминг, подрядчиков и предварительную смету.", cta: "Обсудить проект" },
+  { n: "03", title: "Мероприятие и контроль", text: "Я провожу событие и держу общий процесс в рамках согласованного сценария и договорённостей.", cta: "Начать разговор" },
 ];
 
 const catalogMedia = [
-  { src: "/media/club-wide.webp", position: "50% 38%" },
-  { src: "/media/live-guitar.webp", position: "50% 32%" },
-  { src: "/media/backstage.webp", position: "50% 28%" },
   { src: "/media/private-event.webp", position: "50% 34%" },
   { src: "/media/hero.webp", position: "66% 30%" },
+  { src: "/media/backstage.webp", position: "50% 28%" },
+  { src: "/media/private-event.webp", position: "48% 38%" },
   { src: "/media/club-wide.webp", position: "50% 44%" },
+  { src: "/media/live-guitar.webp", position: "50% 32%" },
 ];
 
 export default function Home() {
   return (
     <main className="home-page night-architecture">
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="KAVA MC - на главную">KAVA<span>MC</span></a>
-        <nav aria-label="Основная навигация"><a href="#formats">Форматы</a><a href="#included">Что входит</a><a href="#video">Видео</a><a href="#experience">Опыт</a><a href="#contacts">Контакты</a></nav>
-        <a className="header-cta glass-action" href={telegram} target="_blank" rel="noreferrer">Обсудить задачу <Arrow /></a>
+        <a className="brand" href="#top" aria-label="KAVA STUDIA - на главную">KAVA<span>STUDIA</span></a>
+        <nav aria-label="Основная навигация"><a href="#formats">Форматы</a><a href="#included">Что входит</a><a href="#process">Как работаем</a><a href="#video">Видео</a><a href="#contacts">Контакты</a></nav>
+        <a className="header-cta glass-action" href="#contacts">Проверить дату <Arrow /></a>
         <MobileMenu />
       </header>
 
       <section className="hero ns-hero" id="top">
-        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA MC · LIVE ENERGY" position="64% 30%" />
+        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA STUDIA · MC KAVA" position="64% 30%" />
         <div className="ns-hero-copy" data-reveal>
-          <p className="eyebrow">Клубный MC · ведущий · продюсер событий</p>
-          <h1>Голос,<br />который <em>двигает</em><br />вечер</h1>
-          <p className="hero-tagline">Создаю события, в которых музыка, люди и момент работают как единое целое.</p>
-          <div className="hero-actions"><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить задачу <Arrow /></a><a className="button button-ghost" href="#video"><Icon name="play" size={18}/> Смотреть выступления</a></div>
+          <p className="eyebrow">Свадьбы · корпоративы · частные события</p>
+          <h1>Организация<br />и проведение<br /><em>современных событий</em></h1>
+          <p className="hero-tagline">Я - MC KAVA. Лично веду проект, создаю программу и собираю под конкретное мероприятие проверенную команду.</p>
+          <div className="hero-actions"><a className="button button-primary" href="#contacts">Проверить дату <Arrow /></a><a className="button button-ghost" href="#video"><Icon name="play" size={18}/> Посмотреть видео</a></div>
         </div>
-        <div className="hero-facts" data-reveal><div><strong>8+</strong><span>лет в индустрии</span></div><div><strong>6</strong><span>форматов работы</span></div><div><strong>3</strong><span>города в портфолио</span></div></div>
+        <div className="hero-facts" data-reveal><div><strong>8+</strong><span>лет в индустрии</span></div><div><strong>3</strong><span>главных направления</span></div><div><strong>1</strong><span>ответственный за процесс</span></div></div>
       </section>
 
-      <div className="marquee" aria-hidden="true"><div>KAVA MC · CLUB SET · LIVE GUITAR · EVENT PRODUCTION · PRIVATE EVENTS · KAVA MC · CLUB SET · LIVE GUITAR · EVENT PRODUCTION · PRIVATE EVENTS ·</div></div>
+      <div className="marquee" aria-hidden="true"><div>KAVA STUDIA · СВАДЬБЫ · КОРПОРАТИВЫ · ЧАСТНЫЕ СОБЫТИЯ · ОРГАНИЗАЦИЯ · ВЕДУЩИЙ · DJ · KAVA STUDIA ·</div></div>
 
       <section className="catalog" id="formats">
-        <div className="content-shell catalog-head" data-reveal><div><p className="eyebrow">Форматы</p><h2>Выбирай не услугу.<br /><em>Выбирай энергию.</em></h2></div><p>От одного клубного выхода до полного продюсирования события.</p></div>
+        <div className="content-shell catalog-head" data-reveal><div><p className="eyebrow">Форматы работы</p><h2>Не пакет ради пакета.<br /><em>Нужен работающий формат.</em></h2></div><p>Состав работы зависит от даты, площадки, числа гостей, города и уровня подготовки события.</p></div>
         <div className="content-shell catalog-grid">
           {formats.map((format, index) => {
             const media = catalogMedia[index];
             return <article className={`catalog-card ${"featured" in format && format.featured ? "featured" : ""}`} key={format.title} data-reveal>
-              <div className="catalog-card-image" style={{ backgroundImage: `linear-gradient(180deg,rgba(5,7,11,.04) 20%,rgba(5,7,11,.88)),url(${media.src})`, backgroundPosition: media.position }}><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Флагман</b> : null}</div>
-              <div className="catalog-card-body"><h3>{format.title}</h3><strong>{format.price}</strong><p>{format.text}</p><div className="tags">{format.tags.map(tag => <span key={tag}>{tag}</span>)}</div><a href="#contacts">Выбрать формат <Arrow /></a></div>
+              <div className="catalog-card-image" style={{ backgroundImage: `linear-gradient(180deg,rgba(5,7,11,.04) 20%,rgba(5,7,11,.88)),url(${media.src})`, backgroundPosition: media.position }}><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Основной формат</b> : null}</div>
+              <div className="catalog-card-body"><h3>{format.title}</h3><strong>{format.price}</strong><p>{format.text}</p><div className="tags">{format.tags.map(tag => <span key={tag}>{tag}</span>)}</div><a href="#contacts">Обсудить формат <Arrow /></a></div>
             </article>;
           })}
         </div>
@@ -94,36 +94,36 @@ export default function Home() {
 
       <section className="included" id="included">
         <div className="content-shell included-layout">
-          <div className="included-title" data-reveal><p className="eyebrow">Что входит в работу</p><h2>Не просто<br /><em>микрофон.</em></h2><p>Я собираю вечер как систему - музыка, темп, коммуникация, сцена и контент.</p></div>
+          <div className="included-title" data-reveal><p className="eyebrow">Что входит в работу</p><h2>Не только<br /><em>микрофон.</em></h2><p>Моя задача - собрать программу, людей и договорённости в один понятный процесс. Световое оборудование не является моим собственным парком - при необходимости я подбираю и координирую отдельного подрядчика.</p></div>
           <div className="included-list">{included.map((item, index) => <div key={item} data-reveal><span>0{index + 1}</span><strong>{item}</strong><Icon name="check" size={22}/></div>)}</div>
         </div>
       </section>
 
-      <section className="collaboration">
-        <div className="content-shell"><div className="section-head" data-reveal><div><p className="eyebrow">Механики сотрудничества</p><h2>Один артист.<br /><em>Три масштаба.</em></h2></div><p>Можно начать с одной даты, проверить химию с залом и перейти к регулярной системе.</p></div>
+      <section className="collaboration" id="process">
+        <div className="content-shell"><div className="section-head" data-reveal><div><p className="eyebrow">Как проходит работа</p><h2>От первого сообщения<br /><em>до дня события.</em></h2></div><p>Без двадцати хаотичных чатов и решений, которые никто не зафиксировал.</p></div>
         <div className="collaboration-grid">{collaboration.map(item => <article key={item.n} data-reveal><span>{item.n}</span><h3>{item.title}</h3><p>{item.text}</p><a href="#contacts">{item.cta} <Arrow /></a></article>)}</div></div>
       </section>
 
-      <section className="visual-break ns-break"><Photo src="/media/private-event.webp" className="visual-break-photo" label="REAL PEOPLE · REAL MOMENT" position="48% 34%"/><div className="content-shell visual-break-inner"><div className="visual-break-copy" data-reveal><p className="eyebrow">Для площадок и брендов</p><h2>Событие должно<br /><em>работать на вас.</em></h2><p>Подстраиваюсь под музыкальную концепцию, аудиторию и коммерческую задачу площадки. Можно начать с одной даты и перейти к серии.</p><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить сотрудничество <Arrow /></a></div></div></section>
+      <section className="visual-break ns-break"><Photo src="/media/private-event.webp" className="visual-break-photo" label="ЛИЧНОЕ УЧАСТИЕ · ПОНЯТНЫЙ ПРОЦЕСС" position="48% 34%"/><div className="content-shell visual-break-inner"><div className="visual-break-copy" data-reveal><p className="eyebrow">MC KAVA - лицо проекта</p><h2>Один человек<br /><em>держит общий контур.</em></h2><p>Я лично общаюсь с заказчиком, создаю программу, веду мероприятие и собираю нужных специалистов. DJ, фотограф, видеограф, звук, свет и другие направления подключаются под конкретную задачу, а не изображают несуществующий штат.</p><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить мероприятие <Arrow /></a></div></div></section>
 
-      <section className="video" id="video"><div className="content-shell"><div className="section-head inverse" data-reveal><div><p className="eyebrow">Реальные выступления</p><h2>Сначала смотри.<br /><em>Потом решай.</em></h2></div><p>Без стоков. Только реальные клубы, публика, сцена и работа в моменте.</p></div><VideoGallery /></div></section>
+      <section className="video" id="video"><div className="content-shell"><div className="section-head inverse" data-reveal><div><p className="eyebrow">Реальная работа</p><h2>Сначала смотри.<br /><em>Потом решай.</em></h2></div><p>Только настоящие сцены, публика и работа в моменте. Клубный опыт здесь не главный продукт, а доказательство реакции, темпа и уверенной работы с залом.</p></div><VideoGallery /></div></section>
 
       <section className="experience" id="experience">
-        <div className="content-shell experience-layout"><div className="experience-copy" data-reveal><p className="eyebrow">Опыт</p><h2>Восемь лет<br /><em>внутри индустрии.</em></h2><p>Клубы, рестораны, частные события, корпоративы, открытия и продюсирование площадок.</p></div>
+        <div className="content-shell experience-layout"><div className="experience-copy" data-reveal><p className="eyebrow">Опыт и география</p><h2>Восемь лет<br /><em>внутри индустрии.</em></h2><p>Свадьбы, корпоративы, частные события, клубы, рестораны, открытия и организация мероприятий в Сергиевом Посаде, Москве и Московской области.</p></div>
         <div className="venue-list">{venues.map(venue => <div key={venue.city} data-reveal><strong>{venue.city}</strong><span>{venue.names}</span></div>)}</div>
-        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="CHARACTER · LIGHT · MOMENT" position="50% 28%"/><Photo src="/media/club-wide.webp" className="gallery-small" label="CROWD · ENERGY" position="50% 42%"/></div></div>
+        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="ПОДГОТОВКА · КОМАНДА · КОНТРОЛЬ" position="50% 28%"/><Photo src="/media/club-wide.webp" className="gallery-small" label="ЗАЛ · ТЕМП · ЭНЕРГИЯ" position="50% 42%"/></div></div>
       </section>
 
-      <div className="marquee marquee-orange" aria-hidden="true"><div>СЦЕНА · МУЗЫКА · ХАРИЗМА · ЭНЕРГИЯ · КОНТЕНТ · СЦЕНА · МУЗЫКА · ХАРИЗМА · ЭНЕРГИЯ · КОНТЕНТ ·</div></div>
+      <div className="marquee marquee-orange" aria-hidden="true"><div>ПРОГРАММА · ТАЙМИНГ · ИМПРОВИЗАЦИЯ · ПОДРЯДЧИКИ · КОНТРОЛЬ · ЖИВЫЕ ЛЮДИ · РЕАЛЬНЫЙ МОМЕНТ ·</div></div>
 
       <section className="contacts" id="contacts">
-        <div className="content-shell contacts-layout"><div className="contact-heading" data-reveal><p className="eyebrow">Бронирование</p><h2>Расскажи задачу.<br /><em>Я предложу формат.</em></h2><p>Заполни короткую форму. Сообщение откроется в Telegram - ты увидишь его перед отправкой.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a></div></div>
+        <div className="content-shell contacts-layout"><div className="contact-heading" data-reveal><p className="eyebrow">Проверка даты</p><h2>Расскажите о событии.<br /><em>Я предложу следующий шаг.</em></h2><p>Заполните короткую форму. Сообщение откроется в Telegram - перед отправкой вы увидите весь текст.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a></div></div>
         <ContactForm /></div>
       </section>
 
-      <footer><a className="brand footer-brand" href="#top">KAVA<span>MC</span></a><div className="footer-center"><p>Клубный MC · ведущий · продюсер событий</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div><p>© {new Date().getFullYear()} KAVA MC</p></footer>
+      <footer><a className="brand footer-brand" href="#top">KAVA<span>STUDIA</span></a><div className="footer-center"><p>Организация и проведение современных событий · MC KAVA</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div><p>© {new Date().getFullYear()} KAVA STUDIA</p></footer>
 
-      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><Icon name="home" size={20}/>Главная</a><a href="#formats"><Icon name="grid" size={20}/>Форматы</a><a href="#video"><Icon name="media" size={20}/>Медиа</a><a className="mobile-book" href={telegram} target="_blank" rel="noreferrer"><Icon name="bolt" size={20}/>Забронировать</a></nav>
+      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><Icon name="home" size={20}/>Главная</a><a href="#formats"><Icon name="grid" size={20}/>Форматы</a><a href="#video"><Icon name="media" size={20}/>Видео</a><a className="mobile-book" href="#contacts"><Icon name="bolt" size={20}/>Проверить дату</a></nav>
     </main>
   );
 }
