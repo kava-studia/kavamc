@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 const links = [
-  ["Возможности", "#services"],
-  ["Форматы и цены", "#formats"],
+  ["Форматы", "#formats"],
+  ["Что входит", "#included"],
+  ["Как проходит работа", "#process"],
   ["Видео", "#video"],
-  ["Опыт", "#experience"],
-  ["Контакты", "#contacts"],
+  ["Проверить дату", "#contacts"],
 ] as const;
 
 export function MobileMenu() {
@@ -39,7 +39,7 @@ export function MobileMenu() {
       />
       <aside className={`mobile-menu ${open ? "open" : ""}`} aria-hidden={!open}>
         <div className="mobile-menu-head">
-          <div className="mobile-menu-brand">KAVA <span>MC</span></div>
+          <div className="mobile-menu-brand">KAVA <span>STUDIA</span></div>
           <button className="mobile-menu-close" type="button" onClick={() => setOpen(false)} aria-label="Закрыть меню">
             <span>×</span> Закрыть
           </button>
@@ -54,10 +54,10 @@ export function MobileMenu() {
         <div className="mobile-menu-booking">
           <div className="mobile-menu-booking-copy">
             <span className="mobile-menu-booking-icon">✦</span>
-            <div><strong>Готовы обсудить событие?</strong><p>Отвечу быстро и по делу.</p></div>
+            <div><strong>Нужно собрать мероприятие?</strong><p>Обсудим задачу, дату и формат.</p></div>
           </div>
-          <a href="https://t.me/kava_studia" target="_blank" rel="noreferrer">Обсудить дату <span>→</span></a>
-          <small>Конфиденциально · Быстрый ответ · Индивидуальный подход</small>
+          <a href="https://t.me/kava_studia" target="_blank" rel="noreferrer">Проверить дату <span>→</span></a>
+          <small>Личное общение · Реальные работы · Понятный процесс</small>
         </div>
       </aside>
     </>
