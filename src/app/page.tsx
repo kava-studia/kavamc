@@ -55,6 +55,7 @@ function MediaTile({
         alt={alt}
         fill
         priority={priority}
+        unoptimized
         sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 40vw"
         style={{ objectFit: "cover", objectPosition: position }}
       />
@@ -64,8 +65,9 @@ function MediaTile({
 
 function VideoTile({ index, label }: { index: number; label: string }) {
   const item = media[index];
+  const portrait = item.orientation === "portrait";
   return (
-    <article className="bento-card bento-video-card bento-video-card-portrait">
+    <article className={`bento-card bento-video-card ${portrait ? "bento-video-card-portrait" : "bento-video-card-landscape"}`}>
       <div className="bento-video-head">
         <div>
           <span className="bento-kicker">{label}</span>
@@ -73,7 +75,7 @@ function VideoTile({ index, label }: { index: number; label: string }) {
         </div>
         <span className="bento-duration">{item.duration}</span>
       </div>
-      <div className="bento-video-frame bento-video-frame-portrait">
+      <div className={`bento-video-frame ${portrait ? "bento-video-frame-portrait" : "bento-video-frame-landscape"}`}>
         <video controls playsInline preload="metadata" poster={item.poster}>
           <source src={item.videoUrl} type="video/mp4" />
         </video>
@@ -141,18 +143,18 @@ export default function Home() {
         </article>
 
         <Link href="/uslugi/vedushchiy-na-svadbu" className="bento-card bento-service-card bento-wedding-card bento-span-4">
-          <MediaTile src="/media/wedding-bento.webp" alt="MC KAVA ведёт свадьбу в банкетном зале" />
-          <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Свадьбы</h3><p>Современное ведение, тайминг, импровизация и работа с гостями без давления.</p><strong>Подробнее <Arrow /></strong></div>
+          <MediaTile src="/media/wedding-bento.webp" alt="MC KAVA ведёт свадьбу в банкетном зале" position="50% 42%" />
+          <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Свадьбы</h3><p>Живое современное ведение, тайминг и импровизация без давления на гостей.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
         <Link href="/uslugi/vedushchiy-na-korporativ" className="bento-card bento-service-card bento-corporate-card bento-span-4">
-          <MediaTile src="/media/corporate-bento.webp" alt="MC KAVA проводит корпоративное мероприятие" />
-          <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Корпоративы</h3><p>Программа под компанию, музыкальные блоки и живой контакт с аудиторией.</p><strong>Подробнее <Arrow /></strong></div>
+          <MediaTile src="/media/corporate-bento.webp" alt="MC KAVA проводит корпоративное мероприятие" position="50% 43%" />
+          <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Корпоративы</h3><p>Программа под команду, музыкальные блоки и живой контакт с залом.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
         <Link href="/uslugi/organizatsiya-meropriyatiy" className="bento-card bento-service-card bento-production-card bento-span-4">
           <MediaTile src="/media/backstage.webp" alt="Подготовка и организация мероприятия" position="50% 32%" />
-          <div className="bento-service-copy"><span className="bento-kicker">Под ключ</span><h3>Организация</h3><p>Площадка, подрядчики, программа, техника, тайминг и контроль договорённостей.</p><strong>Подробнее <Arrow /></strong></div>
+          <div className="bento-service-copy"><span className="bento-kicker">Под ключ</span><h3>Организация</h3><p>Площадка, команда, программа, техника, тайминг и контроль подготовки.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
         <article className="bento-card bento-span-7 bento-copy-card" id="about">
