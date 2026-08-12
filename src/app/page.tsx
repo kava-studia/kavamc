@@ -1,130 +1,237 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
-import { MobileMenu } from "@/components/mobile-menu";
-import { VideoGallery } from "@/components/video-gallery";
-import { formats, venues } from "@/data/site";
+import { media } from "@/data/site";
 
 const telegram = "https://t.me/kava_studia";
 
-type IconName = "arrow" | "play" | "mic" | "spark" | "event" | "guitar" | "home" | "grid" | "media" | "bolt" | "check";
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "KAVA MC",
+      url: "https://kavamc.vercel.app",
+      inLanguage: "ru-RU",
+    },
+    {
+      "@type": "Person",
+      name: "MC KAVA",
+      url: "https://kavamc.vercel.app",
+      jobTitle: "Ведущий, организатор мероприятий и live-артист",
+      telephone: "+79932542217",
+      email: "juri.kava@yandex.ru",
+      areaServed: ["Москва", "Московская область", "Сергиев Посад"],
+    },
+  ],
+};
 
-function Icon({ name, size = 22 }: { name: IconName; size?: number }) {
-  const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
-  const paths: Record<IconName, React.ReactNode> = {
-    arrow: <><path d="M5 12h13"/><path d="m14 7 5 5-5 5"/></>,
-    play: <path d="m9 7 8 5-8 5V7Z"/>,
-    mic: <><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></>,
-    spark: <><path d="m12 3 1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z"/><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/></>,
-    event: <><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></>,
-    guitar: <><path d="M14 5c2-2 5-1 5 2 0 2-2 3-4 3l-5 5"/><path d="M10 15c-2-2-5-1-5 2 0 3 4 5 7 2 2-2 1-4-2-4Z"/><path d="m15 6 3 3"/></>,
-    home: <><path d="m4 11 8-7 8 7"/><path d="M6 10v10h12V10M10 20v-6h4v6"/></>,
-    grid: <><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></>,
-    media: <><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3V9Z"/></>,
-    bolt: <path d="m13 2-8 12h7l-1 8 8-12h-7l1-8Z"/>,
-    check: <path d="m5 12 4 4L19 6"/>,
-  };
-  return <svg {...common}>{paths[name]}</svg>;
+function Arrow() {
+  return <span aria-hidden="true">↗</span>;
 }
 
-function Arrow() { return <Icon name="arrow" size={18} />; }
-
-function Photo({ src, className = "", label, position }: { src: string; className?: string; label: string; position?: string }) {
-  return <div className={`photo ${className}`} style={{ backgroundImage: `linear-gradient(180deg, transparent 42%, rgba(4,5,10,.84)), url(${src})`, backgroundPosition: position }}><span>{label}</span></div>;
+function MediaTile({
+  src,
+  alt,
+  className = "",
+  position = "50% 50%",
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  position?: string;
+  priority?: boolean;
+}) {
+  return (
+    <div className={`bento-media ${className}`}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 40vw"
+        style={{ objectFit: "cover", objectPosition: position }}
+      />
+    </div>
+  );
 }
 
-const included = [
-  "Проведение события как ведущий и MC - живо, без натянутых конкурсов",
-  "Отдельные сценические шоу и клубные форматы, включая Eminem Live Tribute Show",
-  "Сценарная логика, программа и тайминг под конкретную аудиторию",
-  "Организация мероприятия - площадка, подрядчики и общий контроль",
-  "Подбор DJ, звука, света, артистов и других специалистов под задачу",
-  "Личное общение со мной и один ответственный за общий результат",
-];
+function VideoTile({ index, label }: { index: number; label: string }) {
+  const item = media[index];
+  return (
+    <article className="bento-card bento-video-card">
+      <div className="bento-video-head">
+        <div>
+          <span className="bento-kicker">{label}</span>
+          <h3>{item.title}</h3>
+        </div>
+        <span className="bento-duration">{item.duration}</span>
+      </div>
+      <div className="bento-video-frame">
+        <video controls playsInline preload="metadata" poster={item.poster}>
+          <source src={item.videoUrl} type="video/mp4" />
+        </video>
+      </div>
+      <p>{item.venue}</p>
+    </article>
+  );
+}
 
-const collaboration = [
-  { n: "01", title: "Выступи у меня", text: "Eminem Live Tribute Show, Club Show, специальный рэп-блок или гостевой сценический выход.", cta: "Открыть шоу" },
-  { n: "02", title: "Проведи мне", text: "Свадьба, корпоратив, день рождения, выпускной или другое событие с MC KAVA.", cta: "Проверить дату" },
-  { n: "03", title: "Организуй мне", text: "Собираю мероприятие целиком: концепция, площадка, команда, программа, техника и контроль.", cta: "Обсудить проект" },
-];
-
-const catalogMedia = [
-  { src: "/media/club-wide.webp", position: "50% 38%" },
-  { src: "/media/club-main.webp", position: "50% 35%" },
-  { src: "/media/private-event.webp", position: "50% 34%" },
-  { src: "/media/backstage.webp", position: "50% 28%" },
-  { src: "/media/hero.webp", position: "66% 30%" },
-  { src: "/media/private-event.webp", position: "48% 38%" },
+const faq = [
+  ["Можно заказать только ведение?", "Да. Можно пригласить меня только как ведущего, отдельно заказать шоу или передать мне организацию события целиком."],
+  ["Работаешь только в Сергиевом Посаде?", "Нет. Основная география - Сергиев Посад, Москва и Московская область. Другие города обсуждаются отдельно."],
+  ["Eminem Tribute уже готов?", "Проект находится на этапе запуска полноценного showcase. На сайте я отдельно разделяю текущие live-материалы и будущий tribute showreel."],
+  ["Можно без конкурсов?", "Можно. Я строю программу вокруг людей, атмосферы, юмора, музыки и живой реакции, а не вокруг обязательных конкурсов."],
 ];
 
 export default function Home() {
   return (
-    <main className="home-page night-architecture">
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="KAVA MC - на главную">KAVA<span>MC</span></a>
-        <nav aria-label="Основная навигация"><Link href="/eminem-tribute">Eminem Show</Link><a href="#formats">Форматы</a><a href="#included">Что делаю</a><a href="#video">Видео</a><a href="#contacts">Контакты</a></nav>
-        <a className="header-cta glass-action" href="#contacts">Связаться <Arrow /></a>
-        <MobileMenu />
+    <main className="bento-page" id="top">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+
+      <header className="bento-header">
+        <Link className="bento-logo" href="#top" aria-label="KAVA MC - главная">
+          KAVA <span>MC</span>
+        </Link>
+        <nav className="bento-nav" aria-label="Основная навигация">
+          <Link href="/eminem-tribute">Eminem Show</Link>
+          <Link href="/poleznoe">Полезное</Link>
+          <Link href="/referral">Реферальная программа</Link>
+          <a href="#contacts">Контакты</a>
+        </nav>
+        <a className="bento-header-cta" href="#contacts">Обсудить дату <Arrow /></a>
       </header>
 
-      <section className="hero ns-hero" id="top">
-        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA MC · ARTIST · HOST · EVENT PRODUCER" position="64% 30%" />
-        <div className="ns-hero-copy" data-reveal>
-          <p className="eyebrow">Организация · Ведение · Шоу</p>
-          <h1>Собираю событие.<br />Веду зал.<br /><em>Делаю шоу.</em></h1>
-          <p className="hero-tagline">Я - MC KAVA. Ведущий, организатор и артист. Свадьбы, корпоративы, клубные форматы и новый флагман - Eminem Live Tribute Show.</p>
-          <div className="hero-actions"><Link className="button button-primary" href="/eminem-tribute">Eminem Live Tribute Show <Arrow /></Link><a className="button button-ghost" href="#contacts">Обсудить мероприятие</a></div>
+      <section className="bento-shell bento-grid bento-hero-grid" aria-label="KAVA MC">
+        <article className="bento-card bento-hero-copy bento-span-7 bento-row-2">
+          <div className="bento-pill">Организация · Ведение · Шоу</div>
+          <div>
+            <p className="bento-overline">MC KAVA · Москва · Московская область</p>
+            <h1>Событие должно ощущаться <em>живым.</em></h1>
+            <p className="bento-lead">Я веду свадьбы и корпоративы, собираю мероприятия под ключ и развиваю отдельные live-шоу. Без ощущения шаблонного агентства и без театра «веселимся по команде».</p>
+          </div>
+          <div className="bento-actions">
+            <Link className="bento-button bento-button-primary" href="/eminem-tribute">Eminem Live Tribute <Arrow /></Link>
+            <a className="bento-button" href="#contacts">Проверить дату</a>
+          </div>
+        </article>
+
+        <article className="bento-card bento-photo-card bento-span-5 bento-row-2">
+          <MediaTile src="/media/hero.webp" alt="MC KAVA на мероприятии" priority position="64% 30%" />
+          <div className="bento-photo-caption"><span>ARTIST</span><span>HOST</span><span>PRODUCER</span></div>
+        </article>
+
+        <Link href="/eminem-tribute" className="bento-card bento-dark bento-span-8 bento-feature-card">
+          <div className="bento-feature-copy">
+            <span className="bento-kicker">Флагманский запуск</span>
+            <h2>Eminem Live<br />Tribute Show</h2>
+            <p>Отдельный концертный продукт для клубов, фестивалей, корпоративов и специальных событий.</p>
+            <strong>Открыть страницу шоу <Arrow /></strong>
+          </div>
+          <MediaTile src="/media/club-wide.webp" alt="Сцена и публика на клубном выступлении MC KAVA" position="50% 42%" />
+        </Link>
+
+        <article className="bento-card bento-accent bento-span-4 bento-number-card">
+          <span className="bento-kicker">Опыт</span>
+          <strong>8+</strong>
+          <p>лет в event-индустрии, на сцене и внутри реальных мероприятий</p>
+        </article>
+
+        <Link href="/uslugi/vedushchiy-na-svadbu" className="bento-card bento-service-card bento-span-4">
+          <MediaTile src="/media/private-event.webp" alt="Частное мероприятие с MC KAVA" position="48% 34%" />
+          <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Свадьбы</h3><p>Современное ведение, тайминг, импровизация и работа с гостями без давления.</p><strong>Подробнее <Arrow /></strong></div>
+        </Link>
+
+        <Link href="/uslugi/vedushchiy-na-korporativ" className="bento-card bento-service-card bento-span-4">
+          <MediaTile src="/media/club-main.webp" alt="MC KAVA работает с залом" position="50% 36%" />
+          <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Корпоративы</h3><p>Программа под компанию, музыкальные блоки и живой контакт с аудиторией.</p><strong>Подробнее <Arrow /></strong></div>
+        </Link>
+
+        <Link href="/uslugi/organizatsiya-meropriyatiy" className="bento-card bento-service-card bento-span-4">
+          <MediaTile src="/media/backstage.webp" alt="Подготовка и организация мероприятия" position="50% 28%" />
+          <div className="bento-service-copy"><span className="bento-kicker">Под ключ</span><h3>Организация</h3><p>Площадка, подрядчики, программа, техника, тайминг и контроль договорённостей.</p><strong>Подробнее <Arrow /></strong></div>
+        </Link>
+
+        <article className="bento-card bento-span-7 bento-copy-card" id="about">
+          <span className="bento-kicker">Три способа работать со мной</span>
+          <h2>Выступи. Проведи. Организуй.</h2>
+          <div className="bento-steps">
+            <div><span>01</span><strong>Шоу</strong><p>Eminem Tribute, Club Show и специальные сценические форматы.</p></div>
+            <div><span>02</span><strong>Ведущий</strong><p>Свадьбы, корпоративы, дни рождения, выпускные и частные события.</p></div>
+            <div><span>03</span><strong>Организатор</strong><p>Собираю мероприятие целиком и держу общий процесс в одном контуре.</p></div>
+          </div>
+        </article>
+
+        <article className="bento-card bento-span-5 bento-quote-card">
+          <span className="bento-kicker">Принцип</span>
+          <blockquote>«Никого не нужно заставлять веселиться. Нужно создать среду, в которой людям самим хочется включиться».</blockquote>
+          <p>Сценарий даёт опору. Люди дают настоящие моменты.</p>
+        </article>
+
+        <div className="bento-span-7" id="video"><VideoTile index={0} label="Showreel" /></div>
+        <div className="bento-span-5"><VideoTile index={2} label="Живой зал" /></div>
+
+        <article className="bento-card bento-span-8 bento-useful-card">
+          <div className="bento-useful-intro">
+            <span className="bento-kicker">Полезное</span>
+            <h2>Не только продаю. Помогаю разобраться.</h2>
+            <p>Практические материалы для тех, кто организует свадьбу, корпоратив или частное событие самостоятельно.</p>
+            <Link className="bento-button" href="/poleznoe">Все материалы <Arrow /></Link>
+          </div>
+          <div className="bento-useful-links">
+            <Link href="/poleznoe/kak-vybrat-vedushego-na-svadbu"><span>01</span><strong>Как выбрать ведущего на свадьбу</strong><Arrow /></Link>
+            <Link href="/poleznoe/chek-list-podgotovki-svadby"><span>02</span><strong>Чек-лист подготовки свадьбы</strong><Arrow /></Link>
+            <Link href="/poleznoe/kak-vybrat-ploshadku-dlya-meropriyatiya"><span>03</span><strong>Как выбрать площадку</strong><Arrow /></Link>
+          </div>
+        </article>
+
+        <Link href="/referral" className="bento-card bento-referral-card bento-span-4">
+          <span className="bento-kicker">Реферальная программа</span>
+          <h2>Знаешь человека, которому нужен KAVA?</h2>
+          <p>Передай контакт или познакомь нас. Условия вознаграждения фиксируем заранее и без мутных «потом разберёмся».</p>
+          <strong>Как это работает <Arrow /></strong>
+        </Link>
+
+        <article className="bento-card bento-span-5 bento-geo-card">
+          <span className="bento-kicker">География</span>
+          <h2>Сергиев Посад<br />Москва<br />Московская область</h2>
+          <p>Другие города - по задаче, логистике и формату мероприятия.</p>
+          <Link href="/uslugi/club-mc">Клубные форматы <Arrow /></Link>
+        </article>
+
+        <article className="bento-card bento-span-7 bento-faq-card">
+          <span className="bento-kicker">Коротко о главном</span>
+          <div className="bento-faq-list">
+            {faq.map(([question, answer]) => <details key={question}><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}
+          </div>
+        </article>
+      </section>
+
+      <section className="bento-shell bento-contact-section" id="contacts">
+        <div className="bento-contact-copy">
+          <span className="bento-kicker">Booking и мероприятия</span>
+          <h2>Расскажи, что хочешь сделать.</h2>
+          <p>Можно написать про шоу, свадьбу, корпоратив или полную организацию. Если задача пока сформулирована криво - это нормально, разберём по ходу разговора.</p>
+          <div className="bento-contact-links">
+            <a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a>
+            <a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a>
+            <a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a>
+          </div>
         </div>
-        <div className="hero-facts" data-reveal><div><strong>8+</strong><span>лет в индустрии</span></div><div><strong>3</strong><span>способа работать со мной</span></div><div><strong>1</strong><span>лицо и ответственность</span></div></div>
+        <div className="bento-form-wrap"><ContactForm /></div>
       </section>
 
-      <div className="marquee" aria-hidden="true"><div>KAVA MC · EMINEM LIVE TRIBUTE SHOW · EVENT HOST · EVENT PRODUCTION · CLUB SHOW · WEDDINGS · CORPORATES · KAVA MC ·</div></div>
-
-      <section className="catalog" id="formats">
-        <div className="content-shell catalog-head" data-reveal><div><p className="eyebrow">Форматы KAVA</p><h2>Выступи у меня.<br />Проведи мне.<br /><em>Организуй мне.</em></h2></div><p>Можно заказать отдельное шоу, пригласить меня ведущим или собрать событие целиком. Eminem Tribute сейчас - главный артистический продукт.</p></div>
-        <div className="content-shell catalog-grid">
-          {formats.map((format, index) => {
-            const media = catalogMedia[index];
-            const tribute = index === 0;
-            return <article className={`catalog-card ${"featured" in format && format.featured ? "featured" : ""}`} key={format.title} data-reveal>
-              <div className="catalog-card-image" style={{ backgroundImage: `linear-gradient(180deg,rgba(5,7,11,.04) 20%,rgba(5,7,11,.88)),url(${media.src})`, backgroundPosition: media.position }}><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Флагман</b> : null}</div>
-              <div className="catalog-card-body"><h3>{format.title}</h3><strong>{format.price}</strong><p>{format.text}</p><div className="tags">{format.tags.map(tag => <span key={tag}>{tag}</span>)}</div>{tribute ? <Link href="/eminem-tribute">Открыть шоу <Arrow /></Link> : <a href="#contacts">Обсудить формат <Arrow /></a>}</div>
-            </article>;
-          })}
+      <footer className="bento-footer bento-shell">
+        <Link className="bento-logo" href="#top">KAVA <span>MC</span></Link>
+        <p>Организация · Ведение · Шоу</p>
+        <div>
+          <Link href="/poleznoe">Полезное</Link>
+          <Link href="/referral">Реферальная программа</Link>
+          <Link href="/privacy">Конфиденциальность</Link>
+          <Link href="/requisites">Контакты оператора</Link>
         </div>
-      </section>
-
-      <section className="included" id="included">
-        <div className="content-shell included-layout">
-          <div className="included-title" data-reveal><p className="eyebrow">Что можно поручить мне</p><h2>Не только<br /><em>микрофон.</em></h2><p>KAVA MC - это не попытка назвать одним словом всё подряд. Это один человек, которого можно купить как артиста, ведущего или организатора - в зависимости от задачи события.</p></div>
-          <div className="included-list">{included.map((item, index) => <div key={item} data-reveal><span>0{index + 1}</span><strong>{item}</strong><Icon name="check" size={22}/></div>)}</div>
-        </div>
-      </section>
-
-      <section className="collaboration" id="process">
-        <div className="content-shell"><div className="section-head" data-reveal><div><p className="eyebrow">Три входа в KAVA MC</p><h2>Шоу.<br />Проведение.<br /><em>Организация.</em></h2></div><p>Не нужно покупать агентство, если нужен один сильный выход. И не нужно собирать десять подрядчиков самостоятельно, если нужен весь проект.</p></div>
-        <div className="collaboration-grid">{collaboration.map((item, index) => <article key={item.n} data-reveal><span>{item.n}</span><h3>{item.title}</h3><p>{item.text}</p>{index === 0 ? <Link href="/eminem-tribute">{item.cta} <Arrow /></Link> : <a href="#contacts">{item.cta} <Arrow /></a>}</article>)}</div></div>
-      </section>
-
-      <section className="visual-break ns-break"><Photo src="/media/club-wide.webp" className="visual-break-photo" label="EMINEM LIVE TRIBUTE SHOW · KAVA MC" position="50% 40%"/><div className="content-shell visual-break-inner"><div className="visual-break-copy" data-reveal><p className="eyebrow">Главный запуск</p><h2>Eminem Live<br /><em>Tribute Show.</em></h2><p>Отдельный концертный продукт для клубов, фестивалей, корпоративов и специальных событий. Сейчас собираю программу и ищу площадку для первого полноценного live showcase.</p><Link className="button button-primary" href="/eminem-tribute">Смотреть концепцию шоу <Arrow /></Link></div></div></section>
-
-      <section className="video" id="video"><div className="content-shell"><div className="section-head inverse" data-reveal><div><p className="eyebrow">Реальная работа</p><h2>Сначала смотри.<br /><em>Потом решай.</em></h2></div><p>Здесь только реальные сцены и публика. Трибьют-шоурил будет добавлен отдельно после первого showcase - старые ролики за новый продукт не выдаём.</p></div><VideoGallery /></div></section>
-
-      <section className="experience" id="experience">
-        <div className="content-shell experience-layout"><div className="experience-copy" data-reveal><p className="eyebrow">Опыт и география</p><h2>Сцена плюс<br /><em>event производство.</em></h2><p>Клубы, свадьбы, корпоративы, частные события и организация мероприятий в Сергиевом Посаде, Москве и Московской области.</p></div>
-        <div className="venue-list">{venues.map(venue => <div key={venue.city} data-reveal><strong>{venue.city}</strong><span>{venue.names}</span></div>)}</div>
-        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="ОРГАНИЗАЦИЯ · КОМАНДА · КОНТРОЛЬ" position="50% 28%"/><Photo src="/media/club-wide.webp" className="gallery-small" label="СЦЕНА · РЭП · ЭНЕРГИЯ" position="50% 42%"/></div></div>
-      </section>
-
-      <div className="marquee marquee-orange" aria-hidden="true"><div>ВЫСТУПИ У МЕНЯ · ПРОВЕДИ МНЕ · ОРГАНИЗУЙ МНЕ · EMINEM TRIBUTE · CLUB SHOW · СВАДЬБЫ · КОРПОРАТИВЫ ·</div></div>
-
-      <section className="contacts" id="contacts">
-        <div className="content-shell contacts-layout"><div className="contact-heading" data-reveal><p className="eyebrow">Booking и мероприятия</p><h2>Расскажите задачу.<br /><em>Я предложу формат.</em></h2><p>Можно написать по шоу, проведению или полной организации. В сообщении достаточно даты, города, площадки и того, что нужно сделать.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a></div></div>
-        <ContactForm /></div>
-      </section>
-
-      <footer><a className="brand footer-brand" href="#top">KAVA<span>MC</span></a><div className="footer-center"><p>Организация · Ведение · Шоу</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div><p>© {new Date().getFullYear()} KAVA MC</p></footer>
-
-      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><Icon name="home" size={20}/>Главная</a><Link href="/eminem-tribute"><Icon name="mic" size={20}/>Eminem</Link><a href="#video"><Icon name="media" size={20}/>Видео</a><a className="mobile-book" href="#contacts"><Icon name="bolt" size={20}/>Связаться</a></nav>
+      </footer>
     </main>
   );
 }
