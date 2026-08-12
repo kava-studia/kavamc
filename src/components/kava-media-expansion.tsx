@@ -11,6 +11,7 @@ function LocalVideo({
   duration,
   poster,
   src,
+  muted = false,
 }: {
   title: string;
   label: string;
@@ -18,6 +19,7 @@ function LocalVideo({
   duration: string;
   poster: string;
   src: string;
+  muted?: boolean;
 }) {
   return (
     <article className="bento-card bento-video-card bento-video-card-portrait kava-extra-video-card">
@@ -29,48 +31,9 @@ function LocalVideo({
         <span className="bento-duration">{duration}</span>
       </div>
       <div className="bento-video-frame bento-video-frame-portrait">
-        <video controls playsInline preload="metadata" poster={poster}>
+        <video controls playsInline preload="metadata" poster={poster} muted={muted}>
           <source src={src} type="video/mp4" />
         </video>
-      </div>
-      <p>{venue}</p>
-    </article>
-  );
-}
-
-function DriveVideo({
-  title,
-  label,
-  venue,
-  duration,
-  poster,
-  embedUrl,
-}: {
-  title: string;
-  label: string;
-  venue: string;
-  duration: string;
-  poster: string;
-  embedUrl: string;
-}) {
-  return (
-    <article className="bento-card bento-video-card bento-video-card-portrait kava-extra-video-card">
-      <div className="bento-video-head">
-        <div>
-          <span className="bento-kicker">{label}</span>
-          <h3>{title}</h3>
-        </div>
-        <span className="bento-duration">{duration}</span>
-      </div>
-      <div className="bento-video-frame bento-video-frame-portrait kava-drive-video">
-        <img src={poster} alt="" aria-hidden="true" className="kava-drive-video-poster" />
-        <iframe
-          src={embedUrl}
-          title={title}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-          loading="lazy"
-        />
       </div>
       <p>{venue}</p>
     </article>
@@ -83,17 +46,18 @@ function ServiceProof({ kind }: { kind: "wedding" | "corporate" }) {
     <section className="kava-service-video-proof">
       <div className="kava-service-video-copy">
         <span className="bento-kicker">{wedding ? "СВАДЬБА · ВИДЕО" : "КОРПОРАТИВ · ВИДЕО"}</span>
-        <h2>{wedding ? "Как это выглядит вживую." : "Живая атмосфера корпоратива."}</h2>
-        <p>{wedding ? "Короткий свадебный ролик — люди, атмосфера и реальная работа на событии." : "Реальный фрагмент события: команда, музыка и атмосфера площадки."}</p>
+        <h2>{wedding ? "Свадьба в движении." : "Корпоратив вживую."}</h2>
+        <p>{wedding ? "Короткий рекламный ролик со свадьбы — люди, атмосфера и живая работа на событии." : "Реальный фрагмент корпоратива: команда, движение и атмосфера площадки."}</p>
       </div>
       <div className="kava-service-video-player">
-        <DriveVideo
+        <LocalVideo
           title={wedding ? "Свадебный ролик" : "Корпоратив"}
           label={wedding ? "Свадьба" : "Корпоратив"}
-          venue={wedding ? "Ведение свадьбы · рекламный ролик" : "Команда · музыка · атмосфера"}
+          venue={wedding ? "Ведение и организация свадьбы" : "Команда · движение · атмосфера"}
           duration={wedding ? "00:18" : "00:10"}
           poster={wedding ? "/media/wedding-real-v2.webp" : "/media/corporate-real-v2.webp"}
-          embedUrl={wedding ? "https://drive.google.com/file/d/1LYkxVoqnBfpUykcfXa7nqT14FZtkZTB9/preview" : "https://drive.google.com/file/d/1e-geRzmtPbFYLBV2Xdt61hpsUGYtkapQ/preview"}
+          src={wedding ? "/media/wedding-event-720.mp4" : "/media/corporate-event-720.mp4"}
+          muted={wedding}
         />
       </div>
     </section>
@@ -179,27 +143,28 @@ export function KavaMediaExpansion() {
         <div className="kava-extra-media-grid">
           <LocalVideo
             title="Sorry Mama"
-            label="Клубный MC"
+            label="Club Show MC"
             venue="Клубная энергия · живой выход"
             duration="00:14"
             poster="/media/poster-sorry.webp"
-            src="/media/sorry-mama.mp4"
+            src="/media/sorry-mama-hd.mp4"
           />
-          <DriveVideo
+          <LocalVideo
             title="Свадебный ролик"
             label="Свадьба"
-            venue="Ведение свадьбы · рекламный ролик"
+            venue="Ведение и организация свадьбы"
             duration="00:18"
             poster="/media/wedding-real-v2.webp"
-            embedUrl="https://drive.google.com/file/d/1LYkxVoqnBfpUykcfXa7nqT14FZtkZTB9/preview"
+            src="/media/wedding-event-720.mp4"
+            muted
           />
-          <DriveVideo
+          <LocalVideo
             title="Корпоратив"
             label="Корпоратив"
-            venue="Команда · музыка · атмосфера"
+            venue="Команда · движение · атмосфера"
             duration="00:10"
             poster="/media/corporate-real-v2.webp"
-            embedUrl="https://drive.google.com/file/d/1e-geRzmtPbFYLBV2Xdt61hpsUGYtkapQ/preview"
+            src="/media/corporate-event-720.mp4"
           />
         </div>,
         homeMount,
