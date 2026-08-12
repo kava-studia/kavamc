@@ -72,11 +72,11 @@ export default function EminemTributePage() {
         <div>
           <p className={styles.kicker}>ЖИВОЙ МАТЕРИАЛ KAVA MC</p>
           <h2>Сцена. Рэп. Контакт с залом.</h2>
-          <p>Видео показывают сценическую манеру KAVA MC: работу с битом, микрофоном, публикой и динамикой площадки.</p>
+          <p>Здесь — реальный фрагмент, где KAVA MC читает Eminem вживую, и отдельный момент работы с публикой.</p>
         </div>
         <div className={styles.videoGrid}>
-          <video controls playsInline preload="metadata" poster="/media/poster-club.webp">
-            <source src="/media/club-live.mp4" type="video/mp4" />
+          <video controls playsInline preload="metadata" poster="/media/club-wide.webp">
+            <source src="/media/eminem-live.mp4" type="video/mp4" />
           </video>
           <video controls playsInline preload="metadata" poster="/media/poster-crowd.webp">
             <source src="/media/crowd-energy.mp4" type="video/mp4" />
