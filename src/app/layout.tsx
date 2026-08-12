@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Rubik } from "next/font/google";
+import { Onest } from "next/font/google";
 import { CookieConsent } from "@/components/cookie-consent";
 import { ScrollEffects } from "@/components/scroll-effects";
 import { BentoMobileMenu } from "@/components/bento-mobile-menu";
@@ -14,16 +14,11 @@ import "./bento-polish.css";
 import "./legal-hub.css";
 import "./bento-final.css";
 import "./service-hero.css";
+import "./site-v5.css";
 
-const manrope = Manrope({
+const onest = Onest({
   subsets: ["cyrillic", "latin"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-
-const rubik = Rubik({
-  subsets: ["cyrillic", "latin"],
-  variable: "--font-rubik",
+  variable: "--font-onest",
   display: "swap",
 });
 
@@ -34,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s | KAVA MC",
   },
   description:
-    "MC KAVA - ведущий и организатор свадеб, корпоративов и частных мероприятий в Москве, Сергиевом Посаде и Московской области. Eminem Live Tribute Show, Club MC и event production.",
+    "MC KAVA - ведущий и организатор свадеб, корпоративов и частных мероприятий в Москве, Сергиевом Посаде и Московской области. Eminem Live Tribute Show, Club Show MC и event production.",
   keywords: [
     "MC KAVA",
     "KAVA MC",
@@ -45,7 +40,7 @@ export const metadata: Metadata = {
     "организация мероприятий",
     "организатор мероприятий Москва",
     "организация свадьбы",
-    "клубный MC",
+    "Club Show MC",
     "Eminem tribute show",
     "рэп шоу на мероприятие",
     "event production Москва",
@@ -59,7 +54,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "KAVA MC - организация, ведение и live show",
     description:
-      "Свадьбы, корпоративы, организация мероприятий, клубные форматы и Eminem Live Tribute Show.",
+      "Свадьбы, корпоративы, организация мероприятий, сценические форматы и Eminem Live Tribute Show.",
     type: "website",
     locale: "ru_RU",
     siteName: "KAVA MC",
@@ -87,7 +82,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ru" className={`${manrope.variable} ${rubik.variable}`}>
+    <html lang="ru" className={onest.variable}>
       <body>
         <ScrollEffects />
         <BentoMobileMenu />
