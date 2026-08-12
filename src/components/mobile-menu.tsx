@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 const links = [
+  ["Eminem Tribute Show", "/eminem-tribute"],
   ["Форматы", "#formats"],
   ["Что входит", "#included"],
-  ["Как проходит работа", "#process"],
   ["Видео", "#video"],
   ["Проверить дату", "#contacts"],
 ] as const;
@@ -39,7 +39,7 @@ export function MobileMenu() {
       />
       <aside className={`mobile-menu ${open ? "open" : ""}`} aria-hidden={!open}>
         <div className="mobile-menu-head">
-          <div className="mobile-menu-brand">KAVA <span>STUDIA</span></div>
+          <div className="mobile-menu-brand">KAVA <span>MC</span></div>
           <button className="mobile-menu-close" type="button" onClick={() => setOpen(false)} aria-label="Закрыть меню">
             <span>×</span> Закрыть
           </button>
@@ -54,10 +54,10 @@ export function MobileMenu() {
         <div className="mobile-menu-booking">
           <div className="mobile-menu-booking-copy">
             <span className="mobile-menu-booking-icon">✦</span>
-            <div><strong>Нужно собрать мероприятие?</strong><p>Обсудим задачу, дату и формат.</p></div>
+            <div><strong>Нужен ведущий, организатор или live show?</strong><p>Обсудим задачу, дату и формат.</p></div>
           </div>
-          <a href="https://t.me/kava_studia" target="_blank" rel="noreferrer">Проверить дату <span>→</span></a>
-          <small>Личное общение · Реальные работы · Понятный процесс</small>
+          <a href="https://t.me/kava_studia" target="_blank" rel="noreferrer">Связаться с KAVA <span>→</span></a>
+          <small>Организация · Ведение · Шоу</small>
         </div>
       </aside>
     </>
