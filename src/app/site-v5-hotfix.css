@@ -1,0 +1,19 @@
+/* Specificity guard against legacy global selectors. Keep this file last. */
+body > main { font-family: var(--font-onest), Arial, sans-serif !important; }
+
+.bento-page > .bento-shell.bento-grid { padding: 0 !important; }
+.bento-page > .bento-contact-section {
+  padding: clamp(30px, 4vw, 54px) !important;
+}
+.bento-subpage .bento-article-main > section {
+  padding: 0 !important;
+}
+.bento-subpage .bento-service-hero {
+  padding: 0 !important;
+}
+
+@media (max-width: 720px) {
+  .bento-page > .bento-contact-section {
+    padding: 26px 20px !important;
+  }
+}
