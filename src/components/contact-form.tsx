@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { links } from "@/data/links";
 
 const initialForm = {
   name: "",
@@ -41,7 +42,7 @@ export function ContactForm() {
       `Комментарий: ${form.comment || "нет"}`,
     ].join("\n");
 
-    window.open(`https://t.me/kava_studia?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+    window.open(`${links.telegram}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
     setMessage("Открыл Telegram с готовым сообщением. Проверьте текст и нажмите «Отправить».");
   }
 
