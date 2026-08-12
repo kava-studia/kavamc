@@ -4,6 +4,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { ScrollEffects } from "@/components/scroll-effects";
 import { SiteControls } from "@/components/site-controls";
 import { BentoMobileMenu } from "@/components/bento-mobile-menu";
+import { YandexMetrika } from "@/components/yandex-metrika";
 import "./globals.css";
 import "./refinement.css";
 import "./mobile-final.css";
@@ -91,6 +92,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteControls />
         <BentoMobileMenu />
         {children}
+        <YandexMetrika />
         <CookieConsent />
       </body>
     </html>
