@@ -111,6 +111,9 @@ export function KavaMediaExpansion() {
 
     if (pathname === "/") {
       const cards = Array.from(document.querySelectorAll<HTMLElement>(".bento-video-card"));
+      const firstKicker = cards[0]?.querySelector<HTMLElement>(".bento-kicker");
+      if (firstKicker) firstKicker.textContent = "Организация";
+
       const secondCard = cards[1];
       const anchor = secondCard?.parentElement;
       const grid = anchor?.parentElement;
