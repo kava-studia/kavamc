@@ -8,12 +8,12 @@ type Props = { params: Promise<{ slug: string }> };
 
 const serviceMedia: Record<string, { src: string; alt: string; position?: string }> = {
   "vedushchiy-na-svadbu": {
-    src: "/media/wedding-bento.webp",
+    src: "/media/wedding-real-v2.webp",
     alt: "MC KAVA ведёт свадьбу в банкетном зале",
     position: "50% 42%",
   },
   "vedushchiy-na-korporativ": {
-    src: "/media/corporate-bento.webp",
+    src: "/media/corporate-real-v2.webp",
     alt: "MC KAVA проводит корпоративное мероприятие",
     position: "50% 43%",
   },
