@@ -1,0 +1,89 @@
+/* KAVA MC · V7 media QA. Loaded last. */
+
+/* Portrait sources always live in portrait frames. Do not crop or upscale visually. */
+.bento-page .bento-video-card {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 18px !important;
+  background: #14171c !important;
+}
+.bento-page .bento-video-frame-portrait {
+  width: min(100%, 390px) !important;
+  height: auto !important;
+  aspect-ratio: 9 / 16 !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+  border-radius: 22px !important;
+  background: #000 !important;
+}
+.bento-page .bento-video-frame-portrait video {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #000 !important;
+}
+.bento-page .bento-video-frame-landscape {
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  overflow: hidden !important;
+  border-radius: 22px !important;
+  background: #000 !important;
+}
+.bento-page .bento-video-frame-landscape video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  background: #000 !important;
+}
+.bento-page .bento-video-head {
+  min-height: 78px !important;
+  padding: 5px 7px 16px !important;
+}
+.bento-page .bento-video-head h3 {
+  max-width: 22ch !important;
+  color: #fff !important;
+  font-size: clamp(20px, 2vw, 27px) !important;
+  line-height: 1.12 !important;
+  font-weight: 680 !important;
+}
+.bento-page .bento-video-card > p {
+  margin: 0 !important;
+  padding: 14px 7px 2px !important;
+  color: rgba(255,255,255,.58) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+/* Make all service media explicit. No legacy opacity/filter/overlay can hide them. */
+.bento-page .bento-wedding-card .bento-media,
+.bento-page .bento-corporate-card .bento-media,
+.bento-subpage .bento-service-hero-media {
+  isolation: isolate !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+}
+.bento-page .bento-wedding-card img,
+.bento-page .bento-corporate-card img,
+.bento-subpage .bento-service-hero-media img {
+  z-index: 1 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+}
+
+/* No fixed card height may clip readable text. */
+.bento-subpage .bento-service-article .bento-article-main > section {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+@media (max-width: 720px) {
+  .bento-page .bento-video-card { padding: 14px !important; }
+  .bento-page .bento-video-frame-portrait { width: min(100%, 360px) !important; border-radius: 18px !important; }
+  .bento-page .bento-video-head { min-height: 0 !important; }
+}
