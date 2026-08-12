@@ -105,12 +105,12 @@ export default function Home() {
         <article className="bento-card bento-accent bento-span-4 bento-number-card"><span className="bento-kicker">Опыт</span><strong>8+</strong><p>лет в event-индустрии, на сцене и внутри реальных мероприятий</p></article>
 
         <Link href="/uslugi/vedushchiy-na-svadbu" className="bento-card bento-service-card bento-wedding-card bento-span-4">
-          <MediaTile src="/media/wedding-final.webp" alt="MC KAVA ведёт свадьбу в банкетном зале" position="50% 35%" />
+          <MediaTile src="/media/wedding-final-2026.webp" alt="MC KAVA ведёт свадьбу в банкетном зале" position="50% 35%" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Свадьбы</h3><p>Живое современное ведение, тайминг и импровизация без давления на гостей.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
         <Link href="/uslugi/vedushchiy-na-korporativ" className="bento-card bento-service-card bento-corporate-card bento-span-4">
-          <MediaTile src="/media/corporate-final.webp" alt="MC KAVA проводит корпоративное мероприятие" position="50% 57%" />
+          <MediaTile src="/media/corporate-final-2026.webp" alt="MC KAVA проводит корпоративное мероприятие" position="50% 57%" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Корпоративы</h3><p>Программа под команду, музыкальные блоки и живой контакт с залом.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 

@@ -8,12 +8,12 @@ type Props = { params: Promise<{ slug: string }> };
 
 const serviceMedia: Record<string, { src: string; alt: string; position?: string }> = {
   "vedushchiy-na-svadbu": {
-    src: "/media/wedding-final.webp",
+    src: "/media/wedding-final-2026.webp",
     alt: "MC KAVA ведёт свадьбу в банкетном зале",
     position: "50% 35%",
   },
   "vedushchiy-na-korporativ": {
-    src: "/media/corporate-final.webp",
+    src: "/media/corporate-final-2026.webp",
     alt: "MC KAVA проводит корпоративное мероприятие",
     position: "50% 57%",
   },
@@ -32,7 +32,7 @@ const serviceMedia: Record<string, { src: string; alt: string; position?: string
 const serviceVideo: Record<string, { src: string; poster: string; label: string; title: string; text: string; venue: string; duration: string; muted?: boolean }> = {
   "vedushchiy-na-svadbu": {
     src: "/media/wedding-event-720.mp4",
-    poster: "/media/wedding-final.webp",
+    poster: "/media/wedding-final-2026.webp",
     label: "СВАДЬБА · ВИДЕО",
     title: "Свадьба в движении.",
     text: "Короткий рекламный ролик со свадьбы — люди, атмосфера и живая работа на событии.",
@@ -41,8 +41,8 @@ const serviceVideo: Record<string, { src: string; poster: string; label: string;
     muted: true,
   },
   "vedushchiy-na-korporativ": {
-    src: "/media/corporate-event-720.mp4",
-    poster: "/media/corporate-final.webp",
+    src: "/media/corporate-event-1080.mp4",
+    poster: "/media/corporate-final-2026.webp",
     label: "КОРПОРАТИВ · ВИДЕО",
     title: "Корпоратив вживую.",
     text: "Реальный фрагмент корпоратива: команда, движение и атмосфера площадки.",
