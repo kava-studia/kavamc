@@ -29,7 +29,7 @@ export function ContactForm() {
     }
 
     const text = [
-      "Здравствуйте! Хочу обсудить мероприятие с KAVA STUDIA.",
+      "Здравствуйте! Хочу обсудить проект с KAVA MC.",
       `Имя: ${form.name}`,
       `Тип события: ${form.eventType}`,
       `Город: ${form.city}`,
@@ -50,11 +50,11 @@ export function ContactForm() {
   }
 
   return (
-    <form className="lead-form" onSubmit={submit} data-reveal>
+    <form className="lead-form" onSubmit={submit}>
       <div className="form-header">
-        <span>ПРОВЕРКА ДАТЫ</span>
-        <strong>Расскажите о событии</strong>
-        <p>Данные остаются в вашем браузере и передаются только после отправки сообщения в Telegram.</p>
+        <span>КРАТКИЙ БРИФ</span>
+        <strong>Расскажите о задаче</strong>
+        <p>Форма не отправляет данные на сервер. Готовый текст откроется в Telegram, и вы сами решите, отправлять его или нет.</p>
       </div>
 
       <div className="form-grid">
@@ -72,13 +72,14 @@ export function ContactForm() {
             <option>Выпускной</option>
             <option>Открытие или презентация</option>
             <option>Клубное мероприятие</option>
+            <option>Фестиваль</option>
             <option>Другое событие</option>
           </select>
         </label>
 
         <label>
           <span>Город</span>
-          <input required value={form.city} onChange={(e) => update("city", e.target.value)} placeholder="Сергиев Посад или Москва" />
+          <input required value={form.city} onChange={(e) => update("city", e.target.value)} placeholder="Сергиев Посад, Москва..." />
         </label>
 
         <label>
@@ -100,11 +101,12 @@ export function ContactForm() {
           <span>Что требуется</span>
           <select value={form.format} onChange={(e) => update("format", e.target.value)}>
             <option>Проведение мероприятия</option>
+            <option>Eminem Live Tribute Show</option>
+            <option>KAVA MC Club Show</option>
             <option>Ведущий и DJ</option>
             <option>Организация под ключ</option>
             <option>Координация</option>
             <option>Подбор площадки и подрядчиков</option>
-            <option>Клубный MC</option>
             <option>Нужна консультация</option>
           </select>
         </label>
@@ -116,7 +118,7 @@ export function ContactForm() {
 
         <label className="form-wide">
           <span>Комментарий</span>
-          <textarea value={form.comment} onChange={(e) => update("comment", e.target.value)} placeholder="Что уже известно о мероприятии и какая помощь нужна" rows={4} />
+          <textarea value={form.comment} onChange={(e) => update("comment", e.target.value)} placeholder="Что уже известно и какой результат хотите получить" rows={4} />
         </label>
       </div>
 
@@ -126,7 +128,7 @@ export function ContactForm() {
       </label>
 
       <div className="form-footer">
-        <button className="button button-primary" type="submit">Продолжить в Telegram ↗</button>
+        <button type="submit">Продолжить в Telegram ↗</button>
         <p className={`form-message ${message ? "success" : ""}`}>{message || "Предпочтительная связь - Telegram"}</p>
       </div>
     </form>
