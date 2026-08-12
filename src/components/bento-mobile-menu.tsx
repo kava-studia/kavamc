@@ -9,10 +9,9 @@ const menuLinks = [
   ["Свадьбы", "/uslugi/vedushchiy-na-svadbu"],
   ["Корпоративы", "/uslugi/vedushchiy-na-korporativ"],
   ["Организация", "/uslugi/organizatsiya-meropriyatiy"],
-  ["Club MC", "/uslugi/club-mc"],
+  ["Club Show MC", "/uslugi/club-mc"],
   ["Полезное", "/poleznoe"],
   ["Реферальная программа", "/referral"],
-  ["Юридическая информация", "/legal"],
 ] as const;
 
 export function BentoMobileMenu() {
@@ -51,10 +50,10 @@ export function BentoMobileMenu() {
           ))}
         </nav>
         <div className="bento-menu-contacts">
-          <a href={links.telegram} target="_blank" rel="noreferrer">Telegram ↗</a>
-          <a href={links.vk} target="_blank" rel="noreferrer">ВКонтакте ↗</a>
-          <a href={links.max} target="_blank" rel="noreferrer">MAX ↗</a>
-          <a href={`tel:${links.phone}`}>{links.phoneLabel}</a>
+          <a href={links.telegramChannel} target="_blank" rel="noreferrer">KAVA Event · канал ↗</a>
+          <a href={links.vk} target="_blank" rel="noreferrer">Сообщество VK ↗</a>
+          <a href={links.telegram} target="_blank" rel="noreferrer">Написать в Telegram ↗</a>
+          <a href={links.max} target="_blank" rel="noreferrer">Написать в MAX ↗</a>
           <Link href="/#contacts" onClick={() => setOpen(false)}>Обсудить мероприятие</Link>
         </div>
       </aside>
