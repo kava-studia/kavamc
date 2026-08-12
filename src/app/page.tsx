@@ -2,8 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
 import { media } from "@/data/site";
-
-const telegram = "https://t.me/kava_studia";
+import { links } from "@/data/links";
 
 const schema = {
   "@context": "https://schema.org",
@@ -19,8 +18,9 @@ const schema = {
       name: "MC KAVA",
       url: "https://kavamc.vercel.app",
       jobTitle: "Ведущий, организатор мероприятий и live-артист",
-      telephone: "+79932542217",
-      email: "juri.kava@yandex.ru",
+      telephone: links.phone,
+      email: links.email,
+      sameAs: [links.telegram, links.vk, links.max],
       areaServed: ["Москва", "Московская область", "Сергиев Посад"],
     },
     {
@@ -86,9 +86,9 @@ function VideoTile({ index, label }: { index: number; label: string }) {
 }
 
 const faq = [
-  ["Можно заказать только ведение?", "Да. Можно пригласить меня только как ведущего, отдельно заказать шоу или передать мне организацию события целиком."],
+  ["Можно заказать только ведение?", "Да. Можно пригласить меня только как ведущего, отдельно заказать live-шоу или передать мне организацию события целиком."],
   ["Работаешь только в Сергиевом Посаде?", "Нет. Основная география - Сергиев Посад, Москва и Московская область. Другие города обсуждаются отдельно."],
-  ["Eminem Tribute уже готов?", "Проект находится на этапе запуска полноценного showcase. Текущие live-материалы и будущий tribute showreel на сайте разделены."],
+  ["Какие live-форматы можно пригласить?", "Eminem Live Tribute Show, Club MC и специальные сценические форматы под конкретную площадку, корпоратив или событие."],
   ["Можно без конкурсов?", "Можно. Я строю программу вокруг людей, атмосферы, юмора, музыки и живой реакции, а не вокруг обязательных конкурсов."],
 ];
 
@@ -117,7 +117,7 @@ export default function Home() {
           <div>
             <p className="bento-overline">MC KAVA · Москва · Московская область</p>
             <h1>Событие должно ощущаться <em>живым.</em></h1>
-            <p className="bento-lead">Я веду свадьбы и корпоративы, собираю мероприятия под ключ и развиваю отдельные live-шоу. Без ощущения шаблонного агентства и без театра «веселимся по команде».</p>
+            <p className="bento-lead">Я веду свадьбы и корпоративы, собираю мероприятия под ключ и выступаю с отдельными live-шоу. Один человек держит идею, программу, команду и атмосферу в одном контуре.</p>
           </div>
           <div className="bento-actions">
             <Link className="bento-button bento-button-primary" href="/eminem-tribute">Eminem Live Tribute <Arrow /></Link>
@@ -132,9 +132,9 @@ export default function Home() {
 
         <Link href="/eminem-tribute" className="bento-card bento-dark bento-span-8 bento-feature-card">
           <div className="bento-feature-copy">
-            <span className="bento-kicker">Флагманский запуск</span>
+            <span className="bento-kicker">Live show</span>
             <h2>Eminem Live<br />Tribute Show</h2>
-            <p>Отдельный концертный продукт для клубов, фестивалей, корпоративов и специальных событий.</p>
+            <p>Самостоятельная концертная программа для клубов, фестивалей, корпоративов и специальных событий.</p>
             <strong>Открыть страницу шоу <Arrow /></strong>
           </div>
           <MediaTile src="/media/club-wide.webp" alt="Сцена и публика на клубном выступлении MC KAVA" position="50% 42%" />
@@ -147,12 +147,12 @@ export default function Home() {
         </article>
 
         <Link href="/uslugi/vedushchiy-na-svadbu" className="bento-card bento-service-card bento-wedding-card bento-span-4">
-          <MediaTile src="/media/private-event.webp" alt="Частное праздничное мероприятие с MC KAVA" position="49% 31%" />
+          <MediaTile src="/media/wedding-bento.webp" alt="MC KAVA ведёт свадьбу в банкетном зале" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Свадьбы</h3><p>Современное ведение, тайминг, импровизация и работа с гостями без давления.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
         <Link href="/uslugi/vedushchiy-na-korporativ" className="bento-card bento-service-card bento-corporate-card bento-span-4">
-          <MediaTile src="/media/official.webp" alt="MC KAVA на официальном мероприятии" position="50% 28%" />
+          <MediaTile src="/media/corporate-bento.webp" alt="MC KAVA проводит корпоративное мероприятие с командой" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Корпоративы</h3><p>Программа под компанию, музыкальные блоки и живой контакт с аудиторией.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
@@ -184,7 +184,7 @@ export default function Home() {
           <div className="bento-useful-intro">
             <span className="bento-kicker">Полезное</span>
             <h2>Организуешь сам? Держи нормальные инструменты.</h2>
-            <p>Чек-листы и практические материалы без «оставьте номер, чтобы узнать секрет». Их можно открыть и использовать сразу.</p>
+            <p>Практические чек-листы по площадке, бюджету, подрядчикам, таймингу, технике и подготовке события.</p>
             <Link className="bento-button" href="/poleznoe">Все материалы <Arrow /></Link>
           </div>
           <div className="bento-useful-links">
@@ -197,36 +197,36 @@ export default function Home() {
         <Link href="/referral" className="bento-card bento-referral-card bento-span-4">
           <span className="bento-kicker">Реферальная программа</span>
           <h2>Знаешь человека, которому нужен KAVA?</h2>
-          <p>Передай контакт или познакомь нас. Условия вознаграждения фиксируем заранее и без мутных «потом разберёмся».</p>
+          <p>Передай контакт или познакомь нас. Условия вознаграждения фиксируем заранее и прозрачно.</p>
           <strong>Как это работает <Arrow /></strong>
         </Link>
 
-        <a href="https://nado-prazdnik.vercel.app" target="_blank" rel="noreferrer" className="bento-card bento-partner-card bento-span-7">
+        <a href={links.nado} target="_blank" rel="noreferrer" className="bento-card bento-partner-card bento-span-7">
           <span className="bento-kicker">Официальный партнёр</span>
           <h2>NADO Праздник</h2>
-          <p>Технологическая платформа для сборки мероприятий: площадки, исполнители, бюджет, подготовка и цифровой контур события. KAVA MC и NADO Праздник развиваются как отдельные продукты, но могут работать вместе в event-проектах.</p>
+          <p>Партнёрская event-платформа с большой базой площадок и подрядчиков на разные задачи и бюджеты. Это расширяет возможности KAVA MC: можно собрать команду под конкретную идею, найти нужных специалистов и воплотить нестандартный формат без привязки к одному набору исполнителей.</p>
           <strong>Открыть NADO Праздник <Arrow /></strong>
         </a>
 
         <article className="bento-card bento-live-card bento-span-5">
           <span className="bento-kicker">Live направление</span>
           <h2>Сцена не заканчивается микрофоном ведущего.</h2>
-          <p>Сейчас главный публичный продукт - Eminem Live Tribute Show. Остальные сценические программы упаковываем отдельно, когда под них готовы материалы и конкретный live-продукт.</p>
+          <p>KAVA MC объединяет ведение и самостоятельные сценические программы: от клубной работы до полноценного рэп-трибьют шоу.</p>
           <div className="bento-live-list">
-            <span><b>Eminem Live Tribute</b><small>в запуске</small></span>
-            <span><b>Club MC</b><small>доступно</small></span>
-            <span><b>Новые live show</b><small>готовим</small></span>
+            <span><b>Eminem Live Tribute</b><small>60 / 45 / 30 / 15 мин</small></span>
+            <span><b>Club MC</b><small>клубы и события</small></span>
+            <span><b>Special Live Sets</b><small>под площадку</small></span>
           </div>
         </article>
 
         <article className="bento-card bento-social-card bento-span-5">
           <span className="bento-kicker">Соцсети и связь</span>
           <h2>Где следить за KAVA MC</h2>
-          <p>Основные публичные ссылки собираю в одном месте. Неподтверждённые адреса не подставляю, чтобы не увести человека в чужой аккаунт.</p>
+          <p>Анонсы, новые видео, backstage, полезные материалы и свободные даты.</p>
           <div className="bento-social-links">
-            <a href={telegram} target="_blank" rel="noreferrer">Telegram ↗</a>
-            <span>VK · ссылка готовится</span>
-            <span>MAX · ссылка готовится</span>
+            <a href={links.telegram} target="_blank" rel="noreferrer">Telegram ↗</a>
+            <a href={links.vk} target="_blank" rel="noreferrer">ВКонтакте ↗</a>
+            <a href={links.max} target="_blank" rel="noreferrer">MAX ↗</a>
           </div>
         </article>
 
@@ -240,7 +240,7 @@ export default function Home() {
         <Link href="/legal" className="bento-card bento-legal-card bento-span-4">
           <span className="bento-kicker">Юридическая информация</span>
           <h2>Документы сайта - в одном разделе.</h2>
-          <p>Политика обработки данных, согласие, cookies, условия использования, реквизиты оператора и правила реферальной программы.</p>
+          <p>Политика обработки данных, согласие, cookies, условия использования, контакты оператора и правила реферальной программы.</p>
           <strong>Открыть юридический раздел <Arrow /></strong>
         </Link>
 
@@ -263,11 +263,13 @@ export default function Home() {
         <div className="bento-contact-copy">
           <span className="bento-kicker">Booking и мероприятия</span>
           <h2>Расскажи, что хочешь сделать.</h2>
-          <p>Можно написать про шоу, свадьбу, корпоратив или полную организацию. Если задача пока сформулирована криво - это нормально, разберём по ходу разговора.</p>
+          <p>Шоу, свадьба, корпоратив или полная организация. Можно прийти даже с одной идеей - разложим её на площадку, команду, программу, технику и бюджет.</p>
           <div className="bento-contact-links">
-            <a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a>
-            <a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a>
-            <a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a>
+            <a href={links.telegram} target="_blank" rel="noreferrer">Telegram · @kava_event <Arrow /></a>
+            <a href={links.vk} target="_blank" rel="noreferrer">ВКонтакте · kava_studia <Arrow /></a>
+            <a href={links.max} target="_blank" rel="noreferrer">MAX <Arrow /></a>
+            <a href={`tel:${links.phone}`}>{links.phoneLabel} <Arrow /></a>
+            <a href={`mailto:${links.email}`}>{links.email} <Arrow /></a>
           </div>
         </div>
         <div className="bento-form-wrap"><ContactForm /></div>
@@ -285,6 +287,9 @@ export default function Home() {
           <Link href="/cookies">Cookies</Link>
           <Link href="/terms">Условия сайта</Link>
           <Link href="/requisites">Контакты оператора</Link>
+          <a href={links.telegram} target="_blank" rel="noreferrer">Telegram</a>
+          <a href={links.vk} target="_blank" rel="noreferrer">VK</a>
+          <a href={links.max} target="_blank" rel="noreferrer">MAX</a>
         </div>
       </footer>
     </main>
