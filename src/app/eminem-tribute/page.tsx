@@ -16,17 +16,17 @@ export const metadata: Metadata = {
 };
 
 const formats = [
-  { time: "15", title: "Special guest", text: "Короткий ударный блок для корпоратива, открытия или специального выхода." },
-  { time: "30", title: "Club showcase", text: "Концентрированный формат для клубной ночи, бара или тематического события." },
-  { time: "45", title: "Full tribute set", text: "Полноценная программа с драматургией, переходами и работой с публикой." },
-  { time: "60", title: "Extended show", text: "Расширенная концертная версия для отдельного события или большой сцены." },
+  { time: "15", title: "Спецвыход", text: "Короткий ударный блок для корпоратива, открытия или специального выхода." },
+  { time: "30", title: "Клубный сет", text: "Концентрированный формат для клубной ночи, бара или тематического события." },
+  { time: "45", title: "Полный трибьют-сет", text: "Полноценная программа с драматургией, переходами и работой с публикой." },
+  { time: "60", title: "Расширенное шоу", text: "Большая концертная версия для отдельного события или большой сцены." },
 ];
 
 const structure = [
   "Интро и быстрый вход в узнаваемый материал",
   "Хитовый блок с плотной рэп-подачей и работой с залом",
   "Контрастный эмоциональный фрагмент внутри общей драматургии",
-  "Интерактивные live-переходы без ощущения караоке-концерта",
+  "Живые переходы и взаимодействие с публикой",
   "Финальный блок с максимальной энергией и сильной точкой шоу",
 ];
 
@@ -38,22 +38,22 @@ export default function EminemTributePage() {
         <nav>
           <a href="#show">Шоу</a>
           <a href="#formats">Форматы</a>
-          <a href="#booking">Booking</a>
+          <a href="#booking">Букинг</a>
           <Link href="/">Все направления KAVA</Link>
         </nav>
-        <a className={styles.headerCta} href={links.telegram} target="_blank" rel="noreferrer">Booking</a>
+        <a className={styles.headerCta} href={links.telegram} target="_blank" rel="noreferrer">Пригласить шоу</a>
       </header>
 
       <section className={styles.hero} id="show">
         <div className={styles.heroImage} aria-hidden="true" />
         <div className={styles.heroOverlay} />
         <div className={styles.heroCopy}>
-          <p className={styles.kicker}>KAVA MC PRESENTS</p>
+          <p className={styles.kicker}>KAVA MC · ТРИБЬЮТ-ШОУ</p>
           <h1>EMINEM<br /><em>LIVE TRIBUTE</em><br />SHOW</h1>
           <p className={styles.lead}>Живой рэп-трибьют с фокусом на технику, подачу, энергию и контакт с залом. Самостоятельный сценический продукт KAVA MC.</p>
           <div className={styles.actions}>
             <a href={links.telegram} target="_blank" rel="noreferrer" className={styles.primary}>Пригласить шоу</a>
-            <a href="#booking" className={styles.secondary}>Booking info</a>
+            <a href="#booking" className={styles.secondary}>Информация для букинга</a>
           </div>
           <p className={styles.status}>Клубы · фестивали · корпоративы · специальные события · Москва и другие города по договорённости.</p>
         </div>
@@ -63,16 +63,16 @@ export default function EminemTributePage() {
         <p>НЕ КАРАОКЕ. НЕ ПАРОДИЯ.</p>
         <h2>Трибьют через живую подачу MC KAVA.</h2>
         <div className={styles.statementGrid}>
-          <p>Основа формата - исполнение материала Eminem вживую, сценическая работа, собственная подача и концертная динамика.</p>
+          <p>Основа формата — исполнение материала Eminem вживую, сценическая работа, собственная подача и концертная динамика.</p>
           <p>Программа адаптируется по длине и технической конфигурации под клуб, фестиваль, корпоратив или отдельное тематическое событие.</p>
         </div>
       </section>
 
       <section className={styles.liveProof}>
         <div>
-          <p className={styles.kicker}>KAVA MC LIVE</p>
+          <p className={styles.kicker}>ЖИВОЙ МАТЕРИАЛ KAVA MC</p>
           <h2>Сцена. Рэп. Контакт с залом.</h2>
-          <p>Live-портфолио показывает сценическую манеру KAVA MC: работу с битом, микрофоном, публикой и динамикой площадки.</p>
+          <p>Видео показывают сценическую манеру KAVA MC: работу с битом, микрофоном, публикой и динамикой площадки.</p>
         </div>
         <div className={styles.videoGrid}>
           <video controls playsInline preload="metadata" poster="/media/poster-club.webp">
@@ -86,13 +86,13 @@ export default function EminemTributePage() {
 
       <section className={styles.formats} id="formats">
         <div className={styles.sectionHead}>
-          <p className={styles.kicker}>SHOW FORMATS</p>
+          <p className={styles.kicker}>ФОРМАТЫ ШОУ</p>
           <h2>Один продукт.<br />Несколько сценических длин.</h2>
         </div>
         <div className={styles.formatGrid}>
           {formats.map((item) => (
             <article key={item.time}>
-              <strong>{item.time}<small> MIN</small></strong>
+              <strong>{item.time}<small> МИН</small></strong>
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </article>
@@ -102,7 +102,7 @@ export default function EminemTributePage() {
 
       <section className={styles.launch}>
         <div className={styles.sectionHead}>
-          <p className={styles.kicker}>SHOW FLOW</p>
+          <p className={styles.kicker}>СТРУКТУРА ШОУ</p>
           <h2>Как устроена программа.</h2>
         </div>
         <div className={styles.launchList}>
@@ -112,7 +112,7 @@ export default function EminemTributePage() {
 
       <section className={styles.booking} id="booking">
         <div>
-          <p className={styles.kicker}>BOOKING / CLUBS / EVENTS</p>
+          <p className={styles.kicker}>БУКИНГ · КЛУБЫ · СОБЫТИЯ</p>
           <h2>Есть сцена?<br />Давайте сделаем сильный live.</h2>
           <p>Для букинга достаточно города, даты, формата события, площадки и базовой информации о технических возможностях сцены. Остальное собираем в рабочий райдер.</p>
         </div>
