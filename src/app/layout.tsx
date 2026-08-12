@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Unbounded } from "next/font/google";
+import { Manrope, Rubik } from "next/font/google";
 import { CookieConsent } from "@/components/cookie-consent";
 import { ScrollEffects } from "@/components/scroll-effects";
-import { SiteControls } from "@/components/site-controls";
 import { BentoMobileMenu } from "@/components/bento-mobile-menu";
 import { YandexMetrika } from "@/components/yandex-metrika";
 import "./globals.css";
@@ -20,9 +19,9 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const unbounded = Unbounded({
+const rubik = Rubik({
   subsets: ["cyrillic", "latin"],
-  variable: "--font-unbounded",
+  variable: "--font-rubik",
   display: "swap",
 });
 
@@ -80,16 +79,15 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0d0f12",
+  themeColor: "#0b0d10",
   colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
+    <html lang="ru" className={`${manrope.variable} ${rubik.variable}`}>
       <body>
         <ScrollEffects />
-        <SiteControls />
         <BentoMobileMenu />
         {children}
         <YandexMetrika />
