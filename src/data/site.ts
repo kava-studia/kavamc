@@ -3,7 +3,7 @@ export const formats = [
     eyebrow: "Флагман",
     title: "Eminem Live Tribute Show",
     price: "Стоимость по запросу",
-    text: "Живое рэп-шоу по материалу Eminem для клубов, фестивалей, корпоративов и специальных событий. Отдельная программа, шоурил, райдер и продажа площадкам.",
+    text: "Живое рэп-шоу по материалу Eminem для клубов, фестивалей, корпоративов и специальных событий.",
     tags: ["Live tribute", "Rap show", "Клубы и события"],
     featured: true,
   },
@@ -11,8 +11,8 @@ export const formats = [
     eyebrow: "Формат 02",
     title: "KAVA MC Club Show",
     price: "От 15 000 ₽ + трансфер",
-    text: "Клубный MC, работа поверх DJ-сета, открытия, специальные ночи и гостевые выходы с живой коммуникацией и рэп-энергией.",
-    tags: ["Club MC", "Сцена", "Энергия"],
+    text: "Club Show MC, работа поверх DJ-сета, открытия, специальные ночи и гостевые выходы с живой коммуникацией и рэп-энергией.",
+    tags: ["Club Show MC", "Сцена", "Энергия"],
   },
   {
     eyebrow: "Формат 03",
@@ -25,7 +25,7 @@ export const formats = [
     eyebrow: "Формат 04",
     title: "Проведение корпоратива",
     price: "Индивидуальная стоимость",
-    text: "Программа под компанию и аудиторию - от камерного вечера до большого корпоративного события с музыкальными и сценическими блоками.",
+    text: "Программа под компанию и аудиторию — от камерного вечера до большого корпоративного события с музыкальными и сценическими блоками.",
     tags: ["Корпоратив", "Сценарий", "Работа с залом"],
   },
   {
@@ -53,13 +53,14 @@ export const venues = [
 export const media = [
   {
     id: "showreel",
-    title: "MC KAVA - главное видео",
+    title: "MC KAVA — главное видео",
     type: "Портфолио",
     venue: "Сцена · публика · атмосфера",
     year: "2026",
     poster: "/media/poster-showreel.webp",
     videoUrl: "/media/showreel-main.mp4",
-    duration: "01:04",
+    duration: "00:28",
+    orientation: "portrait",
   },
   {
     id: "club",
@@ -70,6 +71,7 @@ export const media = [
     poster: "/media/poster-club.webp",
     videoUrl: "/media/club-live.mp4",
     duration: "00:11",
+    orientation: "portrait",
   },
   {
     id: "crowd",
@@ -80,6 +82,7 @@ export const media = [
     poster: "/media/poster-crowd.webp",
     videoUrl: "/media/crowd-energy.mp4",
     duration: "00:12",
+    orientation: "portrait",
   },
   {
     id: "sorry-mama",
@@ -90,5 +93,6 @@ export const media = [
     poster: "/media/poster-sorry.webp",
     videoUrl: "/media/sorry-mama.mp4",
     duration: "00:14",
+    orientation: "portrait",
   },
 ] as const;
