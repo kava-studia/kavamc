@@ -1,0 +1,59 @@
+name: Import KAVA MC final media
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/import-kavamc-final-media.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import-media:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Download final KAVA MC media
+        run: |
+          set -euo pipefail
+          mkdir -p public/media
+
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://at.adobe.com/HR5OnYyyXo2XPvf3" \
+            --output public/media/wedding-final-2026.webp
+
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://at.adobe.com/EGlqFud88eyV6uF3" \
+            --output public/media/corporate-final-2026.webp
+
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://at.adobe.com/Ur15DfCrb4nmjR15" \
+            --output public/media/corporate-event-1080.mp4
+
+          test -s public/media/wedding-final-2026.webp
+          test -s public/media/corporate-final-2026.webp
+          test -s public/media/corporate-event-1080.mp4
+
+          head -c 16 public/media/wedding-final-2026.webp | grep -aq "WEBP" || { echo "Invalid wedding WebP"; exit 1; }
+          head -c 16 public/media/corporate-final-2026.webp | grep -aq "WEBP" || { echo "Invalid corporate WebP"; exit 1; }
+          head -c 64 public/media/corporate-event-1080.mp4 | grep -aq "ftyp" || { echo "Invalid corporate MP4"; exit 1; }
+
+          ls -lh public/media/wedding-final-2026.webp public/media/corporate-final-2026.webp public/media/corporate-event-1080.mp4
+
+      - name: Commit final media into main
+        run: |
+          git config user.name "kava-media-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/media/wedding-final-2026.webp public/media/corporate-final-2026.webp public/media/corporate-event-1080.mp4
+          if git diff --cached --quiet; then
+            echo "Final media already imported"
+            exit 0
+          fi
+          git commit -m "Import exact wedding photo, corporate photo and Full HD corporate video"
+          git push origin HEAD:main
