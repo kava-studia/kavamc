@@ -66,6 +66,7 @@ function MediaTile({
 function VideoTile({ index, label }: { index: number; label: string }) {
   const item = media[index];
   const portrait = item.orientation === "portrait";
+  const silentWedding = item.id === "wedding";
   return (
     <article className={`bento-card bento-video-card ${portrait ? "bento-video-card-portrait" : "bento-video-card-landscape"}`}>
       <div className="bento-video-head">
@@ -76,7 +77,7 @@ function VideoTile({ index, label }: { index: number; label: string }) {
         <span className="bento-duration">{item.duration}</span>
       </div>
       <div className={`bento-video-frame ${portrait ? "bento-video-frame-portrait" : "bento-video-frame-landscape"}`}>
-        <video controls playsInline preload="metadata" poster={item.poster}>
+        <video controls playsInline preload="metadata" poster={item.poster} muted={silentWedding}>
           <source src={item.videoUrl} type="video/mp4" />
         </video>
       </div>
@@ -143,12 +144,12 @@ export default function Home() {
         </article>
 
         <Link href="/uslugi/vedushchiy-na-svadbu" className="bento-card bento-service-card bento-wedding-card bento-span-4">
-          <MediaTile src="/media/wedding-bento.webp" alt="MC KAVA ведёт свадьбу в банкетном зале" position="50% 42%" />
+          <MediaTile src="/media/wedding-real-v2.webp" alt="MC KAVA ведёт свадьбу в банкетном зале" position="50% 42%" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Свадьбы</h3><p>Живое современное ведение, тайминг и импровизация без давления на гостей.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
         <Link href="/uslugi/vedushchiy-na-korporativ" className="bento-card bento-service-card bento-corporate-card bento-span-4">
-          <MediaTile src="/media/corporate-bento.webp" alt="MC KAVA проводит корпоративное мероприятие" position="50% 43%" />
+          <MediaTile src="/media/corporate-real-v2.webp" alt="MC KAVA проводит корпоративное мероприятие" position="50% 43%" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Корпоративы</h3><p>Программа под команду, музыкальные блоки и живой контакт с залом.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
@@ -173,8 +174,15 @@ export default function Home() {
           <p>Сценарий даёт опору. Люди дают настоящие моменты.</p>
         </article>
 
-        <div className="bento-span-6" id="video"><VideoTile index={0} label="Шоурил" /></div>
+        <div className="bento-span-6" id="video"><VideoTile index={0} label="Организация" /></div>
         <div className="bento-span-6"><VideoTile index={2} label="Живой зал" /></div>
+        <div className="kava-extra-media bento-span-12">
+          <div className="kava-extra-media-grid">
+            <VideoTile index={3} label="Club Show MC" />
+            <VideoTile index={4} label="Свадьба" />
+            <VideoTile index={5} label="Корпоратив" />
+          </div>
+        </div>
 
         <article className="bento-card bento-span-8 bento-useful-card">
           <div className="bento-useful-intro">
