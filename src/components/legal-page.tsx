@@ -17,7 +17,7 @@ export function LegalPage({ eyebrow, title, intro, children }: { eyebrow: string
         <div className="legal-content">{children}</div>
       </article>
       <footer className="legal-footer">
-        <Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия</Link><Link href="/requisites">Контакты оператора</Link>
+        <Link href="/legal">Все документы</Link><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия</Link><Link href="/requisites">Контакты оператора</Link>
       </footer>
     </main>
   );
