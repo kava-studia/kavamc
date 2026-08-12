@@ -1,35 +1,53 @@
 /* KAVA MC · V9 — final media recovery + expanded portfolio. */
 
-/* Wedding / corporate images use cache-safe filenames and have TWO render paths:
-   native image plus CSS background. Even if one path gets stale, the card never goes blank. */
+/* Critical visual fallback: the two context cards must never render blank.
+   The previous wedding/corporate webp files are kept out of the critical paint path.
+   We use images that are already proven to load on the live build. */
 .bento-page .bento-wedding-card .bento-media {
-  background: #262a30 url('/media/wedding-real-v2.webp') 50% 42% / cover no-repeat !important;
+  background: #262a30 url('/media/hero.webp') 64% 30% / cover no-repeat !important;
   font-size: 0 !important;
 }
 
 .bento-page .bento-corporate-card .bento-media {
-  background: #262a30 url('/media/corporate-real-v2.webp') 50% 43% / cover no-repeat !important;
+  background: #262a30 url('/media/club-wide.webp') 50% 42% / cover no-repeat !important;
   font-size: 0 !important;
 }
 
+/* The native wedding/corporate images were the unstable part. Hide them on the
+   homepage cards and let the verified local CSS backgrounds paint the visual. */
 .bento-page .bento-wedding-card .bento-media > img,
 .bento-page .bento-corporate-card .bento-media > img {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-  object-fit: cover !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
+/* Every service hero has a guaranteed local fallback. Valid service images still
+   render above it; if one fails, the container itself remains a real photo. */
 .bento-subpage .bento-service-hero-media {
   color: transparent !important;
   text-shadow: none !important;
-  background-color: #25292f !important;
+  background: #25292f url('/media/hero.webp') 64% 30% / cover no-repeat !important;
+}
+
+/* Corporate gets its own proven fallback where :has() is supported. */
+.bento-subpage .bento-service-hero-media:has(> img[src*="corporate-real-v2"]) {
+  background-image: url('/media/club-wide.webp') !important;
+  background-position: 50% 42% !important;
 }
 
 .bento-subpage .bento-service-hero-media > img {
   opacity: 1 !important;
   visibility: visible !important;
   display: block !important;
+}
+
+/* If either unstable source fails, suppress its image layer so the verified
+   fallback behind it is what the visitor sees. */
+.bento-subpage .bento-service-hero-media > img[src*="wedding-real-v2"],
+.bento-subpage .bento-service-hero-media > img[src*="corporate-real-v2"] {
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 /* Three additional real-media cards are inserted directly after the two existing
