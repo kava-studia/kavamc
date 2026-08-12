@@ -63,6 +63,17 @@ export const media = [
     orientation: "portrait",
   },
   {
+    id: "club",
+    title: "Работа MC вживую",
+    type: "Live MC",
+    venue: "Ничего Личного",
+    year: "2026",
+    poster: "/media/poster-club.webp",
+    videoUrl: "/media/club-live.mp4",
+    duration: "00:11",
+    orientation: "portrait",
+  },
+  {
     id: "crowd",
     title: "Работа с залом",
     type: "Живой зал",
