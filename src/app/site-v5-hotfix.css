@@ -11,6 +11,17 @@ body > main { font-family: var(--font-onest), Arial, sans-serif !important; }
 .bento-subpage .bento-service-hero {
   padding: 0 !important;
 }
+.event-type-grid button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+.event-type-grid button b {
+  flex: 0 0 auto !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
+}
 
 @media (max-width: 720px) {
   .bento-page > .bento-contact-section {
