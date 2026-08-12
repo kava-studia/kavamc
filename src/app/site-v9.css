@@ -1,0 +1,72 @@
+/* KAVA MC · V9 — media recovery and cache-safe service photography.
+   Loaded last. Uses new filenames so a browser/CDN cannot reuse the previously
+   corrupted wedding/corporate WebP responses. */
+
+/* Home service cards: always paint the real image as a CSS background.
+   The legacy <img> stays in the DOM for semantics, but cannot expose a broken alt label. */
+.bento-page .bento-wedding-card .bento-media {
+  background-image: url('/media/wedding-real-v2.webp') !important;
+  background-size: cover !important;
+  background-position: 50% 42% !important;
+  background-repeat: no-repeat !important;
+  font-size: 0 !important;
+}
+
+.bento-page .bento-corporate-card .bento-media {
+  background-image: url('/media/corporate-real-v2.webp') !important;
+  background-size: cover !important;
+  background-position: 50% 43% !important;
+  background-repeat: no-repeat !important;
+  font-size: 0 !important;
+}
+
+.bento-page .bento-wedding-card .bento-media > img,
+.bento-page .bento-corporate-card .bento-media > img {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Service pages. :has() is supported by the current evergreen browsers and lets
+   the generic [slug] template receive the right photo without another layout fork. */
+.bento-subpage .bento-service-hero-media:has(img[src*='wedding-bento.webp']) {
+  background-image: url('/media/wedding-real-v2.webp') !important;
+  background-size: cover !important;
+  background-position: 50% 42% !important;
+  background-repeat: no-repeat !important;
+  font-size: 0 !important;
+}
+
+.bento-subpage .bento-service-hero-media:has(img[src*='corporate-bento.webp']) {
+  background-image: url('/media/corporate-real-v2.webp') !important;
+  background-size: cover !important;
+  background-position: 50% 43% !important;
+  background-repeat: no-repeat !important;
+  font-size: 0 !important;
+}
+
+.bento-subpage .bento-service-hero-media:has(img[src*='wedding-bento.webp']) > img,
+.bento-subpage .bento-service-hero-media:has(img[src*='corporate-bento.webp']) > img {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Never allow an image placeholder/alt string to sit over the dark media area. */
+.bento-subpage .bento-service-hero-media {
+  color: transparent !important;
+  text-shadow: none !important;
+}
+
+/* Mobile service hero keeps the media compact enough that the actual service copy
+   enters the first screen instead of feeling like a giant empty banner. */
+@media (max-width: 720px) {
+  .bento-subpage .bento-service-hero-media {
+    min-height: 360px !important;
+    height: 56svh !important;
+    max-height: 500px !important;
+  }
+
+  .bento-page .bento-service-card .bento-media {
+    min-height: 260px !important;
+    flex-basis: 260px !important;
+  }
+}
