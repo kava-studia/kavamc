@@ -66,111 +66,32 @@ function ServiceProof({ kind }: { kind: "wedding" | "corporate" }) {
 
 export function KavaMediaExpansion() {
   const pathname = usePathname();
-  const [homeMount, setHomeMount] = useState<HTMLElement | null>(null);
   const [serviceMount, setServiceMount] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    let createdHome: HTMLElement | null = null;
-    let createdService: HTMLElement | null = null;
-
-    if (pathname === "/") {
-      const cards = Array.from(document.querySelectorAll<HTMLElement>(".bento-video-card"));
-      const firstKicker = cards[0]?.querySelector<HTMLElement>(".bento-kicker");
-      if (firstKicker) firstKicker.textContent = "Организация";
-
-      const secondCard = cards[1];
-      const anchor = secondCard?.parentElement;
-      const grid = anchor?.parentElement;
-      if (anchor && grid) {
-        createdHome = document.createElement("div");
-        createdHome.className = "kava-extra-media bento-span-12";
-        anchor.insertAdjacentElement("afterend", createdHome);
-        setHomeMount(createdHome);
-      }
-
-      const weddingImg = document.querySelector<HTMLImageElement>(".bento-wedding-card .bento-media img");
-      const corporateImg = document.querySelector<HTMLImageElement>(".bento-corporate-card .bento-media img");
-      if (weddingImg) {
-        weddingImg.src = "/media/wedding-real-v2.webp";
-        weddingImg.style.opacity = "1";
-        weddingImg.style.visibility = "visible";
-      }
-      if (corporateImg) {
-        corporateImg.src = "/media/corporate-real-v2.webp";
-        corporateImg.style.opacity = "1";
-        corporateImg.style.visibility = "visible";
-      }
-    }
-
     const isWedding = pathname === "/uslugi/vedushchiy-na-svadbu";
     const isCorporate = pathname === "/uslugi/vedushchiy-na-korporativ";
-    if (isWedding || isCorporate) {
-      const hero = document.querySelector<HTMLElement>(".bento-service-hero");
-      const shell = hero?.parentElement;
-      const media = hero?.querySelector<HTMLElement>(".bento-service-hero-media");
-      const src = isWedding ? "/media/wedding-real-v2.webp" : "/media/corporate-real-v2.webp";
-      if (media) {
-        media.style.backgroundImage = `url('${src}')`;
-        media.style.backgroundSize = "cover";
-        media.style.backgroundPosition = isWedding ? "50% 42%" : "50% 43%";
-        media.style.backgroundRepeat = "no-repeat";
-        const image = media.querySelector<HTMLImageElement>("img");
-        if (image) {
-          image.src = src;
-          image.style.opacity = "1";
-          image.style.visibility = "visible";
-        }
-      }
-      if (hero && shell) {
-        createdService = document.createElement("div");
-        createdService.className = "kava-service-video-mount";
-        hero.insertAdjacentElement("afterend", createdService);
-        setServiceMount(createdService);
-      }
+    if (!isWedding && !isCorporate) {
+      setServiceMount(null);
+      return;
     }
 
+    const hero = document.querySelector<HTMLElement>(".bento-service-hero");
+    if (!hero) return;
+
+    const mount = document.createElement("div");
+    mount.className = "kava-service-video-mount";
+    hero.insertAdjacentElement("afterend", mount);
+    setServiceMount(mount);
+
     return () => {
-      createdHome?.remove();
-      createdService?.remove();
-      setHomeMount(null);
+      mount.remove();
       setServiceMount(null);
     };
   }, [pathname]);
 
-  return (
-    <>
-      {homeMount && createPortal(
-        <div className="kava-extra-media-grid">
-          <LocalVideo
-            title="Sorry Mama"
-            label="Club Show MC"
-            venue="Клубная энергия · живой выход"
-            duration="00:14"
-            poster="/media/poster-sorry.webp"
-            src="/media/sorry-mama-hd.mp4"
-          />
-          <LocalVideo
-            title="Свадебный ролик"
-            label="Свадьба"
-            venue="Ведение и организация свадьбы"
-            duration="00:18"
-            poster="/media/wedding-real-v2.webp"
-            src="/media/wedding-event-720.mp4"
-            muted
-          />
-          <LocalVideo
-            title="Корпоратив"
-            label="Корпоратив"
-            venue="Команда · движение · атмосфера"
-            duration="00:10"
-            poster="/media/corporate-real-v2.webp"
-            src="/media/corporate-event-720.mp4"
-          />
-        </div>,
-        homeMount,
-      )}
-      {serviceMount && pathname === "/uslugi/vedushchiy-na-svadbu" && createPortal(<ServiceProof kind="wedding" />, serviceMount)}
-      {serviceMount && pathname === "/uslugi/vedushchiy-na-korporativ" && createPortal(<ServiceProof kind="corporate" />, serviceMount)}
-    </>
-  );
+  if (!serviceMount) return null;
+  if (pathname === "/uslugi/vedushchiy-na-svadbu") return createPortal(<ServiceProof kind="wedding" />, serviceMount);
+  if (pathname === "/uslugi/vedushchiy-na-korporativ") return createPortal(<ServiceProof kind="corporate" />, serviceMount);
+  return null;
 }
