@@ -1,0 +1,71 @@
+name: Apply KAVA MC final media links
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/apply-kavamc-final-media-links.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Switch site to exact final assets
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          files = [
+              Path('src/app/page.tsx'),
+              Path('src/app/uslugi/[slug]/page.tsx'),
+              Path('src/data/site.ts'),
+          ]
+          replacements = {
+              '/media/wedding-final.webp': '/media/wedding-final-2026.webp',
+              '/media/corporate-final.webp': '/media/corporate-final-2026.webp',
+              '/media/corporate-event-720.mp4': '/media/corporate-event-1080.mp4',
+          }
+
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              before = text
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+              print(path, 'changed' if text != before else 'unchanged')
+
+          # hard assertions: exact media must now be referenced by the public pages/data
+          page = Path('src/app/page.tsx').read_text(encoding='utf-8')
+          service = Path('src/app/uslugi/[slug]/page.tsx').read_text(encoding='utf-8')
+          site = Path('src/data/site.ts').read_text(encoding='utf-8')
+          assert '/media/wedding-final-2026.webp' in page
+          assert '/media/corporate-final-2026.webp' in page
+          assert '/media/wedding-final-2026.webp' in service
+          assert '/media/corporate-final-2026.webp' in service
+          assert '/media/corporate-event-1080.mp4' in service
+          assert '/media/corporate-event-1080.mp4' in site
+          assert '/media/corporate-event-720.mp4' not in service
+          assert '/media/corporate-event-720.mp4' not in site
+          PY
+
+      - name: Commit final links into main
+        run: |
+          git config user.name "kava-media-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/app/page.tsx 'src/app/uslugi/[slug]/page.tsx' src/data/site.ts
+          if git diff --cached --quiet; then
+            echo "Final links already applied"
+            exit 0
+          fi
+          git commit -m "Use exact wedding photo, corporate photo and Full HD corporate video"
+          git push origin HEAD:main
