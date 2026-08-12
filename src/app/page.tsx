@@ -23,6 +23,13 @@ const schema = {
       email: "juri.kava@yandex.ru",
       areaServed: ["Москва", "Московская область", "Сергиев Посад"],
     },
+    {
+      "@type": "ProfessionalService",
+      name: "KAVA MC",
+      url: "https://kavamc.vercel.app",
+      description: "Проведение и организация мероприятий, live-шоу, свадьбы, корпоративы и клубные форматы.",
+      areaServed: ["Москва", "Московская область", "Сергиев Посад"],
+    },
   ],
 };
 
@@ -81,7 +88,7 @@ function VideoTile({ index, label }: { index: number; label: string }) {
 const faq = [
   ["Можно заказать только ведение?", "Да. Можно пригласить меня только как ведущего, отдельно заказать шоу или передать мне организацию события целиком."],
   ["Работаешь только в Сергиевом Посаде?", "Нет. Основная география - Сергиев Посад, Москва и Московская область. Другие города обсуждаются отдельно."],
-  ["Eminem Tribute уже готов?", "Проект находится на этапе запуска полноценного showcase. На сайте я отдельно разделяю текущие live-материалы и будущий tribute showreel."],
+  ["Eminem Tribute уже готов?", "Проект находится на этапе запуска полноценного showcase. Текущие live-материалы и будущий tribute showreel на сайте разделены."],
   ["Можно без конкурсов?", "Можно. Я строю программу вокруг людей, атмосферы, юмора, музыки и живой реакции, а не вокруг обязательных конкурсов."],
 ];
 
@@ -97,7 +104,8 @@ export default function Home() {
         <nav className="bento-nav" aria-label="Основная навигация">
           <Link href="/eminem-tribute">Eminem Show</Link>
           <Link href="/poleznoe">Полезное</Link>
-          <Link href="/referral">Реферальная программа</Link>
+          <Link href="/referral">Реферальная</Link>
+          <Link href="/legal">Юридическое</Link>
           <a href="#contacts">Контакты</a>
         </nav>
         <a className="bento-header-cta" href="#contacts">Обсудить дату <Arrow /></a>
@@ -138,18 +146,18 @@ export default function Home() {
           <p>лет в event-индустрии, на сцене и внутри реальных мероприятий</p>
         </article>
 
-        <Link href="/uslugi/vedushchiy-na-svadbu" className="bento-card bento-service-card bento-span-4">
-          <MediaTile src="/media/private-event.webp" alt="Частное мероприятие с MC KAVA" position="48% 34%" />
+        <Link href="/uslugi/vedushchiy-na-svadbu" className="bento-card bento-service-card bento-wedding-card bento-span-4">
+          <MediaTile src="/media/private-event.webp" alt="Частное праздничное мероприятие с MC KAVA" position="49% 31%" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Свадьбы</h3><p>Современное ведение, тайминг, импровизация и работа с гостями без давления.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
-        <Link href="/uslugi/vedushchiy-na-korporativ" className="bento-card bento-service-card bento-span-4">
-          <MediaTile src="/media/club-main.webp" alt="MC KAVA работает с залом" position="50% 36%" />
+        <Link href="/uslugi/vedushchiy-na-korporativ" className="bento-card bento-service-card bento-corporate-card bento-span-4">
+          <MediaTile src="/media/official.webp" alt="MC KAVA на официальном мероприятии" position="50% 28%" />
           <div className="bento-service-copy"><span className="bento-kicker">Проведение</span><h3>Корпоративы</h3><p>Программа под компанию, музыкальные блоки и живой контакт с аудиторией.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
-        <Link href="/uslugi/organizatsiya-meropriyatiy" className="bento-card bento-service-card bento-span-4">
-          <MediaTile src="/media/backstage.webp" alt="Подготовка и организация мероприятия" position="50% 28%" />
+        <Link href="/uslugi/organizatsiya-meropriyatiy" className="bento-card bento-service-card bento-production-card bento-span-4">
+          <MediaTile src="/media/backstage.webp" alt="Подготовка и организация мероприятия" position="50% 32%" />
           <div className="bento-service-copy"><span className="bento-kicker">Под ключ</span><h3>Организация</h3><p>Площадка, подрядчики, программа, техника, тайминг и контроль договорённостей.</p><strong>Подробнее <Arrow /></strong></div>
         </Link>
 
@@ -175,13 +183,13 @@ export default function Home() {
         <article className="bento-card bento-span-8 bento-useful-card">
           <div className="bento-useful-intro">
             <span className="bento-kicker">Полезное</span>
-            <h2>Не только продаю. Помогаю разобраться.</h2>
-            <p>Практические материалы для тех, кто организует свадьбу, корпоратив или частное событие самостоятельно.</p>
+            <h2>Организуешь сам? Держи нормальные инструменты.</h2>
+            <p>Чек-листы и практические материалы без «оставьте номер, чтобы узнать секрет». Их можно открыть и использовать сразу.</p>
             <Link className="bento-button" href="/poleznoe">Все материалы <Arrow /></Link>
           </div>
           <div className="bento-useful-links">
-            <Link href="/poleznoe/kak-vybrat-vedushego-na-svadbu"><span>01</span><strong>Как выбрать ведущего на свадьбу</strong><Arrow /></Link>
-            <Link href="/poleznoe/chek-list-podgotovki-svadby"><span>02</span><strong>Чек-лист подготовки свадьбы</strong><Arrow /></Link>
+            <Link href="/poleznoe/chek-list-podgotovki-meropriyatiya"><span>01</span><strong>Чек-лист подготовки мероприятия</strong><Arrow /></Link>
+            <Link href="/poleznoe/kak-vybrat-vedushego-na-svadbu"><span>02</span><strong>Как выбрать ведущего на свадьбу</strong><Arrow /></Link>
             <Link href="/poleznoe/kak-vybrat-ploshadku-dlya-meropriyatiya"><span>03</span><strong>Как выбрать площадку</strong><Arrow /></Link>
           </div>
         </article>
@@ -191,6 +199,49 @@ export default function Home() {
           <h2>Знаешь человека, которому нужен KAVA?</h2>
           <p>Передай контакт или познакомь нас. Условия вознаграждения фиксируем заранее и без мутных «потом разберёмся».</p>
           <strong>Как это работает <Arrow /></strong>
+        </Link>
+
+        <a href="https://nado-prazdnik.vercel.app" target="_blank" rel="noreferrer" className="bento-card bento-partner-card bento-span-7">
+          <span className="bento-kicker">Официальный партнёр</span>
+          <h2>NADO Праздник</h2>
+          <p>Технологическая платформа для сборки мероприятий: площадки, исполнители, бюджет, подготовка и цифровой контур события. KAVA MC и NADO Праздник развиваются как отдельные продукты, но могут работать вместе в event-проектах.</p>
+          <strong>Открыть NADO Праздник <Arrow /></strong>
+        </a>
+
+        <article className="bento-card bento-live-card bento-span-5">
+          <span className="bento-kicker">Live направление</span>
+          <h2>Сцена не заканчивается микрофоном ведущего.</h2>
+          <p>Сейчас главный публичный продукт - Eminem Live Tribute Show. Остальные сценические программы упаковываем отдельно, когда под них готовы материалы и конкретный live-продукт.</p>
+          <div className="bento-live-list">
+            <span><b>Eminem Live Tribute</b><small>в запуске</small></span>
+            <span><b>Club MC</b><small>доступно</small></span>
+            <span><b>Новые live show</b><small>готовим</small></span>
+          </div>
+        </article>
+
+        <article className="bento-card bento-social-card bento-span-5">
+          <span className="bento-kicker">Соцсети и связь</span>
+          <h2>Где следить за KAVA MC</h2>
+          <p>Основные публичные ссылки собираю в одном месте. Неподтверждённые адреса не подставляю, чтобы не увести человека в чужой аккаунт.</p>
+          <div className="bento-social-links">
+            <a href={telegram} target="_blank" rel="noreferrer">Telegram ↗</a>
+            <span>VK · ссылка готовится</span>
+            <span>MAX · ссылка готовится</span>
+          </div>
+        </article>
+
+        <article className="bento-card bento-checklist-card bento-span-3">
+          <span className="bento-kicker">Бесплатно</span>
+          <h2>Чек-лист мероприятия</h2>
+          <p>Площадка, бюджет, команда, тайминг, техника, документы и контрольный прогон перед датой.</p>
+          <Link href="/poleznoe/chek-list-podgotovki-meropriyatiya">Открыть чек-лист <Arrow /></Link>
+        </article>
+
+        <Link href="/legal" className="bento-card bento-legal-card bento-span-4">
+          <span className="bento-kicker">Юридическая информация</span>
+          <h2>Документы сайта - в одном разделе.</h2>
+          <p>Политика обработки данных, согласие, cookies, условия использования, реквизиты оператора и правила реферальной программы.</p>
+          <strong>Открыть юридический раздел <Arrow /></strong>
         </Link>
 
         <article className="bento-card bento-span-5 bento-geo-card">
@@ -225,10 +276,14 @@ export default function Home() {
       <footer className="bento-footer bento-shell">
         <Link className="bento-logo" href="#top">KAVA <span>MC</span></Link>
         <p>Организация · Ведение · Шоу</p>
-        <div>
+        <div className="bento-footer-legal">
           <Link href="/poleznoe">Полезное</Link>
           <Link href="/referral">Реферальная программа</Link>
-          <Link href="/privacy">Конфиденциальность</Link>
+          <Link href="/legal">Юридическая информация</Link>
+          <Link href="/privacy">Политика ПДн</Link>
+          <Link href="/consent">Согласие</Link>
+          <Link href="/cookies">Cookies</Link>
+          <Link href="/terms">Условия сайта</Link>
           <Link href="/requisites">Контакты оператора</Link>
         </div>
       </footer>
