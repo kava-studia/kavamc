@@ -29,6 +29,28 @@ const serviceMedia: Record<string, { src: string; alt: string; position?: string
   },
 };
 
+const serviceVideo: Record<string, { src: string; poster: string; label: string; title: string; text: string; venue: string; duration: string; muted?: boolean }> = {
+  "vedushchiy-na-svadbu": {
+    src: "/media/wedding-event-720.mp4",
+    poster: "/media/wedding-real-v2.webp",
+    label: "СВАДЬБА · ВИДЕО",
+    title: "Свадьба в движении.",
+    text: "Короткий рекламный ролик со свадьбы — люди, атмосфера и живая работа на событии.",
+    venue: "Ведение и организация свадьбы",
+    duration: "00:18",
+    muted: true,
+  },
+  "vedushchiy-na-korporativ": {
+    src: "/media/corporate-event-720.mp4",
+    poster: "/media/corporate-real-v2.webp",
+    label: "КОРПОРАТИВ · ВИДЕО",
+    title: "Корпоратив вживую.",
+    text: "Реальный фрагмент корпоратива: команда, движение и атмосфера площадки.",
+    venue: "Команда · движение · атмосфера",
+    duration: "00:10",
+  },
+};
+
 const displayCopy: Record<string, { title: string; lead: string; start: string }> = {
   "vedushchiy-na-svadbu": {
     title: "Ведущий на свадьбу",
@@ -73,6 +95,7 @@ export default async function ServicePage({ params }: Props) {
   const service = services.find((item) => item.slug === slug);
   if (!service) notFound();
   const visual = serviceMedia[service.slug];
+  const video = serviceVideo[service.slug];
   const display = displayCopy[service.slug] ?? { title: service.title, lead: service.lead, start: "Сначала коротко обсуждаем задачу и фиксируем следующий шаг." };
 
   const schema = {
@@ -115,6 +138,30 @@ export default async function ServicePage({ params }: Props) {
             />
           </div>
         </div>
+
+        {video && (
+          <section className="kava-service-video-proof">
+            <div className="kava-service-video-copy">
+              <span className="bento-kicker">{video.label}</span>
+              <h2>{video.title}</h2>
+              <p>{video.text}</p>
+            </div>
+            <div className="kava-service-video-player">
+              <article className="bento-card bento-video-card bento-video-card-portrait kava-extra-video-card">
+                <div className="bento-video-head">
+                  <div><span className="bento-kicker">{service.eyebrow}</span><h3>{service.slug === "vedushchiy-na-svadbu" ? "Свадебный ролик" : "Корпоратив"}</h3></div>
+                  <span className="bento-duration">{video.duration}</span>
+                </div>
+                <div className="bento-video-frame bento-video-frame-portrait">
+                  <video controls playsInline preload="metadata" poster={video.poster} muted={video.muted ?? false}>
+                    <source src={video.src} type="video/mp4" />
+                  </video>
+                </div>
+                <p>{video.venue}</p>
+              </article>
+            </div>
+          </section>
+        )}
 
         <div className="bento-article bento-service-article">
           <article className="bento-article-main">
