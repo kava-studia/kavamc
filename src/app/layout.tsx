@@ -12,6 +12,7 @@ import "./mobile-layout-hotfix.css";
 import "./bento.css";
 import "./bento-polish.css";
 import "./legal-hub.css";
+import "./bento-final.css";
 
 const manrope = Manrope({
   subsets: ["cyrillic", "latin"],
