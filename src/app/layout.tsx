@@ -16,6 +16,7 @@ import "./bento-final.css";
 import "./service-hero.css";
 import "./site-v5.css";
 import "./site-v5-hotfix.css";
+import "./site-v6.css";
 
 const onest = Onest({
   subsets: ["cyrillic", "latin"],
