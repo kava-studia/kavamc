@@ -10,10 +10,12 @@ const serviceMedia: Record<string, { src: string; alt: string; position?: string
   "vedushchiy-na-svadbu": {
     src: "/media/wedding-bento.webp",
     alt: "MC KAVA ведёт свадьбу в банкетном зале",
+    position: "50% 42%",
   },
   "vedushchiy-na-korporativ": {
     src: "/media/corporate-bento.webp",
     alt: "MC KAVA проводит корпоративное мероприятие",
+    position: "50% 43%",
   },
   "organizatsiya-meropriyatiy": {
     src: "/media/backstage.webp",
@@ -24,6 +26,29 @@ const serviceMedia: Record<string, { src: string; alt: string; position?: string
     src: "/media/club-wide.webp",
     alt: "KAVA MC на клубной сцене",
     position: "50% 42%",
+  },
+};
+
+const displayCopy: Record<string, { title: string; lead: string; start: string }> = {
+  "vedushchiy-na-svadbu": {
+    title: "Ведущий на свадьбу",
+    lead: "Живое современное ведение, понятный тайминг и импровизация без давления на гостей.",
+    start: "Вы присылаете дату, город и примерный формат свадьбы. Созваниваемся, знакомимся и фиксируем следующий шаг.",
+  },
+  "vedushchiy-na-korporativ": {
+    title: "Ведущий на корпоратив",
+    lead: "Программа под вашу команду: нужный темп, музыкальные блоки, награждения и живой контакт с залом.",
+    start: "Вы присылаете дату, город, количество гостей и задачу корпоратива. Дальше собираем подходящий формат программы.",
+  },
+  "organizatsiya-meropriyatiy": {
+    title: "Организация мероприятий",
+    lead: "Собираю площадку, подрядчиков, программу, технику и тайминг в один управляемый проект.",
+    start: "Можно прийти просто с идеей, датой или бюджетом. Сначала определяем задачу, затем собираем смету и команду.",
+  },
+  "club-mc": {
+    title: "Club Show MC",
+    lead: "MC внутри музыки и реакции зала: работа поверх DJ-сета, специальные выходы и сценические блоки.",
+    start: "Пришлите город, дату, площадку и формат вечера. Я предложу подходящую длительность и конфигурацию шоу.",
   },
 };
 
@@ -48,6 +73,7 @@ export default async function ServicePage({ params }: Props) {
   const service = services.find((item) => item.slug === slug);
   if (!service) notFound();
   const visual = serviceMedia[service.slug];
+  const display = displayCopy[service.slug] ?? { title: service.title, lead: service.lead, start: "Сначала коротко обсуждаем задачу и фиксируем следующий шаг." };
 
   const schema = {
     "@context": "https://schema.org",
@@ -73,8 +99,8 @@ export default async function ServicePage({ params }: Props) {
           <div className="bento-service-hero-copy">
             <Link className="bento-back" href="/">← На главную</Link>
             <span className="bento-kicker">{service.eyebrow}</span>
-            <h1>{service.title}</h1>
-            <p>{service.lead}</p>
+            <h1>{display.title}</h1>
+            <p>{display.lead}</p>
             <Link className="bento-service-hero-cta" href="/#contacts">Обсудить событие ↗</Link>
           </div>
           <div className="bento-service-hero-media">
@@ -83,6 +109,7 @@ export default async function ServicePage({ params }: Props) {
               alt={visual.alt}
               fill
               priority
+              unoptimized
               sizes="(max-width: 820px) 100vw, 50vw"
               style={{ objectFit: "cover", objectPosition: visual.position ?? "50% 50%" }}
             />
@@ -101,13 +128,13 @@ export default async function ServicePage({ params }: Props) {
             </section>
             <section>
               <h2>Как начинаем</h2>
-              <p>Сначала фиксируем дату, город, площадку или её отсутствие, количество гостей и задачу события. После этого определяем формат работы, состав команды и следующий шаг.</p>
+              <p>{display.start}</p>
             </section>
           </article>
           <aside className="bento-article-side">
             <span className="bento-kicker">Связаться</span>
-            <h3>Сначала проверим дату.</h3>
-            <p>Дальше уже спокойно разбираем формат, программу и детали.</p>
+            <h3>Проверим дату и задачу.</h3>
+            <p>Дальше спокойно собираем формат, программу и детали.</p>
             <Link href="/#contacts">Написать KAVA MC ↗</Link>
           </aside>
         </div>
