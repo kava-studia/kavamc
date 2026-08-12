@@ -33,60 +33,61 @@ function Photo({ src, className = "", label, position }: { src: string; classNam
 }
 
 const included = [
-  "Личное общение с заказчиком и один ответственный за общий процесс",
-  "Программа, сценарный каркас и тайминг под конкретное событие",
-  "Живое ведение, импровизация и работа с залом без принуждения гостей",
-  "Подбор DJ и других подрядчиков под задачу мероприятия",
-  "Подбор подрядчиков по звуку и свету с отдельным расчётом оборудования",
-  "Координация договорённостей и контроль согласованного плана",
+  "Проведение события как ведущий и MC - живо, без натянутых конкурсов",
+  "Отдельные сценические шоу и клубные форматы, включая Eminem Live Tribute Show",
+  "Сценарная логика, программа и тайминг под конкретную аудиторию",
+  "Организация мероприятия - площадка, подрядчики и общий контроль",
+  "Подбор DJ, звука, света, артистов и других специалистов под задачу",
+  "Личное общение со мной и один ответственный за общий результат",
 ];
 
 const collaboration = [
-  { n: "01", title: "Знакомство и задача", text: "Обсуждаем формат, гостей, площадку, ожидания и то, что точно не должно происходить.", cta: "Проверить дату" },
-  { n: "02", title: "Предложение и подготовка", text: "Фиксируем состав работы, собираем программу, тайминг, подрядчиков и предварительную смету.", cta: "Обсудить проект" },
-  { n: "03", title: "Мероприятие и контроль", text: "Я провожу событие и держу общий процесс в рамках согласованного сценария и договорённостей.", cta: "Начать разговор" },
+  { n: "01", title: "Выступи у меня", text: "Eminem Live Tribute Show, Club Show, специальный рэп-блок или гостевой сценический выход.", cta: "Открыть шоу" },
+  { n: "02", title: "Проведи мне", text: "Свадьба, корпоратив, день рождения, выпускной или другое событие с MC KAVA.", cta: "Проверить дату" },
+  { n: "03", title: "Организуй мне", text: "Собираю мероприятие целиком: концепция, площадка, команда, программа, техника и контроль.", cta: "Обсудить проект" },
 ];
 
 const catalogMedia = [
+  { src: "/media/club-wide.webp", position: "50% 38%" },
+  { src: "/media/club-main.webp", position: "50% 35%" },
   { src: "/media/private-event.webp", position: "50% 34%" },
-  { src: "/media/hero.webp", position: "66% 30%" },
   { src: "/media/backstage.webp", position: "50% 28%" },
+  { src: "/media/hero.webp", position: "66% 30%" },
   { src: "/media/private-event.webp", position: "48% 38%" },
-  { src: "/media/club-wide.webp", position: "50% 44%" },
-  { src: "/media/live-guitar.webp", position: "50% 32%" },
 ];
 
 export default function Home() {
   return (
     <main className="home-page night-architecture">
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="KAVA STUDIA - на главную">KAVA<span>STUDIA</span></a>
-        <nav aria-label="Основная навигация"><a href="#formats">Форматы</a><a href="#included">Что входит</a><a href="#process">Как работаем</a><a href="#video">Видео</a><a href="#contacts">Контакты</a></nav>
-        <a className="header-cta glass-action" href="#contacts">Проверить дату <Arrow /></a>
+        <a className="brand" href="#top" aria-label="KAVA MC - на главную">KAVA<span>MC</span></a>
+        <nav aria-label="Основная навигация"><Link href="/eminem-tribute">Eminem Show</Link><a href="#formats">Форматы</a><a href="#included">Что делаю</a><a href="#video">Видео</a><a href="#contacts">Контакты</a></nav>
+        <a className="header-cta glass-action" href="#contacts">Связаться <Arrow /></a>
         <MobileMenu />
       </header>
 
       <section className="hero ns-hero" id="top">
-        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA STUDIA · MC KAVA" position="64% 30%" />
+        <Photo src="/media/hero.webp" className="hero-photo" label="KAVA MC · ARTIST · HOST · EVENT PRODUCER" position="64% 30%" />
         <div className="ns-hero-copy" data-reveal>
-          <p className="eyebrow">Свадьбы · корпоративы · частные события</p>
-          <h1>Организация<br />и проведение<br /><em>современных событий</em></h1>
-          <p className="hero-tagline">Я - MC KAVA. Лично веду проект, создаю программу и собираю под конкретное мероприятие проверенную команду.</p>
-          <div className="hero-actions"><a className="button button-primary" href="#contacts">Проверить дату <Arrow /></a><a className="button button-ghost" href="#video"><Icon name="play" size={18}/> Посмотреть видео</a></div>
+          <p className="eyebrow">Организация · Ведение · Шоу</p>
+          <h1>Собираю событие.<br />Веду зал.<br /><em>Делаю шоу.</em></h1>
+          <p className="hero-tagline">Я - MC KAVA. Ведущий, организатор и артист. Свадьбы, корпоративы, клубные форматы и новый флагман - Eminem Live Tribute Show.</p>
+          <div className="hero-actions"><Link className="button button-primary" href="/eminem-tribute">Eminem Live Tribute Show <Arrow /></Link><a className="button button-ghost" href="#contacts">Обсудить мероприятие</a></div>
         </div>
-        <div className="hero-facts" data-reveal><div><strong>8+</strong><span>лет в индустрии</span></div><div><strong>3</strong><span>главных направления</span></div><div><strong>1</strong><span>ответственный за процесс</span></div></div>
+        <div className="hero-facts" data-reveal><div><strong>8+</strong><span>лет в индустрии</span></div><div><strong>3</strong><span>способа работать со мной</span></div><div><strong>1</strong><span>лицо и ответственность</span></div></div>
       </section>
 
-      <div className="marquee" aria-hidden="true"><div>KAVA STUDIA · СВАДЬБЫ · КОРПОРАТИВЫ · ЧАСТНЫЕ СОБЫТИЯ · ОРГАНИЗАЦИЯ · ВЕДУЩИЙ · DJ · KAVA STUDIA ·</div></div>
+      <div className="marquee" aria-hidden="true"><div>KAVA MC · EMINEM LIVE TRIBUTE SHOW · EVENT HOST · EVENT PRODUCTION · CLUB SHOW · WEDDINGS · CORPORATES · KAVA MC ·</div></div>
 
       <section className="catalog" id="formats">
-        <div className="content-shell catalog-head" data-reveal><div><p className="eyebrow">Форматы работы</p><h2>Не пакет ради пакета.<br /><em>Нужен работающий формат.</em></h2></div><p>Состав работы зависит от даты, площадки, числа гостей, города и уровня подготовки события.</p></div>
+        <div className="content-shell catalog-head" data-reveal><div><p className="eyebrow">Форматы KAVA</p><h2>Выступи у меня.<br />Проведи мне.<br /><em>Организуй мне.</em></h2></div><p>Можно заказать отдельное шоу, пригласить меня ведущим или собрать событие целиком. Eminem Tribute сейчас - главный артистический продукт.</p></div>
         <div className="content-shell catalog-grid">
           {formats.map((format, index) => {
             const media = catalogMedia[index];
+            const tribute = index === 0;
             return <article className={`catalog-card ${"featured" in format && format.featured ? "featured" : ""}`} key={format.title} data-reveal>
-              <div className="catalog-card-image" style={{ backgroundImage: `linear-gradient(180deg,rgba(5,7,11,.04) 20%,rgba(5,7,11,.88)),url(${media.src})`, backgroundPosition: media.position }}><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Основной формат</b> : null}</div>
-              <div className="catalog-card-body"><h3>{format.title}</h3><strong>{format.price}</strong><p>{format.text}</p><div className="tags">{format.tags.map(tag => <span key={tag}>{tag}</span>)}</div><a href="#contacts">Обсудить формат <Arrow /></a></div>
+              <div className="catalog-card-image" style={{ backgroundImage: `linear-gradient(180deg,rgba(5,7,11,.04) 20%,rgba(5,7,11,.88)),url(${media.src})`, backgroundPosition: media.position }}><span>0{index + 1}</span>{"featured" in format && format.featured ? <b>Флагман</b> : null}</div>
+              <div className="catalog-card-body"><h3>{format.title}</h3><strong>{format.price}</strong><p>{format.text}</p><div className="tags">{format.tags.map(tag => <span key={tag}>{tag}</span>)}</div>{tribute ? <Link href="/eminem-tribute">Открыть шоу <Arrow /></Link> : <a href="#contacts">Обсудить формат <Arrow /></a>}</div>
             </article>;
           })}
         </div>
@@ -94,36 +95,36 @@ export default function Home() {
 
       <section className="included" id="included">
         <div className="content-shell included-layout">
-          <div className="included-title" data-reveal><p className="eyebrow">Что входит в работу</p><h2>Не только<br /><em>микрофон.</em></h2><p>Моя задача - собрать программу, людей и договорённости в один понятный процесс. Световое оборудование не является моим собственным парком - при необходимости я подбираю и координирую отдельного подрядчика.</p></div>
+          <div className="included-title" data-reveal><p className="eyebrow">Что можно поручить мне</p><h2>Не только<br /><em>микрофон.</em></h2><p>KAVA MC - это не попытка назвать одним словом всё подряд. Это один человек, которого можно купить как артиста, ведущего или организатора - в зависимости от задачи события.</p></div>
           <div className="included-list">{included.map((item, index) => <div key={item} data-reveal><span>0{index + 1}</span><strong>{item}</strong><Icon name="check" size={22}/></div>)}</div>
         </div>
       </section>
 
       <section className="collaboration" id="process">
-        <div className="content-shell"><div className="section-head" data-reveal><div><p className="eyebrow">Как проходит работа</p><h2>От первого сообщения<br /><em>до дня события.</em></h2></div><p>Без двадцати хаотичных чатов и решений, которые никто не зафиксировал.</p></div>
-        <div className="collaboration-grid">{collaboration.map(item => <article key={item.n} data-reveal><span>{item.n}</span><h3>{item.title}</h3><p>{item.text}</p><a href="#contacts">{item.cta} <Arrow /></a></article>)}</div></div>
+        <div className="content-shell"><div className="section-head" data-reveal><div><p className="eyebrow">Три входа в KAVA MC</p><h2>Шоу.<br />Проведение.<br /><em>Организация.</em></h2></div><p>Не нужно покупать агентство, если нужен один сильный выход. И не нужно собирать десять подрядчиков самостоятельно, если нужен весь проект.</p></div>
+        <div className="collaboration-grid">{collaboration.map((item, index) => <article key={item.n} data-reveal><span>{item.n}</span><h3>{item.title}</h3><p>{item.text}</p>{index === 0 ? <Link href="/eminem-tribute">{item.cta} <Arrow /></Link> : <a href="#contacts">{item.cta} <Arrow /></a>}</article>)}</div></div>
       </section>
 
-      <section className="visual-break ns-break"><Photo src="/media/private-event.webp" className="visual-break-photo" label="ЛИЧНОЕ УЧАСТИЕ · ПОНЯТНЫЙ ПРОЦЕСС" position="48% 34%"/><div className="content-shell visual-break-inner"><div className="visual-break-copy" data-reveal><p className="eyebrow">MC KAVA - лицо проекта</p><h2>Один человек<br /><em>держит общий контур.</em></h2><p>Я лично общаюсь с заказчиком, создаю программу, веду мероприятие и собираю нужных специалистов. DJ, фотограф, видеограф, звук, свет и другие направления подключаются под конкретную задачу, а не изображают несуществующий штат.</p><a className="button button-primary" href={telegram} target="_blank" rel="noreferrer">Обсудить мероприятие <Arrow /></a></div></div></section>
+      <section className="visual-break ns-break"><Photo src="/media/club-wide.webp" className="visual-break-photo" label="EMINEM LIVE TRIBUTE SHOW · KAVA MC" position="50% 40%"/><div className="content-shell visual-break-inner"><div className="visual-break-copy" data-reveal><p className="eyebrow">Главный запуск</p><h2>Eminem Live<br /><em>Tribute Show.</em></h2><p>Отдельный концертный продукт для клубов, фестивалей, корпоративов и специальных событий. Сейчас собираю программу и ищу площадку для первого полноценного live showcase.</p><Link className="button button-primary" href="/eminem-tribute">Смотреть концепцию шоу <Arrow /></Link></div></div></section>
 
-      <section className="video" id="video"><div className="content-shell"><div className="section-head inverse" data-reveal><div><p className="eyebrow">Реальная работа</p><h2>Сначала смотри.<br /><em>Потом решай.</em></h2></div><p>Только настоящие сцены, публика и работа в моменте. Клубный опыт здесь не главный продукт, а доказательство реакции, темпа и уверенной работы с залом.</p></div><VideoGallery /></div></section>
+      <section className="video" id="video"><div className="content-shell"><div className="section-head inverse" data-reveal><div><p className="eyebrow">Реальная работа</p><h2>Сначала смотри.<br /><em>Потом решай.</em></h2></div><p>Здесь только реальные сцены и публика. Трибьют-шоурил будет добавлен отдельно после первого showcase - старые ролики за новый продукт не выдаём.</p></div><VideoGallery /></div></section>
 
       <section className="experience" id="experience">
-        <div className="content-shell experience-layout"><div className="experience-copy" data-reveal><p className="eyebrow">Опыт и география</p><h2>Восемь лет<br /><em>внутри индустрии.</em></h2><p>Свадьбы, корпоративы, частные события, клубы, рестораны, открытия и организация мероприятий в Сергиевом Посаде, Москве и Московской области.</p></div>
+        <div className="content-shell experience-layout"><div className="experience-copy" data-reveal><p className="eyebrow">Опыт и география</p><h2>Сцена плюс<br /><em>event производство.</em></h2><p>Клубы, свадьбы, корпоративы, частные события и организация мероприятий в Сергиевом Посаде, Москве и Московской области.</p></div>
         <div className="venue-list">{venues.map(venue => <div key={venue.city} data-reveal><strong>{venue.city}</strong><span>{venue.names}</span></div>)}</div>
-        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="ПОДГОТОВКА · КОМАНДА · КОНТРОЛЬ" position="50% 28%"/><Photo src="/media/club-wide.webp" className="gallery-small" label="ЗАЛ · ТЕМП · ЭНЕРГИЯ" position="50% 42%"/></div></div>
+        <div className="experience-gallery"><Photo src="/media/backstage.webp" className="gallery-main" label="ОРГАНИЗАЦИЯ · КОМАНДА · КОНТРОЛЬ" position="50% 28%"/><Photo src="/media/club-wide.webp" className="gallery-small" label="СЦЕНА · РЭП · ЭНЕРГИЯ" position="50% 42%"/></div></div>
       </section>
 
-      <div className="marquee marquee-orange" aria-hidden="true"><div>ПРОГРАММА · ТАЙМИНГ · ИМПРОВИЗАЦИЯ · ПОДРЯДЧИКИ · КОНТРОЛЬ · ЖИВЫЕ ЛЮДИ · РЕАЛЬНЫЙ МОМЕНТ ·</div></div>
+      <div className="marquee marquee-orange" aria-hidden="true"><div>ВЫСТУПИ У МЕНЯ · ПРОВЕДИ МНЕ · ОРГАНИЗУЙ МНЕ · EMINEM TRIBUTE · CLUB SHOW · СВАДЬБЫ · КОРПОРАТИВЫ ·</div></div>
 
       <section className="contacts" id="contacts">
-        <div className="content-shell contacts-layout"><div className="contact-heading" data-reveal><p className="eyebrow">Проверка даты</p><h2>Расскажите о событии.<br /><em>Я предложу следующий шаг.</em></h2><p>Заполните короткую форму. Сообщение откроется в Telegram - перед отправкой вы увидите весь текст.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a></div></div>
+        <div className="content-shell contacts-layout"><div className="contact-heading" data-reveal><p className="eyebrow">Booking и мероприятия</p><h2>Расскажите задачу.<br /><em>Я предложу формат.</em></h2><p>Можно написать по шоу, проведению или полной организации. В сообщении достаточно даты, города, площадки и того, что нужно сделать.</p><div className="direct-contacts"><a href={telegram} target="_blank" rel="noreferrer">Telegram · @kava_studia <Arrow /></a><a href="tel:+79932542217">+7 993 254-22-17 <Arrow /></a><a href="mailto:juri.kava@yandex.ru">juri.kava@yandex.ru <Arrow /></a></div></div>
         <ContactForm /></div>
       </section>
 
-      <footer><a className="brand footer-brand" href="#top">KAVA<span>STUDIA</span></a><div className="footer-center"><p>Организация и проведение современных событий · MC KAVA</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div><p>© {new Date().getFullYear()} KAVA STUDIA</p></footer>
+      <footer><a className="brand footer-brand" href="#top">KAVA<span>MC</span></a><div className="footer-center"><p>Организация · Ведение · Шоу</p><div className="footer-legal"><Link href="/privacy">Конфиденциальность</Link><Link href="/consent">Согласие на обработку данных</Link><Link href="/cookies">Cookies</Link><Link href="/terms">Условия использования</Link><Link href="/requisites">Контакты оператора</Link></div></div><p>© {new Date().getFullYear()} KAVA MC</p></footer>
 
-      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><Icon name="home" size={20}/>Главная</a><a href="#formats"><Icon name="grid" size={20}/>Форматы</a><a href="#video"><Icon name="media" size={20}/>Видео</a><a className="mobile-book" href="#contacts"><Icon name="bolt" size={20}/>Проверить дату</a></nav>
+      <nav className="mobile-bottom-nav" aria-label="Быстрые действия"><a href="#top"><Icon name="home" size={20}/>Главная</a><Link href="/eminem-tribute"><Icon name="mic" size={20}/>Eminem</Link><a href="#video"><Icon name="media" size={20}/>Видео</a><a className="mobile-book" href="#contacts"><Icon name="bolt" size={20}/>Связаться</a></nav>
     </main>
   );
 }
