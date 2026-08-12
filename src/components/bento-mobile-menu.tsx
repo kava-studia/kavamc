@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { links } from "@/data/links";
 
-const links = [
+const menuLinks = [
   ["Eminem Live Tribute", "/eminem-tribute"],
   ["Свадьбы", "/uslugi/vedushchiy-na-svadbu"],
   ["Корпоративы", "/uslugi/vedushchiy-na-korporativ"],
@@ -41,7 +42,7 @@ export function BentoMobileMenu() {
           <span>Организация · Ведение · Шоу</span>
         </div>
         <nav aria-label="Мобильная навигация">
-          {links.map(([label, href], index) => (
+          {menuLinks.map(([label, href], index) => (
             <Link href={href} onClick={() => setOpen(false)} key={href}>
               <span>{String(index + 1).padStart(2, "0")}</span>
               <strong>{label}</strong>
@@ -50,8 +51,10 @@ export function BentoMobileMenu() {
           ))}
         </nav>
         <div className="bento-menu-contacts">
-          <a href="https://t.me/kava_studia" target="_blank" rel="noreferrer">Telegram ↗</a>
-          <a href="tel:+79932542217">+7 993 254-22-17</a>
+          <a href={links.telegram} target="_blank" rel="noreferrer">Telegram ↗</a>
+          <a href={links.vk} target="_blank" rel="noreferrer">ВКонтакте ↗</a>
+          <a href={links.max} target="_blank" rel="noreferrer">MAX ↗</a>
+          <a href={`tel:${links.phone}`}>{links.phoneLabel}</a>
           <Link href="/#contacts" onClick={() => setOpen(false)}>Обсудить мероприятие</Link>
         </div>
       </aside>
