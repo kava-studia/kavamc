@@ -3,12 +3,14 @@ import { Manrope, Unbounded } from "next/font/google";
 import { CookieConsent } from "@/components/cookie-consent";
 import { ScrollEffects } from "@/components/scroll-effects";
 import { SiteControls } from "@/components/site-controls";
+import { BentoMobileMenu } from "@/components/bento-mobile-menu";
 import "./globals.css";
 import "./refinement.css";
 import "./mobile-final.css";
 import "./premium-v2.css";
 import "./mobile-layout-hotfix.css";
 import "./bento.css";
+import "./bento-polish.css";
 
 const manrope = Manrope({
   subsets: ["cyrillic", "latin"],
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | KAVA MC",
   },
   description:
-    "MC KAVA - ведущий и организатор свадеб, корпоративов и частных мероприятий в Москве, Сергиевом Посаде и Московской области. Club Show и Eminem Live Tribute Show.",
+    "MC KAVA - ведущий и организатор свадеб, корпоративов и частных мероприятий в Москве, Сергиевом Посаде и Московской области. Eminem Live Tribute Show, Club MC и event production.",
   keywords: [
     "MC KAVA",
     "KAVA MC",
@@ -43,6 +45,8 @@ export const metadata: Metadata = {
     "клубный MC",
     "Eminem tribute show",
     "рэп шоу на мероприятие",
+    "event production Москва",
+    "шоу на корпоратив",
   ],
   authors: [{ name: "MC KAVA" }],
   creator: "MC KAVA",
@@ -84,6 +88,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body>
         <ScrollEffects />
         <SiteControls />
+        <BentoMobileMenu />
         {children}
         <CookieConsent />
       </body>
