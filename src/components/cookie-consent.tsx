@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "kavamc_cookie_consent_v1";
+export const COOKIE_STORAGE_KEY = "kavamc_cookie_consent_v1";
+export const COOKIE_CONSENT_EVENT = "kavamc-cookie-consent-changed";
 
 type Choice = "essential" | "all";
 
@@ -12,11 +13,12 @@ export function CookieConsent() {
   const [settings, setSettings] = useState(false);
 
   useEffect(() => {
-    setVisible(!window.localStorage.getItem(STORAGE_KEY));
+    setVisible(!window.localStorage.getItem(COOKIE_STORAGE_KEY));
   }, []);
 
   function save(choice: Choice) {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ choice, date: new Date().toISOString() }));
+    window.localStorage.setItem(COOKIE_STORAGE_KEY, JSON.stringify({ choice, date: new Date().toISOString() }));
+    window.dispatchEvent(new CustomEvent(COOKIE_CONSENT_EVENT, { detail: { choice } }));
     setVisible(false);
     setSettings(false);
   }
@@ -27,11 +29,11 @@ export function CookieConsent() {
     <aside className="cookie-panel" aria-label="Настройки файлов cookie">
       <div className="cookie-topline"><span>COOKIE SETTINGS</span><button type="button" onClick={() => save("essential")} aria-label="Закрыть">×</button></div>
       <h2>Сайт уважает приватность.</h2>
-      <p>Сейчас используются только технически необходимые настройки и локальное хранение вашего выбора. Аналитика и рекламные cookies не включены.</p>
+      <p>Необходимые настройки используются для работы сайта. Аналитика Яндекс Метрики включается только после выбора «Принять» и только если счётчик подключён владельцем сайта.</p>
       {settings && (
         <div className="cookie-settings">
           <div><strong>Необходимые</strong><span>Всегда включены · сохраняют выбор настроек</span></div>
-          <div><strong>Аналитические</strong><span>Сейчас не используются</span></div>
+          <div><strong>Аналитические</strong><span>Яндекс Метрика · только после согласия</span></div>
           <div><strong>Рекламные</strong><span>Не используются</span></div>
         </div>
       )}
