@@ -4,7 +4,6 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { ScrollEffects } from "@/components/scroll-effects";
 import { BentoMobileMenu } from "@/components/bento-mobile-menu";
 import { YandexMetrika } from "@/components/yandex-metrika";
-import { KavaMediaExpansion } from "@/components/kava-media-expansion";
 import "./globals.css";
 import "./refinement.css";
 import "./mobile-final.css";
@@ -93,7 +92,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ScrollEffects />
         <BentoMobileMenu />
         {children}
-        <KavaMediaExpansion />
         <YandexMetrika />
         <CookieConsent />
       </body>
