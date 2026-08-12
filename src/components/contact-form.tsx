@@ -1,137 +1,84 @@
 "use client";
 
-import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { links } from "@/data/links";
 
-const initialForm = {
-  name: "",
-  eventType: "Свадьба",
-  city: "",
-  date: "",
-  venue: "",
-  guests: "",
-  format: "Проведение мероприятия",
-  contact: "",
-  comment: "",
-  consent: false,
-};
+const eventOptions = [
+  {
+    id: "wedding",
+    label: "Свадьба",
+    message: "Здравствуйте! Хочу провести свадьбу с KAVA MC. Хочу обсудить дату и формат.",
+  },
+  {
+    id: "corporate",
+    label: "Корпоратив",
+    message: "Здравствуйте! Хочу провести корпоратив с KAVA MC. Хочу обсудить дату и формат.",
+  },
+  {
+    id: "organization",
+    label: "Организация мероприятия",
+    message: "Здравствуйте! Хочу организовать мероприятие с KAVA MC. Хочу обсудить идею, дату и формат.",
+  },
+  {
+    id: "club-show",
+    label: "Club Show MC",
+    message: "Здравствуйте! Хочу пригласить KAVA MC с Club Show MC. Хочу обсудить дату, площадку и формат.",
+  },
+  {
+    id: "eminem",
+    label: "Eminem Live Tribute Show",
+    message: "Здравствуйте! Хочу пригласить Eminem Live Tribute Show by KAVA MC. Хочу обсудить дату, площадку и формат.",
+  },
+  {
+    id: "other",
+    label: "Другое событие",
+    message: "Здравствуйте! Хочу обсудить мероприятие с KAVA MC.",
+  },
+] as const;
+
+type EventId = (typeof eventOptions)[number]["id"];
 
 export function ContactForm() {
-  const [form, setForm] = useState(initialForm);
-  const [message, setMessage] = useState("");
+  const [selected, setSelected] = useState<EventId>("wedding");
+  const current = eventOptions.find((item) => item.id === selected) ?? eventOptions[0];
 
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (!form.consent) {
-      setMessage("Нужно дать отдельное согласие на обработку персональных данных.");
-      return;
-    }
-
-    const text = [
-      "Здравствуйте! Хочу обсудить проект с KAVA MC.",
-      `Имя: ${form.name}`,
-      `Тип события: ${form.eventType}`,
-      `Город: ${form.city}`,
-      `Дата: ${form.date || "уточняется"}`,
-      `Площадка: ${form.venue || "ещё не выбрана"}`,
-      `Количество гостей: ${form.guests || "уточняется"}`,
-      `Что требуется: ${form.format}`,
-      `Контакт: ${form.contact}`,
-      `Комментарий: ${form.comment || "нет"}`,
-    ].join("\n");
-
-    window.open(`${links.telegram}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
-    setMessage("Открыл Telegram с готовым сообщением. Проверьте текст и нажмите «Отправить».");
-  }
-
-  function update(field: keyof typeof initialForm, value: string | boolean) {
-    setForm((current) => ({ ...current, [field]: value }));
+  function openTelegram() {
+    const url = `${links.telegram}?text=${encodeURIComponent(current.message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 
   return (
-    <form className="lead-form" onSubmit={submit}>
-      <div className="form-header">
-        <span>КРАТКИЙ БРИФ</span>
-        <strong>Расскажите о задаче</strong>
-        <p>Форма не отправляет данные на сервер. Готовый текст откроется в Telegram, и вы сами решите, отправлять его или нет.</p>
+    <div className="quick-brief">
+      <div className="quick-brief-head">
+        <span>Короткий бриф</span>
+        <h3>Что планируем?</h3>
+        <p>Выберите формат. Telegram откроется сразу с готовым первым сообщением — дальше общаемся уже лично.</p>
       </div>
 
-      <div className="form-grid">
-        <label>
-          <span>Имя</span>
-          <input required value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="Как к вам обращаться" />
-        </label>
-
-        <label>
-          <span>Тип события</span>
-          <select value={form.eventType} onChange={(e) => update("eventType", e.target.value)}>
-            <option>Свадьба</option>
-            <option>Корпоратив</option>
-            <option>День рождения или юбилей</option>
-            <option>Выпускной</option>
-            <option>Открытие или презентация</option>
-            <option>Клубное мероприятие</option>
-            <option>Фестиваль</option>
-            <option>Другое событие</option>
-          </select>
-        </label>
-
-        <label>
-          <span>Город</span>
-          <input required value={form.city} onChange={(e) => update("city", e.target.value)} placeholder="Сергиев Посад, Москва..." />
-        </label>
-
-        <label>
-          <span>Дата</span>
-          <input type="date" value={form.date} onChange={(e) => update("date", e.target.value)} />
-        </label>
-
-        <label>
-          <span>Площадка</span>
-          <input value={form.venue} onChange={(e) => update("venue", e.target.value)} placeholder="Название или ещё не выбрана" />
-        </label>
-
-        <label>
-          <span>Количество гостей</span>
-          <input inputMode="numeric" value={form.guests} onChange={(e) => update("guests", e.target.value)} placeholder="Например, 45" />
-        </label>
-
-        <label className="form-wide">
-          <span>Что требуется</span>
-          <select value={form.format} onChange={(e) => update("format", e.target.value)}>
-            <option>Проведение мероприятия</option>
-            <option>Eminem Live Tribute Show</option>
-            <option>KAVA MC Club Show</option>
-            <option>Ведущий и DJ</option>
-            <option>Организация под ключ</option>
-            <option>Координация</option>
-            <option>Подбор площадки и подрядчиков</option>
-            <option>Нужна консультация</option>
-          </select>
-        </label>
-
-        <label className="form-wide">
-          <span>Телефон или Telegram</span>
-          <input required value={form.contact} onChange={(e) => update("contact", e.target.value)} placeholder="@username или +7" />
-        </label>
-
-        <label className="form-wide">
-          <span>Комментарий</span>
-          <textarea value={form.comment} onChange={(e) => update("comment", e.target.value)} placeholder="Что уже известно и какой результат хотите получить" rows={4} />
-        </label>
+      <div className="event-type-grid" role="radiogroup" aria-label="Тип события">
+        {eventOptions.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            role="radio"
+            aria-checked={selected === item.id}
+            className={selected === item.id ? "is-selected" : ""}
+            onClick={() => setSelected(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
       </div>
 
-      <label className="consent-check">
-        <input type="checkbox" checked={form.consent} onChange={(e) => update("consent", e.target.checked)} required />
-        <span>Я отдельно и добровольно даю <Link href="/consent" target="_blank">согласие на обработку персональных данных</Link> для ответа на обращение. С <Link href="/privacy" target="_blank">политикой конфиденциальности</Link> ознакомлен.</span>
-      </label>
-
-      <div className="form-footer">
-        <button type="submit">Продолжить в Telegram ↗</button>
-        <p className={`form-message ${message ? "success" : ""}`}>{message || "Предпочтительная связь - Telegram"}</p>
+      <div className="quick-brief-preview">
+        <span>Сообщение</span>
+        <p>{current.message}</p>
       </div>
-    </form>
+
+      <button className="quick-brief-submit" type="button" onClick={openTelegram}>
+        Продолжить в Telegram <span aria-hidden="true">↗</span>
+      </button>
+      <small>Сайт ничего не сохраняет: выбранный вариант используется только для подготовки текста сообщения.</small>
+    </div>
   );
 }
