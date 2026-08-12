@@ -8,14 +8,14 @@ type Props = { params: Promise<{ slug: string }> };
 
 const serviceMedia: Record<string, { src: string; alt: string; position?: string }> = {
   "vedushchiy-na-svadbu": {
-    src: "/media/wedding-real-v2.webp",
+    src: "/media/wedding-final.webp",
     alt: "MC KAVA ведёт свадьбу в банкетном зале",
-    position: "50% 42%",
+    position: "50% 35%",
   },
   "vedushchiy-na-korporativ": {
-    src: "/media/corporate-real-v2.webp",
+    src: "/media/corporate-final.webp",
     alt: "MC KAVA проводит корпоративное мероприятие",
-    position: "50% 43%",
+    position: "50% 57%",
   },
   "organizatsiya-meropriyatiy": {
     src: "/media/backstage.webp",
@@ -32,7 +32,7 @@ const serviceMedia: Record<string, { src: string; alt: string; position?: string
 const serviceVideo: Record<string, { src: string; poster: string; label: string; title: string; text: string; venue: string; duration: string; muted?: boolean }> = {
   "vedushchiy-na-svadbu": {
     src: "/media/wedding-event-720.mp4",
-    poster: "/media/wedding-real-v2.webp",
+    poster: "/media/wedding-final.webp",
     label: "СВАДЬБА · ВИДЕО",
     title: "Свадьба в движении.",
     text: "Короткий рекламный ролик со свадьбы — люди, атмосфера и живая работа на событии.",
@@ -42,7 +42,7 @@ const serviceVideo: Record<string, { src: string; poster: string; label: string;
   },
   "vedushchiy-na-korporativ": {
     src: "/media/corporate-event-720.mp4",
-    poster: "/media/corporate-real-v2.webp",
+    poster: "/media/corporate-final.webp",
     label: "КОРПОРАТИВ · ВИДЕО",
     title: "Корпоратив вживую.",
     text: "Реальный фрагмент корпоратива: команда, движение и атмосфера площадки.",
@@ -127,36 +127,17 @@ export default async function ServicePage({ params }: Props) {
             <Link className="bento-service-hero-cta" href="/#contacts">Обсудить событие ↗</Link>
           </div>
           <div className="bento-service-hero-media">
-            <Image
-              src={visual.src}
-              alt={visual.alt}
-              fill
-              priority
-              unoptimized
-              sizes="(max-width: 820px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: visual.position ?? "50% 50%" }}
-            />
+            <Image src={visual.src} alt={visual.alt} fill priority unoptimized sizes="(max-width: 820px) 100vw, 50vw" style={{ objectFit: "cover", objectPosition: visual.position ?? "50% 50%" }} />
           </div>
         </div>
 
         {video && (
           <section className="kava-service-video-proof">
-            <div className="kava-service-video-copy">
-              <span className="bento-kicker">{video.label}</span>
-              <h2>{video.title}</h2>
-              <p>{video.text}</p>
-            </div>
+            <div className="kava-service-video-copy"><span className="bento-kicker">{video.label}</span><h2>{video.title}</h2><p>{video.text}</p></div>
             <div className="kava-service-video-player">
               <article className="bento-card bento-video-card bento-video-card-portrait kava-extra-video-card">
-                <div className="bento-video-head">
-                  <div><span className="bento-kicker">{service.eyebrow}</span><h3>{service.slug === "vedushchiy-na-svadbu" ? "Свадебный ролик" : "Корпоратив"}</h3></div>
-                  <span className="bento-duration">{video.duration}</span>
-                </div>
-                <div className="bento-video-frame bento-video-frame-portrait">
-                  <video controls playsInline preload="metadata" poster={video.poster} muted={video.muted ?? false}>
-                    <source src={video.src} type="video/mp4" />
-                  </video>
-                </div>
+                <div className="bento-video-head"><div><span className="bento-kicker">{service.eyebrow}</span><h3>{service.slug === "vedushchiy-na-svadbu" ? "Свадебный ролик" : "Корпоратив"}</h3></div><span className="bento-duration">{video.duration}</span></div>
+                <div className="bento-video-frame bento-video-frame-portrait"><video controls playsInline preload="metadata" poster={video.poster} muted={video.muted ?? false}><source src={video.src} type="video/mp4" /></video></div>
                 <p>{video.venue}</p>
               </article>
             </div>
@@ -165,25 +146,11 @@ export default async function ServicePage({ params }: Props) {
 
         <div className="bento-article bento-service-article">
           <article className="bento-article-main">
-            <section>
-              <h2>Что входит</h2>
-              <ul>{service.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
-            </section>
-            <section>
-              <h2>Кому подходит</h2>
-              <p>{service.who}</p>
-            </section>
-            <section>
-              <h2>Как начинаем</h2>
-              <p>{display.start}</p>
-            </section>
+            <section><h2>Что входит</h2><ul>{service.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></section>
+            <section><h2>Кому подходит</h2><p>{service.who}</p></section>
+            <section><h2>Как начинаем</h2><p>{display.start}</p></section>
           </article>
-          <aside className="bento-article-side">
-            <span className="bento-kicker">Связаться</span>
-            <h3>Проверим дату и задачу.</h3>
-            <p>Дальше спокойно собираем формат, программу и детали.</p>
-            <Link href="/#contacts">Написать KAVA MC ↗</Link>
-          </aside>
+          <aside className="bento-article-side"><span className="bento-kicker">Связаться</span><h3>Проверим дату и задачу.</h3><p>Дальше спокойно собираем формат, программу и детали.</p><Link href="/#contacts">Написать KAVA MC ↗</Link></aside>
         </div>
       </div>
     </main>
