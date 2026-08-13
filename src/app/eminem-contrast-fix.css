@@ -1,0 +1,162 @@
+/* Eminem Tribute route-specific contrast lock.
+   This file is loaded last from the root layout and is intentionally scoped by
+   the unique section ids used only on /eminem-tribute. */
+
+main:has(> section#show):has(> section#formats):has(> section#booking) {
+  background: #07090d !important;
+  color: #f5f2ea !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+main:has(> section#show):has(> section#formats):has(> section#booking) > section,
+main:has(> section#show):has(> section#formats):has(> section#booking) > footer {
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  text-shadow: none !important;
+}
+
+/* Hero — dark photo, light copy. */
+main:has(> section#show) > section#show h1,
+main:has(> section#show) > section#show p,
+main:has(> section#show) > section#show a {
+  color: #f5f2ea !important;
+  -webkit-text-fill-color: #f5f2ea !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#show h1 em {
+  color: #ff4e35 !important;
+  -webkit-text-fill-color: #ff4e35 !important;
+}
+
+/* Statement — explicitly light. This is the block that was rendered black-on-black. */
+main:has(> section#show) > section#show + section {
+  background: #f3f0e8 !important;
+  background-image: none !important;
+  color: #0b0d12 !important;
+}
+main:has(> section#show) > section#show + section h1,
+main:has(> section#show) > section#show + section h2,
+main:has(> section#show) > section#show + section h3,
+main:has(> section#show) > section#show + section p {
+  color: #0b0d12 !important;
+  -webkit-text-fill-color: #0b0d12 !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+main:has(> section#show) > section#show + section > p:first-child {
+  color: #e74631 !important;
+  -webkit-text-fill-color: #e74631 !important;
+}
+main:has(> section#show) > section#show + section > div p {
+  color: #555a62 !important;
+  -webkit-text-fill-color: #555a62 !important;
+}
+
+/* Live proof — dark. */
+main:has(> section#show) > section#show + section + section {
+  background: #0c0f15 !important;
+  background-image: none !important;
+  color: #f5f2ea !important;
+}
+main:has(> section#show) > section#show + section + section h2 {
+  color: #f5f2ea !important;
+  -webkit-text-fill-color: #f5f2ea !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#show + section + section p {
+  color: rgba(245,242,234,.72) !important;
+  -webkit-text-fill-color: rgba(245,242,234,.72) !important;
+  opacity: 1 !important;
+}
+
+/* Formats — dark. */
+main:has(> section#show) > section#formats {
+  background: #080a0e !important;
+  background-image: none !important;
+  color: #f5f2ea !important;
+}
+main:has(> section#show) > section#formats h2,
+main:has(> section#show) > section#formats h3 {
+  color: #f5f2ea !important;
+  -webkit-text-fill-color: #f5f2ea !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#formats p {
+  color: rgba(245,242,234,.68) !important;
+  -webkit-text-fill-color: rgba(245,242,234,.68) !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#formats strong {
+  color: #ff4e35 !important;
+  -webkit-text-fill-color: #ff4e35 !important;
+}
+
+/* Program structure — dark. */
+main:has(> section#show) > section#formats + section {
+  background: #11151c !important;
+  background-image: none !important;
+  color: #f5f2ea !important;
+}
+main:has(> section#show) > section#formats + section h2,
+main:has(> section#show) > section#formats + section p {
+  color: #f5f2ea !important;
+  -webkit-text-fill-color: #f5f2ea !important;
+  opacity: 1 !important;
+}
+
+/* Booking — explicitly light, except the contact card. */
+main:has(> section#show) > section#booking {
+  background: #f3f0e8 !important;
+  background-image: none !important;
+  color: #0b0d12 !important;
+}
+main:has(> section#show) > section#booking > div:first-child h2 {
+  color: #0b0d12 !important;
+  -webkit-text-fill-color: #0b0d12 !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#booking > div:first-child p {
+  color: #555a62 !important;
+  -webkit-text-fill-color: #555a62 !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#booking > div:last-child {
+  background: #0a0c10 !important;
+  color: #fff !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+main:has(> section#show) > section#booking > div:last-child h3,
+main:has(> section#show) > section#booking > div:last-child p,
+main:has(> section#show) > section#booking > div:last-child a {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#booking > div:last-child > span {
+  color: #ff6a55 !important;
+  -webkit-text-fill-color: #ff6a55 !important;
+}
+
+/* Legal + footer — dark. */
+main:has(> section#show) > section#booking + section,
+main:has(> section#show) > footer {
+  background: #080a0e !important;
+  background-image: none !important;
+  color: #f5f2ea !important;
+}
+main:has(> section#show) > section#booking + section h2 {
+  color: #f5f2ea !important;
+  -webkit-text-fill-color: #f5f2ea !important;
+  opacity: 1 !important;
+}
+main:has(> section#show) > section#booking + section p,
+main:has(> section#show) > footer p,
+main:has(> section#show) > footer a {
+  color: rgba(245,242,234,.68) !important;
+  -webkit-text-fill-color: rgba(245,242,234,.68) !important;
+  opacity: 1 !important;
+}
