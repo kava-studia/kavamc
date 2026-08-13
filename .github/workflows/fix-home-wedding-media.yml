@@ -1,0 +1,157 @@
+name: Fix KAVA MC home cards and wedding video
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/fix-home-wedding-media.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fix-media:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Put exact home photos under cache-busting names
+        run: |
+          set -euo pipefail
+          cp public/media/wedding-final-2026.webp public/media/wedding-home-2026-v2.webp
+          cp public/media/corporate-final-2026.webp public/media/corporate-home-2026-v2.webp
+          test -s public/media/wedding-home-2026-v2.webp
+          test -s public/media/corporate-home-2026-v2.webp
+
+      - name: Download original Full HD wedding video without recompression
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 2 \
+            "https://at.adobe.com/8oSK8RYTambhWdHg" \
+            --output public/media/wedding-event-1080-original.mp4
+          test -s public/media/wedding-event-1080-original.mp4
+          head -c 64 public/media/wedding-event-1080-original.mp4 | grep -aq "ftyp" || { echo "Invalid wedding MP4"; exit 1; }
+          SIZE=$(stat -c%s public/media/wedding-event-1080-original.mp4)
+          test "$SIZE" -gt 20000000 || { echo "Wedding source unexpectedly small: $SIZE"; exit 1; }
+          ls -lh public/media/wedding-event-1080-original.mp4
+
+      - name: Patch site references and remove legacy media overrides
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          page = Path('src/app/page.tsx')
+          text = page.read_text(encoding='utf-8')
+          text = text.replace('/media/wedding-final-2026.webp', '/media/wedding-home-2026-v2.webp')
+          text = text.replace('/media/corporate-final-2026.webp', '/media/corporate-home-2026-v2.webp')
+          page.write_text(text, encoding='utf-8')
+
+          service = Path('src/app/uslugi/[slug]/page.tsx')
+          text = service.read_text(encoding='utf-8')
+          text = text.replace('/media/wedding-event-720.mp4', '/media/wedding-event-1080-original.mp4')
+          service.write_text(text, encoding='utf-8')
+
+          site = Path('src/data/site.ts')
+          text = site.read_text(encoding='utf-8')
+          text = text.replace('/media/wedding-event-720.mp4', '/media/wedding-event-1080-original.mp4')
+          site.write_text(text, encoding='utf-8')
+
+          css = Path('src/app/site-v8.css')
+          css.write_text(r'''/* KAVA MC · V8 final media fix. Must stay loaded last. */
+
+/* Home service cards must show the actual <img>, never old CSS background media. */
+.bento-page .bento-wedding-card,
+.bento-page .bento-corporate-card {
+  background-image: none !important;
+}
+.bento-page .bento-wedding-card::before,
+.bento-page .bento-wedding-card::after,
+.bento-page .bento-corporate-card::before,
+.bento-page .bento-corporate-card::after,
+.bento-page .bento-wedding-card .bento-media::before,
+.bento-page .bento-wedding-card .bento-media::after,
+.bento-page .bento-corporate-card .bento-media::before,
+.bento-page .bento-corporate-card .bento-media::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+.bento-page .bento-wedding-card .bento-media,
+.bento-page .bento-corporate-card .bento-media {
+  position: relative !important;
+  background: #202329 !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+}
+.bento-page .bento-wedding-card .bento-media > img,
+.bento-page .bento-corporate-card .bento-media > img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: none !important;
+  z-index: 2 !important;
+}
+
+/* Keep portrait proof videos native-looking: no zooming or artificial crop. */
+.bento-page .bento-video-frame-portrait video,
+.bento-subpage .bento-video-frame-portrait video {
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #000 !important;
+}
+''', encoding='utf-8')
+
+          layout = Path('src/app/layout.tsx')
+          text = layout.read_text(encoding='utf-8')
+          if 'import "./site-v8.css";' not in text:
+              marker = 'import "./site-v7.css";'
+              if marker in text:
+                  text = text.replace(marker, marker + '\nimport "./site-v8.css";')
+              else:
+                  text = 'import "./site-v8.css";\n' + text
+          layout.write_text(text, encoding='utf-8')
+
+          # Hard assertions so a broken partial fix never gets committed.
+          page_text = page.read_text(encoding='utf-8')
+          service_text = service.read_text(encoding='utf-8')
+          site_text = site.read_text(encoding='utf-8')
+          layout_text = layout.read_text(encoding='utf-8')
+          assert '/media/wedding-home-2026-v2.webp' in page_text
+          assert '/media/corporate-home-2026-v2.webp' in page_text
+          assert '/media/wedding-event-1080-original.mp4' in service_text
+          assert '/media/wedding-event-1080-original.mp4' in site_text
+          assert '/media/wedding-event-720.mp4' not in service_text
+          assert '/media/wedding-event-720.mp4' not in site_text
+          assert 'import "./site-v8.css";' in layout_text
+          PY
+
+      - name: Commit final media fix
+        run: |
+          set -euo pipefail
+          git config user.name "kava-media-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            public/media/wedding-home-2026-v2.webp \
+            public/media/corporate-home-2026-v2.webp \
+            public/media/wedding-event-1080-original.mp4 \
+            src/app/page.tsx \
+            'src/app/uslugi/[slug]/page.tsx' \
+            src/data/site.ts \
+            src/app/site-v8.css \
+            src/app/layout.tsx
+          git diff --cached --stat
+          git commit -m "Fix home photos and use original Full HD wedding video"
+          git push origin HEAD:main
