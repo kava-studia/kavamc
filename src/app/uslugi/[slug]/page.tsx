@@ -31,7 +31,7 @@ const serviceMedia: Record<string, { src: string; alt: string; position?: string
 
 const serviceVideo: Record<string, { src: string; poster: string; label: string; title: string; text: string; venue: string; duration: string; muted?: boolean }> = {
   "vedushchiy-na-svadbu": {
-    src: "/media/wedding-event-720.mp4",
+    src: "/media/wedding-event-1080-original.mp4",
     poster: "/media/wedding-final-2026.webp",
     label: "СВАДЬБА · ВИДЕО",
     title: "Свадьба в движении.",

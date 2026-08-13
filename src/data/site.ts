@@ -102,7 +102,7 @@ export const media = [
     venue: "Ведение и организация свадьбы",
     year: "2026",
     poster: "/media/wedding-final-2026.webp",
-    videoUrl: "/media/wedding-event-720.mp4",
+    videoUrl: "/media/wedding-event-1080-original.mp4",
     duration: "00:18",
     orientation: "portrait",
   },
