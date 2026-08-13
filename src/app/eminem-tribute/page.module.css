@@ -146,6 +146,70 @@
 .footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 28px 7vw; border-top: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.5); font-size: 13px; }
 .footer p { margin: 0; }
 
+/* Contrast guard: global KAVA MC visual layers must never make dark tribute sections dark-on-dark. */
+.page { color: #f5f2ea !important; }
+.header,
+.hero,
+.liveProof,
+.formats,
+.launch,
+.legal,
+.footer,
+.bookingCard { color: #f5f2ea !important; }
+
+.header nav a,
+.headerCta,
+.brand,
+.primary,
+.secondary,
+.hero h1,
+.hero .lead,
+.hero .status,
+.liveProof h2,
+.liveProof > div > p,
+.formats .sectionHead h2,
+.formatGrid h3,
+.formatGrid p,
+.launch .sectionHead h2,
+.launchList p,
+.legal h2,
+.legal p,
+.footer p,
+.bookingCard h3,
+.bookingCard p,
+.bookingCard a {
+  color: #f5f2ea !important;
+}
+
+.header nav a,
+.hero .status,
+.liveProof > div > p,
+.formatGrid p,
+.legal p,
+.footer p,
+.bookingCard p {
+  color: rgba(245,242,234,.66) !important;
+}
+
+.hero .lead { color: rgba(255,255,255,.84) !important; }
+.kicker,
+.statement > p,
+.bookingCard > span,
+.launchList span { color: #ff6a55 !important; }
+.hero h1 em,
+.brand span,
+.formatGrid strong { color: #ff4e35 !important; }
+
+/* Light sections intentionally stay dark-on-light. */
+.statement,
+.booking { color: #0b0d12 !important; }
+.statement h2,
+.statementGrid p,
+.booking h2,
+.booking > div > p { color: #0b0d12 !important; }
+.statementGrid p,
+.booking > div > p { color: rgba(11,13,18,.68) !important; }
+
 @media (max-width: 900px) {
   .header { width: calc(100% - 14px); top: 6px; margin-top: 6px; border-radius: 20px; min-height: 56px; padding-right: 58px; }
   .header nav, .headerCta { display: none; }
