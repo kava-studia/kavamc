@@ -137,6 +137,8 @@ export default function Home() {
             <div><span>02 / Сцена</span><h3>Club Show MC</h3><strong>25 000 ₽</strong><p>Клубный MC формат под вечер и площадку.</p></div>
             <div><span>03 / Пара</span><h3>Свадьба</h3><strong>от 80 000 ₽</strong><p>Ведение, сценарная логика и работа с гостями.</p></div>
             <div><span>04 / Под ключ</span><h3>Организация</h3><strong>от 130 000 ₽</strong><p>Площадка, команда, программа и координация.</p></div>
+            <div><span>05 / Клубная сцена</span><h3>Eminem Club Show</h3><strong>20 000 ₽</strong><p>Клубный рэп-блок и контакт с залом.</p></div>
+            <div><span>06 / Live</span><h3>Eminem Live Tribute Show</h3><strong>20 000 ₽</strong><p>Живой трибьют-сет для события и сцены.</p></div>
           </div>
           <a href="#contacts" className="kava-prices-cta">Рассказать о своём событии <Arrow /></a>
         </section>
