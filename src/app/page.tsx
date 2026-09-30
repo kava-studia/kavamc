@@ -73,7 +73,7 @@ export default function Home() {
       <header className="bento-header">
         <Link className="bento-logo" href="#top" aria-label="KAVA MC — главная">KAVA <span>MC</span></Link>
         <nav className="bento-nav" aria-label="Основная навигация">
-          <Link href="/eminem-tribute">Eminem Show</Link><Link href="/poleznoe">Полезное</Link><Link href="/referral">Реферальная</Link><a href="#contacts">Контакты</a>
+          <Link href="/eminem-tribute">Eminem Show</Link><a href="#prices">Цены</a><Link href="/poleznoe">Полезное</Link><Link href="/referral">Реферальная</Link><a href="#contacts">Контакты</a>
         </nav>
         <a className="bento-header-cta" href="#contacts">Обсудить дату <Arrow /></a>
       </header>
@@ -129,6 +129,17 @@ export default function Home() {
         </article>
 
         <article className="bento-card bento-span-5 bento-quote-card"><span className="bento-kicker">Принцип</span><blockquote>«Не заставлять людей веселиться, а создать вечер, в который хочется включиться».</blockquote><p>Сценарий даёт опору. Люди дают настоящие моменты.</p></article>
+
+        <section className="bento-card kava-prices bento-span-12" id="prices" aria-labelledby="prices-title">
+          <div className="kava-prices-intro"><span className="bento-kicker">Форматы и стоимость</span><h2 id="prices-title">Понятно, с чего начать.</h2><p>Финальный состав программы и смету согласуем под дату, площадку и задачу.</p></div>
+          <div className="kava-prices-grid">
+            <div><span>01 / Частный праздник</span><h3>День рождения</h3><strong>70 000 ₽</strong><p>Ведение и DJ включены.</p></div>
+            <div><span>02 / Сцена</span><h3>Club Show MC</h3><strong>25 000 ₽</strong><p>Клубный MC формат под вечер и площадку.</p></div>
+            <div><span>03 / Пара</span><h3>Свадьба</h3><strong>от 80 000 ₽</strong><p>Ведение, сценарная логика и работа с гостями.</p></div>
+            <div><span>04 / Под ключ</span><h3>Организация</h3><strong>от 130 000 ₽</strong><p>Площадка, команда, программа и координация.</p></div>
+          </div>
+          <a href="#contacts" className="kava-prices-cta">Рассказать о своём событии <Arrow /></a>
+        </section>
 
         <div className="bento-span-6" id="video"><VideoTile index={0} label="Организация" /></div>
         <div className="bento-span-6"><VideoTile index={2} label="Живой зал" /></div>
