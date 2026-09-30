@@ -74,6 +74,12 @@ const displayCopy: Record<string, { title: string; lead: string; start: string }
   },
 };
 
+const servicePrices: Record<string, string> = {
+  "vedushchiy-na-svadbu": "от 80 000 ₽",
+  "organizatsiya-meropriyatiy": "от 130 000 ₽",
+  "club-mc": "25 000 ₽",
+};
+
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }));
 }
@@ -124,6 +130,7 @@ export default async function ServicePage({ params }: Props) {
             <span className="bento-kicker">{service.eyebrow}</span>
             <h1>{display.title}</h1>
             <p>{display.lead}</p>
+            {servicePrices[slug] && <p className="kava-service-price">Стоимость: <strong>{servicePrices[slug]}</strong></p>}
             <Link className="bento-service-hero-cta" href="/#contacts">Обсудить событие ↗</Link>
           </div>
           <div className="bento-service-hero-media">
