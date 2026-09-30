@@ -51,6 +51,7 @@ export default function EminemTributePage() {
           <p className={styles.kicker}>KAVA MC · ТРИБЬЮТ-ШОУ</p>
           <h1>EMINEM<br /><em>LIVE TRIBUTE</em><br />SHOW</h1>
           <p className={styles.lead}>Живой рэп-трибьют с фокусом на технику, подачу, энергию и контакт с залом. Самостоятельный сценический продукт KAVA MC.</p>
+          <p className={styles.status}>Eminem Club Show — 20 000 ₽ · Eminem Live Tribute Show — 20 000 ₽</p>
           <div className={styles.actions}>
             <a href={links.telegram} target="_blank" rel="noreferrer" className={styles.primary}>Пригласить шоу</a>
             <a href="#booking" className={styles.secondary}>Информация для букинга</a>
