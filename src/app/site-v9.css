@@ -196,7 +196,7 @@
 .kava-prices { padding: clamp(26px, 3.5vw, 52px); background: #191b20; color: #f4f1eb; scroll-margin-top: 100px; }
 .kava-prices-intro h2 { margin: 14px 0; font-size: clamp(34px, 4.4vw, 64px); line-height: 1; letter-spacing: -.055em; }
 .kava-prices-intro p { color: #bbb8b3; line-height: 1.5; }
-.kava-prices-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 32px 0 24px; }
+.kava-prices-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 32px 0 24px; }
 .kava-prices-grid > div { min-width: 0; padding: 23px; border: 1px solid rgba(255,255,255,.16); border-radius: 22px; background: #24272d; }
 .kava-prices-grid span { color: #ff8a58; text-transform: uppercase; letter-spacing: .1em; font-size: 11px; font-weight: 800; }
 .kava-prices-grid h3 { min-height: 2.4em; margin: 22px 0 14px; font-size: clamp(21px, 1.9vw, 29px); line-height: 1.2; }
